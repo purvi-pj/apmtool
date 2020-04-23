@@ -1,0 +1,95 @@
+{
+	"alipay": {
+		"required": ["name","country_code"],
+		"schema": {
+			"name": "",
+			"country_code": ""
+		}
+	},
+	"bancontact": {
+		"required": ["name","country_code"],
+		"schema": {
+			"name": "",
+			"country_code": ""
+		}
+	},	
+	"blik": {
+		"required": ["name","country_code"],
+		"schema": {
+			"name": "",
+			"country_code": ""
+		}
+	},		
+	"eps": {
+		"required": ["name","country_code"],
+		"schema": {
+			"name": "",
+			"country_code": ""
+		}
+	},		
+	"giropay": {
+		"required": ["name","country_code"],
+		"schema": {
+			"name": "",
+			"country_code": ""
+		}
+	},		
+	"ideal": {
+		"required": ["name","country_code"],
+		"schema": {
+			"name": "",
+			"country_code": ""
+		}
+	},	
+	"mybank": {
+		"required": ["name","country_code"],
+		"schema": {		
+			"name": "",
+			"country_code": ""
+		}
+	},		
+	"p24": {
+		"required": ["name","country_code","email"],
+		"schema": {
+			"name": "",
+			"country_code": "",
+			"email": ""
+		}
+	},		
+	"payu": {
+		"required": ["name","country_code"],
+		"schema": {
+			"name": "",
+			"country_code": ""
+		}
+	},
+	"sofort": {
+		"required": ["name","country_code"],
+		"schema": {
+			"name": "",
+			"country_code": ""
+		}
+	},				
+	"trustly": {
+		"required": ["name","country_code"],
+		"schema": {		
+			"name": "",
+			"country_code": ""
+		}
+	},		
+	"verkkopankki": {
+		"required": ["name","country_code","email"],
+		"schema": {		
+			"name": "",
+			"country_code": "",
+			"email": ""
+		}
+	},		
+	"wechatpay": {
+		"required": ["name","country_code"],
+		"schema": {
+			"name": "",
+			"country_code": ""
+		}
+	}		
+}

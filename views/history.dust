@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ORDER HISTORY</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+  </head>
+  <body>
+
+      <div>
+        <form class="form-inline" id="searchHistoryForm" action="history" method="POST">
+          <div class="form-group mx-sm-3 mb-2">
+            <label for="orderId" class="sr-only">Order ID</label>
+            <input type="text" class="form-control" name="orderId" id="orderId" value="{orderId}" placeholder="Order ID">
+          </div>
+          <button type="submit" class="btn btn-primary mb-2">Search</button>
+          <a class="btn btn-primary mb-2 mx-2" href="/history" role="button">Show Most Recent</a>
+        </form>
+      </div>
+
+    <!-- <div class="container"> -->
+      <div class="row">
+        <div class="col-3">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Most Recent Orders</th>
+              </tr>
+            </thead>            
+            <tbody>
+              {#records}
+                <tr>
+                  <th scope="row"><span class="orderSummary" itemid="{$idx}">{ORDER_ID}<br/>({STATUS})</span></th>
+                </tr>
+              {/records}                                 
+            </tbody>
+          </table>
+        </div>
+        <div class="col">
+          <div class="card">
+            <div class="card-body">
+
+              <h5 class="card-title"><span id="orderTitle">{records[0].ORDER_ID} ({records[0].STATUS})</span></h5>
+              <h6 class="card-subtitle mb-2 text-muted"><span id="orderDate">{records[0].INSERTION_DATE}</span></h6>
+              <h6 class="card-subtitle mb-2 text-muted">PAYMENT SCHEME: `<span id="orderPaymentScheme">{records[0].PAYMENT_SCHEME}</span>`</h6>
+              <h6 class="card-subtitle mb-2 text-muted">ENVIRONMENT: `<span id="orderPaymentEnvironment">{records[0].ENVIRONMENT}</span>`</h6>
+
+              <div class="accordion" id="accordionExample">
+                <div class="card">
+                  <div class="card-header" id="headingOne">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Create Order API (<span id="createOrderCorrelationIds">{records[0].CREATE_ORDER_API.CORRELATION_ID}</span>)
+                      </button>
+                    </h2>
+                  </div>
+
+                  <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <div class="card-body">
+                      <h6 class="card-title">REQUEST</h6>
+                      <pre id="createOrderRequest">{records[0].CREATE_ORDER_API.REQUESTJSON}</pre>
+                      <hr/>
+                      <h6 class="card-title">RESPONSE</h6>
+                      <pre id="createOrderResponse">{records[0].CREATE_ORDER_API.RESPONSEJSON}</pre>                      
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" id="headingTwo">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Confirm Payment Source API (<span id="confirmPaymentSourceCorrelationIds">{records[0].CONFIRM_PAYMENT_SOURCE_API.CORRELATION_ID}</span>)
+                      </button>
+                    </h2>
+                  </div>
+                  <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                    <div class="card-body">
+                      <h6 class="card-title">REQUEST</h6>
+                      <pre id="confirmPaymentSourceRequest">{records[0].CONFIRM_PAYMENT_SOURCE_API.REQUESTJSON}</pre>
+                      <hr/>
+                      <h6 class="card-title">RESPONSE</h6>
+                      <pre id="confirmPaymentSourceResponse">{records[0].CONFIRM_PAYMENT_SOURCE_API.RESPONSEJSON}</pre>                      
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" id="headingThree">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Capture Order API (<span id="captureOrderCorrelationIds">{records[0].CAPTURE_ORDER_API.CORRELATION_ID}</span>)
+                      </button>
+                    </h2>
+                  </div>
+                  <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                    <div class="card-body">
+                      <h6 class="card-title">REQUEST</h6>
+                      <pre id="captureOrderRequest">{records[0].CAPTURE_ORDER_API.REQUESTJSON}</pre>
+                      <hr/>
+                      <h6 class="card-title">RESPONSE</h6>
+                      <pre id="captureOrderResponse">{records[0].CAPTURE_ORDER_API.RESPONSEJSON}</pre>                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    <!-- </div> -->
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>  
+
+    <script>
+
+      var recordValues = {records|js|s};
+
+    </script>
+
+     <script type="text/javascript" src="/javascripts/history.js"></script> 
+
+
+        
+  </body>
+</html>
