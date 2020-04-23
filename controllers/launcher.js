@@ -31,8 +31,8 @@ function createOrder(req, res, next) {
 		amount: req.body.amount,
 		countryCode: req.body.countrycode,
 		scheme: req.body.paymentscheme,
-		returnUrl: 'http://localhost.paypal.com/3000/return',
-		cancelUrl: 'http://localhost.paypal.com/3000/cancel'
+		returnUrl: process.env.RETURN_URL,
+		cancelUrl: process.env.CANCEL_URL
 	};
 
 	console.log(util.format('req.body = %s', JSON.stringify(args, null, 2)));
@@ -94,8 +94,8 @@ function confirmPaymentSource(req, res, next) {
 		amount: req.body.amount,
 		countryCode: req.body.countrycode,
 		scheme: req.body.paymentscheme,
-		returnUrl: 'http://localhost.paypal.com:3000/return',
-		cancelUrl: 'http://localhost.paypal.com:3000/return'
+		returnUrl: process.env.RETURN_URL,
+		cancelUrl: process.env.CANCEL_URL
 	};
 
 	ordersUtils.createAccessToken()
@@ -145,8 +145,8 @@ function mockApproval(req, res, next) {
 	const model = {
 		// returnUrl: req.query.returnUrl,
 		// cancelUrl: req.query.cancelUrl
-		returnUrl: 'http://localhost.paypal.com:3000/return',
-		cancelUrl: 'http://localhost.paypal.com:3000/return'
+		returnUrl: process.env.RETURN_URL,
+		cancelUrl: process.env.CANCEL_URL
 	};
 
 	res.render('mockPaymentSchemeApproval', model);

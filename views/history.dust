@@ -16,6 +16,7 @@
           </div>
           <button type="submit" class="btn btn-primary mb-2">Search</button>
           <a class="btn btn-primary mb-2 mx-2" href="/history" role="button">Show Most Recent</a>
+          <a class="btn btn-primary mb-2" href="/" role="buton">Create New Order</a>
         </form>
       </div>
 
@@ -43,20 +44,36 @@
 
               <h5 class="card-title"><span id="orderTitle">{records[0].ORDER_ID} ({records[0].STATUS})</span></h5>
               <h6 class="card-subtitle mb-2 text-muted"><span id="orderDate">{records[0].INSERTION_DATE}</span></h6>
-              <h6 class="card-subtitle mb-2 text-muted">PAYMENT SCHEME: `<span id="orderPaymentScheme">{records[0].PAYMENT_SCHEME}</span>`</h6>
-              <h6 class="card-subtitle mb-2 text-muted">ENVIRONMENT: `<span id="orderPaymentEnvironment">{records[0].ENVIRONMENT}</span>`</h6>
+<!--               <h6 class="card-subtitle mb-2 text-muted">PAYMENT SCHEME: `<span id="orderPaymentScheme">{records[0].PAYMENT_SCHEME}</span>`</h6>
+              <h6 class="card-subtitle mb-2 text-muted">ENVIRONMENT: `<span id="orderPaymentEnvironment">{records[0].ENVIRONMENT}</span>`</h6> -->
 
-              <div class="accordion" id="accordionExample">
+              <div class="accordion" id="orderDetails">
                 <div class="card">
-                  <div class="card-header" id="headingOne">
+                  <div class="card-header" id="headingSummary">
                     <h2 class="mb-0">
-                      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#orderSummary" aria-expanded="true" aria-controls="orderSummary">
+                        Order Summary
+                      </button>
+                    </h2>
+                  </div>
+
+                  <div id="orderSummary" class="collapse show" aria-labelledby="headingSummary" data-parent="#orderDetails">
+                    <div class="card-body">
+                      <pre id="orderSummaryJson">{records[0].SUMMARYJSON}</pre>
+                      <button id="clipboardCopy" class="btn btn-primary mb-2" data-clipboard-target="#orderSummaryJson">Copy to Clipboard</button>             
+                    </div>
+                  </div>
+                </div>                
+                <div class="card">
+                  <div class="card-header" id="headingCreateOrderApi">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#createOrderApi" aria-expanded="true" aria-controls="createOrderApi">
                         Create Order API (<span id="createOrderCorrelationIds">{records[0].CREATE_ORDER_API.CORRELATION_ID}</span>)
                       </button>
                     </h2>
                   </div>
 
-                  <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                  <div id="createOrderApi" class="collapse" aria-labelledby="headingCreateOrderApi" data-parent="#orderDetails">
                     <div class="card-body">
                       <h6 class="card-title">REQUEST</h6>
                       <pre id="createOrderRequest">{records[0].CREATE_ORDER_API.REQUESTJSON}</pre>
@@ -67,14 +84,14 @@
                   </div>
                 </div>
                 <div class="card">
-                  <div class="card-header" id="headingTwo">
+                  <div class="card-header" id="headingConfirmPaymentSourceApi">
                     <h2 class="mb-0">
-                      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#confirmPaymentSourceApi" aria-expanded="false" aria-controls="confirmPaymentSourceApi">
                         Confirm Payment Source API (<span id="confirmPaymentSourceCorrelationIds">{records[0].CONFIRM_PAYMENT_SOURCE_API.CORRELATION_ID}</span>)
                       </button>
                     </h2>
                   </div>
-                  <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                  <div id="confirmPaymentSourceApi" class="collapse" aria-labelledby="headingConfirmPaymentSourceApi" data-parent="#orderDetails">
                     <div class="card-body">
                       <h6 class="card-title">REQUEST</h6>
                       <pre id="confirmPaymentSourceRequest">{records[0].CONFIRM_PAYMENT_SOURCE_API.REQUESTJSON}</pre>
@@ -85,14 +102,14 @@
                   </div>
                 </div>
                 <div class="card">
-                  <div class="card-header" id="headingThree">
+                  <div class="card-header" id="headingCaptureOrderApi">
                     <h2 class="mb-0">
-                      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#captureOrderApi" aria-expanded="false" aria-controls="captureOrderApi">
                         Capture Order API (<span id="captureOrderCorrelationIds">{records[0].CAPTURE_ORDER_API.CORRELATION_ID}</span>)
                       </button>
                     </h2>
                   </div>
-                  <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                  <div id="captureOrderApi" class="collapse" aria-labelledby="headingCaptureOrderApi" data-parent="#orderDetails">
                     <div class="card-body">
                       <h6 class="card-title">REQUEST</h6>
                       <pre id="captureOrderRequest">{records[0].CAPTURE_ORDER_API.REQUESTJSON}</pre>
@@ -123,6 +140,7 @@
     </script>
 
      <script type="text/javascript" src="/javascripts/history.js"></script> 
+     <script type="text/javascript" src="/javascripts/clipboard.min.js"></script> 
 
 
         

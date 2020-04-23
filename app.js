@@ -9,6 +9,8 @@ var mongoose = require('mongoose');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+require('dotenv').config();
+
 var app = express();
 
 // view engine setup
@@ -30,7 +32,7 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
-mongoose.connect('mongodb://127.0.0.1:27017/apmtool', {useNewUrlParser: true});
+mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true});
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));

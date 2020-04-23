@@ -8,8 +8,9 @@ $(function() {
 
 		$( "#orderTitle" ).text(`${recordValues[recordIndex].ORDER_ID} (${recordValues[recordIndex].STATUS})`);
 		$( "#orderDate" ).text(`${recordInsertionDate.toString()}`);
-		$( "#orderPaymentScheme" ).text(`${recordValues[recordIndex].PAYMENT_SCHEME}`);
-		$( "#orderPaymentEnvironment" ).text(`${recordValues[recordIndex].ENVIRONMENT}`);
+		// $( "#orderPaymentScheme" ).text(`${recordValues[recordIndex].PAYMENT_SCHEME}`);
+		// $( "#orderPaymentEnvironment" ).text(`${recordValues[recordIndex].ENVIRONMENT}`);
+		$( "#orderSummaryJson" ).text(`${recordValues[recordIndex].SUMMARYJSON}`);
 		$( "#createOrderCorrelationIds" ).text(`${recordValues[recordIndex].CREATE_ORDER_API.CORRELATION_ID}`);
 		$( "#createOrderRequest" ).text(`${recordValues[recordIndex].CREATE_ORDER_API.REQUESTJSON}`);
 		$( "#createOrderResponse" ).text(`${recordValues[recordIndex].CREATE_ORDER_API.RESPONSEJSON}`);
@@ -21,5 +22,7 @@ $(function() {
 		recordValues[recordIndex].CAPTURE_ORDER_API ? $( "#captureOrderResponse" ).text(`${recordValues[recordIndex].CAPTURE_ORDER_API.RESPONSEJSON}`) : $( "#captureOrderResponse" ).text('{}');
 
 	});
+
+	var clipboard = new ClipboardJS(document.getElementById('clipboardCopy'));
 
 });
