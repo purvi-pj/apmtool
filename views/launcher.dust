@@ -47,49 +47,75 @@
                       <input class="form-check-input" type="radio" name="environment" id="liveenv" value="LIVE" disabled>
                       <label class="form-check-label" for="prodenv">LIVE</label>
                     </div>       
-                </div>    
-                <div class="form-group">
-                    <label for="paymentscheme">Payment Scheme</label>
-                    <select class="form-control" id="paymentscheme" name="paymentscheme">
-                        <option value="alipay">alipay</option>
-                        <option value="bancontact">bancontact</option>
-                        <option value="blik">blik</option>
-                        <option value="eps">eps</option>
-                        <option value="giropay">giropay</option>
-                        <option value="ideal" selected>ideal</option>
-                        <option value="mybank">mybank</option>
-                        <option value="p24">p24</option>
-                        <option value="payu">payu</option>
-                        <option value="sofort">sofort</option>
-                        <option value="trustly">trustly</option>
-                        <option value="verkkopankki">verkkopankki</option>
-                        <option value="wechatpay">wechatpay</option>
-                    </select>
-                </div>                                
-                <div class="form-group">
-                    <label for="amount">Amount</label>
-                    <input type="text" name="amount" class="form-control" value="1.00">
                 </div>
+
+                <div class="form-row">    
+                  <div class="form-group col-md-4">
+                      <label for="paymentscheme">Payment Scheme</label>
+                      <select class="form-control" id="paymentscheme" name="paymentscheme">
+                          <option value="alipay">alipay</option>
+                          <option value="bancontact">bancontact</option>
+                          <option value="blik">blik</option>
+                          <option value="eps">eps</option>
+                          <option value="giropay">giropay</option>
+                          <option value="ideal" selected>ideal</option>
+                          <option value="mybank">mybank</option>
+                          <option value="p24">p24</option>
+                          <option value="payu">payu</option>
+                          <option value="poli">poli</option>
+                          <option value="sofort">sofort</option>
+                          <option value="trustly">trustly</option>
+                          <option value="trustpay">trustpay</option>
+                          <option value="verkkopankki">verkkopankki</option>
+                          <option value="wechatpay">wechatpay</option>
+                      </select>
+                  </div>                                
+                  <div class="form-group col-md-3">
+                      <label for="amount">Amount</label>
+                      <input type="text" name="amount" class="form-control" value="1.00">
+                  </div>
+                  <div class="form-group col-md-3">
+                      <label for="currency">Currency</label>
+                      <input type="text" name="currency" class="form-control" value="EUR">
+                  </div>
+                  <div class="form-group col-md-2">
+                      <label for="countrycode">Country Code</label>
+                      <input type="text" name="countrycode" class="form-control" value="NL">
+                  </div>    
+                </div>          
+
+<!--                 <div class="form-row">      
+ -->                  <div class="form-group">
+                      <label for="name">Buyer Name</label>
+                      <input type="text" name="name" class="form-control" value="Test McTesterson">
+                  </div>
+                  <div class="form-group">
+                      <label for="email">Buyer Email Address</label>
+                      <input type="text" name="email" class="form-control" value="test@test.com">
+                  </div>                    
+                  <div class="form-group">
+                      <label for="phonenumber">Buyer Phone Number</label>
+                      <input type="text" name="phonenumber" class="form-control" value="14085551234">
+                  </div>       
+                <!-- </div> -->
+
                 <div class="form-group">
-                    <label for="currency">Currency</label>
-                    <input type="text" name="currency" class="form-control" value="EUR">
-                </div>
-                <div class="form-group">
-                    <label for="countrycode">Country Code</label>
-                    <input type="text" name="countrycode" class="form-control" value="NL">
-                </div>                
-                <div class="form-group">
-                    <label for="name">Buyer Name</label>
-                    <input type="text" name="name" class="form-control" value="Test McTesterson">
-                </div>
-                <div class="form-group">
-                    <label for="email">Buyer Email Address</label>
-                    <input type="text" name="email" class="form-control" value="test@test.com">
-                </div>                    
-                <div class="form-group">
-                    <label for="phonenumber">Buyer Phone Number</label>
-                    <input type="text" name="phonenumber" class="form-control" value="14085551234">
-                </div>                                                                    
+                    <label>Shipping Preference</label>
+                    <div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="shippingpreference" id="shipping_getfromfile" value="GET_FROM_FILE" checked>
+                          <label class="form-check-label" for="shipping_getfromfile">GET_FROM_FILE</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="shippingpreference" id="shipping_no_shipping" value="NO_SHIPPING">
+                          <label class="form-check-label" for="shipping_no_shipping">NO_SHIPPING</label>
+                        </div>       
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="shippingpreference" id="shipping_set_provided_address" value="SET_PROVIDED_ADDRESS">
+                          <label class="form-check-label" for="shipping_set_provided_address">SET_PROVIDED_ADDRESS</label>
+                        </div>        
+                    </div>              
+                </div>                                                                 
                 <div class="form-group">
                     <!-- <input type="submit" id="submitBtn" class="btn btn-primary" > -->
                     <button type="button" id="submitBtn" class="btn btn-primary" data-toggle="modal" data-target="#processingModal">
