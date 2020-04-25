@@ -63,6 +63,13 @@
 			"country_code": ""
 		}
 	},
+	"poli": {
+		"required": ["name","country_code"],
+		"schema": {
+			"name": "",
+			"country_code": ""
+		}
+	},	
 	"sofort": {
 		"required": ["name","country_code"],
 		"schema": {
@@ -71,6 +78,13 @@
 		}
 	},				
 	"trustly": {
+		"required": ["name","country_code"],
+		"schema": {		
+			"name": "",
+			"country_code": ""
+		}
+	},		
+	"trustpay": {
 		"required": ["name","country_code"],
 		"schema": {		
 			"name": "",
