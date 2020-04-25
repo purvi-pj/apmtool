@@ -2,6 +2,7 @@
 
 const ordersUtils 	= require('../lib/orders'),
 	  PPOrder 		= require('../schemas/ppOrder'),
+	  dbUtils 		= require('../lib/db'),
 	  util 			= require('util');
 
 function startOrder(req, res, next) {
@@ -31,6 +32,7 @@ function createOrder(req, res, next) {
 		amount: req.body.amount,
 		countryCode: req.body.countrycode,
 		scheme: req.body.paymentscheme,
+		shippingPreference: req.body.shippingpreference,
 		returnUrl: process.env.RETURN_URL,
 		cancelUrl: process.env.CANCEL_URL
 	};
@@ -81,6 +83,28 @@ function getOrder(req, res, next) {
 		res.json(result);
 	});
 
+}
+
+function getOrderInternalStatus(req, res, next) {
+	const orderId = req.body.orderId;
+
+	dbUtils.getOrderStatus({ orderId })
+
+	.then((status) => {
+
+		if (status) {
+			res.json({ STATUS: status });
+		} else {
+			res.json({ STATUS: 'UNKNOWN' });
+		}
+
+	}).catch((err) => {
+
+		console.log('ERROR ON CANCEL RETURN...');
+
+		res.json({ STATUS: 'UNKNOWN' });
+
+	});	
 }
 
 function confirmPaymentSource(req, res, next) {
@@ -145,23 +169,71 @@ function mockApproval(req, res, next) {
 	const model = {
 		// returnUrl: req.query.returnUrl,
 		// cancelUrl: req.query.cancelUrl
-		returnUrl: process.env.RETURN_URL,
-		cancelUrl: process.env.CANCEL_URL
+		returnUrl: util.format('%s?token=%s', process.env.RETURN_URL, req.query.token),
+		cancelUrl: util.format('%s?token=%s', process.env.CANCEL_URL, req.query.token)
 	};
 
 	res.render('mockPaymentSchemeApproval', model);
 }
 
 function handleReturn(req, res, next) {
-	res.render('return');
+
+	console.log('RETURN REDIRECT FOR `%s`', req.query.token);
+
+	dbUtils.getOrderByOrderId({ orderId: req.query.token })
+
+	.then((record) => {
+
+		if (record) {
+			record.STATUS = 'REDIRECT_RETURN';
+			record.save();
+
+			res.render('return');
+		}
+
+	}).catch((err) => {
+
+		console.log('ERROR ON RETURN...');
+
+		res.render('return');
+
+	});
+
+}
+
+function handleCancel(req, res, next) {
+
+	console.log('CANCEL REDIRECT FOR `%s`', req.query.token);
+
+	dbUtils.getOrderByOrderId({ orderId: req.query.token })
+
+	.then((record) => {
+
+		if (record) {
+			record.STATUS = 'CANCELLED';
+			record.save();
+
+			res.render('return');
+		}
+
+	}).catch((err) => {
+
+		console.log('ERROR ON CANCEL RETURN...');
+
+		res.render('return');
+
+	});
+
 }
 
 module.exports = {
 	startOrder,
 	createOrder,
 	getOrder,
+	getOrderInternalStatus,
 	confirmPaymentSource,
 	captureOrder,
 	mockApproval,
-	handleReturn
+	handleReturn,
+	handleCancel
 };

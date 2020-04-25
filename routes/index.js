@@ -31,13 +31,15 @@ const launcherController 	= require('../controllers/launcher'),
 
 	router.post('/getOrder', launcherController.getOrder);
 
-	router.post('/getOrderStatus', launcherController.getOrder);
+	router.post('/getOrderStatus', launcherController.getOrderInternalStatus);
 
 	router.post('/captureOrder', launcherController.captureOrder);
 
 	router.get('/mockPaymentSchemeApproval', launcherController.mockApproval);
 
 	router.get('/return', launcherController.handleReturn);
+
+	router.get('/cancel', launcherController.handleCancel);
 
 	router.post('/ppwebhook', webhookController.ppWebhook);
 
