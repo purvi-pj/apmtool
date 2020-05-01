@@ -1,6 +1,6 @@
 {
   "name": "apmtool",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "scripts": {
     "start": "DEBUG=express node ./bin/www"
@@ -9,14 +9,20 @@
     "adaro": "~1.0.4",
     "body-parser": "^1.19.0",
     "bootstrap-icons": "^1.0.0-alpha3",
+    "connect-ensure-login": "^0.1.1",
+    "connect-flash": "^0.1.1",
     "cookie-parser": "~1.4.4",
+    "crypto-js": "^4.0.0",
     "debug": "~2.6.9",
     "dotenv": "^8.2.0",
     "express": "~4.16.1",
+    "express-session": "^1.17.1",
     "http-errors": "~1.6.3",
     "moment": "^2.24.0",
     "mongoose": "^5.9.9",
     "morgan": "~1.9.1",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
     "request": "^2.88.2",
     "request-debug": "^0.2.0",
     "underscore": "^1.10.2"

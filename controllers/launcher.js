@@ -7,17 +7,9 @@ const ordersUtils 	= require('../lib/orders'),
 
 function startOrder(req, res, next) {
 
-	// ordersUtils.createAccessToken({})
+	console.log(JSON.stringify(req.user, null, 2));
 
-	// .then((result) => {
-
-	// 	console.log(JSON.stringify(result, null, 2));
-
-	// 	res.render('launcher', {});
-
-	// });
-
-	res.render('launcher', {});
+	res.render('launcher', { user: req.user });
 
 }
 
@@ -226,6 +218,32 @@ function handleCancel(req, res, next) {
 
 }
 
+function renderLogin(req, res, next) {
+
+	res.render('login', { error: req.query.error });
+}
+
+function logout(req, res, next) {
+	  req.logout();
+	  res.redirect('/');
+}
+
+function renderAdmin(req, res, next) {
+	res.render('admin');
+}
+
+function createUser(req, res, next) {
+	dbUtils.createUser({ username: req.body.username, password: req.body.password })
+
+	.then((user) => {
+
+		res.redirect('/history');
+
+	}).catch((err) => {
+		res.redirect('/login?error=Create+user+error');
+	});
+}
+
 module.exports = {
 	startOrder,
 	createOrder,
@@ -235,5 +253,9 @@ module.exports = {
 	captureOrder,
 	mockApproval,
 	handleReturn,
-	handleCancel
+	handleCancel,
+	renderLogin,
+	renderAdmin,
+	createUser,
+	logout
 };

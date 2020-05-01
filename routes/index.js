@@ -1,15 +1,18 @@
 'use strict';
 
 var express = require('express');
+var passport = require('passport');
 var router = express.Router();
 var bodyParser = require('body-parser');
+var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 
 // create application/x-www-form-urlencoded parser
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 const launcherController 	= require('../controllers/launcher'),
 	  webhookController		= require('../controllers/webhook'),
-	  historyController 	= require('../controllers/history');
+	  historyController 	= require('../controllers/history'),
+	  sandboxController 	= require('../controllers/sandbox');
 
 /* GET home page. */
 // router.get('/', function(req, res, next) {
@@ -43,9 +46,23 @@ const launcherController 	= require('../controllers/launcher'),
 
 	router.post('/ppwebhook', webhookController.ppWebhook);
 
-	router.get('/history', historyController.loadRecent);
+	router.get('/history', ensureLoggedIn('/login'), historyController.loadRecent);
 
 	router.post('/history', historyController.loadRecord);
+
+	router.get('/user/create', sandboxController.createUser);
+
+	router.get('/user/validate', sandboxController.validateUser);
+
+	router.get('/login', launcherController.renderLogin);
+
+	router.post('/login', passport.authenticate('local', { successReturnToOrRedirect: '/', failureRedirect: '/login?error=Invalid', failureFlash: true   }));
+
+	router.get('/logout', launcherController.logout);
+
+	router.get('/admin', ensureLoggedIn('/login'), launcherController.renderAdmin);
+
+	router.post('/createUser', ensureLoggedIn('/login'), launcherController.createUser);
 
 // };
 

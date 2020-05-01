@@ -22,6 +22,7 @@
           <button type="submit" class="btn btn-primary mb-2">Search</button>
           <a class="btn btn-primary mb-2 mx-2" href="/history" role="button">Show Most Recent</a>
           <a class="btn btn-primary mb-2" href="/" role="buton">Create New Order</a>
+          <a class="btn btn-primary mb-2 mx-2" href="/logout" role="buton">Logout</a>
         </form>
       </div>
 
