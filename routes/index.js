@@ -56,7 +56,7 @@ const launcherController 	= require('../controllers/launcher'),
 
 	router.get('/login', launcherController.renderLogin);
 
-	router.post('/login', passport.authenticate('local', { successReturnToOrRedirect: '/', failureRedirect: '/login?error=Invalid', failureFlash: true   }));
+	router.post('/login', passport.authenticate('local', { successReturnToOrRedirect: '/', failureRedirect: '/login?error=Invalid+username+or+password', failureFlash: true   }));
 
 	router.get('/logout', launcherController.logout);
 

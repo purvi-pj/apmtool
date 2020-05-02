@@ -12,7 +12,6 @@
 
   </head>
   <body>
-
       <div>
         <form class="form-inline" id="searchHistoryForm" action="history" method="POST">
           <div class="form-group mx-sm-3 mb-2">
@@ -22,7 +21,7 @@
           <button type="submit" class="btn btn-primary mb-2">Search</button>
           <a class="btn btn-primary mb-2 mx-2" href="/history" role="button">Show Most Recent</a>
           <a class="btn btn-primary mb-2" href="/" role="buton">Create New Order</a>
-          <a class="btn btn-primary mb-2 mx-2" href="/logout" role="buton">Logout</a>
+          <a class="btn btn-primary mb-2 mx-2" href="/logout" role="buton" data-toggle="tooltip" data-placement="right" title="Logout of {user.USERNAME}">Logout</a>
         </form>
       </div>
 

@@ -15,7 +15,7 @@ function loadRecent(req, res, next) {
 		})
 
 
-		res.render("history", { records });
+		res.render("history", { records, user: req.user });
 
 	});
 }
@@ -38,7 +38,7 @@ function loadRecord(req, res, next) {
 
 			const records = [{ORDER_ID: 'NOT FOUND'}];
 
-			res.render("history", { records, orderId: req.body.orderId });		
+			res.render("history", { records, orderId: req.body.orderId, user: req.user });		
 
 		});
 	} else {
