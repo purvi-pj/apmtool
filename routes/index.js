@@ -34,6 +34,8 @@ const launcherController 	= require('../controllers/launcher'),
 
 	router.post('/getOrder', launcherController.getOrder);
 
+	router.post('/getOrderSummary', launcherController.getOrderSummary);
+
 	router.post('/getOrderStatus', launcherController.getOrderInternalStatus);
 
 	router.post('/captureOrder', launcherController.captureOrder);

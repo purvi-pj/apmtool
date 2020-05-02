@@ -77,6 +77,52 @@ function getOrder(req, res, next) {
 
 }
 
+function getOrderSummary(req, res, next) {
+
+	const orderId = req.body.orderId;
+
+	console.log(util.format('getOrderSummary for `%s`', orderId));
+
+	dbUtils.getOrderByOrderId({ orderId })
+
+	.then((record) => {
+
+		if (record) {
+
+			// Create summary object
+			let summary = {
+				ORDER_ID: record.ORDER_ID,
+				ORDER_CREATE_TIME: record.CREATE_ORDER_API.RESPONSE.create_time,
+				PAYMENT_SCHEME: record.PAYMENT_SCHEME,
+				STATUS: record.STATUS,
+				ENVIRONMENT: record.ENVIRONMENT,
+				CLIENT_ID: maskValue(record.CLIENT_ID),
+				BUYER_NAME: record.BUYER_NAME,
+				BUYER_EMAIL: record.BUYER_EMAIL,
+				BUYER_COUNTRY: record.BUYER_COUNTRY,
+				AMOUNT: record.AMOUNT,
+				CURRENCY: record.CURRENCY,
+				CORRELATION_IDS: [record.CREATE_ORDER_API.CORRELATION_ID]
+			};
+
+			if (record.CONFIRM_PAYMENT_SOURCE_API.CORRELATION_ID) {
+				summary.CORRELATION_IDS.push(record.CONFIRM_PAYMENT_SOURCE_API.CORRELATION_ID);
+			}
+
+			if (record.CAPTURE_ORDER_API.CORRELATION_ID) {
+				summary.CORRELATION_IDS.push(record.CAPTURE_ORDER_API.CORRELATION_ID);
+			}
+
+			res.json(summary);
+
+		} else {
+			res.json({});
+		}
+	}).catch((err) => {
+		res.json({});
+	});
+}
+
 function getOrderInternalStatus(req, res, next) {
 	const orderId = req.body.orderId;
 
@@ -244,10 +290,21 @@ function createUser(req, res, next) {
 	});
 }
 
+function maskValue (value) {
+	if (value && value.length > 4) {
+		const last4 = value.substring(value.length -4);
+
+		return util.format('%s%s', value.substring(0, value.length - 4).replace(/[a-zA-Z0-9]/g, "*"), last4);
+	} else {
+		return 'N/A';
+	}
+}
+
 module.exports = {
 	startOrder,
 	createOrder,
 	getOrder,
+	getOrderSummary,
 	getOrderInternalStatus,
 	confirmPaymentSource,
 	captureOrder,
