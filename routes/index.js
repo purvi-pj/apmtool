@@ -66,6 +66,8 @@ const launcherController 	= require('../controllers/launcher'),
 
 	router.post('/createUser', ensureLoggedIn('/login'), launcherController.createUser);
 
+	router.get('/mockWebhook', sandboxController.mockWebhook);
+
 // };
 
 module.exports = router;

@@ -20,6 +20,7 @@ $(function() {
 		recordValues[recordIndex].CAPTURE_ORDER_API ? $( "#captureOrderCorrelationIds" ).text(`${recordValues[recordIndex].CAPTURE_ORDER_API.CORRELATION_ID}`) : $( "#captureOrderCorrelationIds" ).text('N/A');
 		recordValues[recordIndex].CAPTURE_ORDER_API ? $( "#captureOrderRequest" ).text(`${recordValues[recordIndex].CAPTURE_ORDER_API.REQUESTJSON}`) : $( "#captureOrderRequest" ).text('{}');
 		recordValues[recordIndex].CAPTURE_ORDER_API ? $( "#captureOrderResponse" ).text(`${recordValues[recordIndex].CAPTURE_ORDER_API.RESPONSEJSON}`) : $( "#captureOrderResponse" ).text('{}');
+		recordValues[recordIndex].WEBHOOKJSON ? $( "#webhookDetails" ).text(`${recordValues[recordIndex].WEBHOOKJSON}`) : $( "#webhookDetails" ).text('{}');
 
 	});
 

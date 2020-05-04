@@ -2,6 +2,7 @@
 
 const util 			= require('util'),
       dbUtils 		= require('../lib/db'),
+      mockUtils 	= require('../lib/mockUtils'),
       _				= require('underscore');
 
 function createUser(req, res, next) {
@@ -40,7 +41,14 @@ function validateUser(req, res, next) {
 
 }
 
+function mockWebhook(req, res, next) {
+	mockUtils.sendMockWebhook(req.query.token);
+
+	res.send('OK');
+}
+
 module.exports = {
 	createUser,
-	validateUser
+	validateUser,
+	mockWebhook
 }

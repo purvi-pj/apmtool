@@ -25,7 +25,7 @@ let ppOrder = function() {
 		// }
 		GET_ORDER_API: { type: mongoose.Schema.Types.Mixed, default: {} },
 		CAPTURE_ORDER_API: { type: mongoose.Schema.Types.Mixed, default: {} },
-		WEBHOOK: { type: mongoose.Schema.Types.Mixed, default: {} }
+		WEBHOOK: [mongoose.Schema.Types.Mixed]
 	});
 
 	return mongoose.model('pp_order', ppOrderSchema);

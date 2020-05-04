@@ -3,6 +3,7 @@
 const ordersUtils 	= require('../lib/orders'),
 	  PPOrder 		= require('../schemas/ppOrder'),
 	  dbUtils 		= require('../lib/db'),
+	  mockUtils 	= require('../lib/mockUtils'),
 	  util 			= require('util');
 
 function startOrder(req, res, next) {
@@ -29,7 +30,7 @@ function createOrder(req, res, next) {
 		cancelUrl: process.env.CANCEL_URL
 	};
 
-	console.log(util.format('req.body = %s', JSON.stringify(args, null, 2)));
+	// console.log(util.format('req.body = %s', JSON.stringify(args, null, 2)));
 
 	ordersUtils.createAccessToken()
 
@@ -41,7 +42,7 @@ function createOrder(req, res, next) {
 
 	}).then((result) => {
 
-		console.log(JSON.stringify(result, null, 2));
+		// console.log(JSON.stringify(result, null, 2));
 
 		res.json(result);
 	}).catch((err) => {
@@ -70,7 +71,7 @@ function getOrder(req, res, next) {
 
 	}).then((result) => {
 
-		console.log(JSON.stringify(result, null, 2));
+		// console.log(JSON.stringify(result, null, 2));
 
 		res.json(result);
 	});
@@ -81,7 +82,7 @@ function getOrderSummary(req, res, next) {
 
 	const orderId = req.body.orderId;
 
-	console.log(util.format('getOrderSummary for `%s`', orderId));
+	// console.log(util.format('getOrderSummary for `%s`', orderId));
 
 	dbUtils.getOrderByOrderId({ orderId })
 
@@ -170,7 +171,7 @@ function confirmPaymentSource(req, res, next) {
 
 	}).then((result) => {
 
-		console.log(JSON.stringify(result, null, 2));
+		// console.log(JSON.stringify(result, null, 2));
 
 		res.json(result);
 	});	
@@ -193,7 +194,7 @@ function captureOrder(req, res, next) {
 
 	}).then((result) => {
 
-		console.log(JSON.stringify(result, null, 2));
+		// console.log(JSON.stringify(result, null, 2));
 
 		res.json(result);
 	}).catch((err) => {
@@ -225,6 +226,9 @@ function handleReturn(req, res, next) {
 		if (record) {
 			record.STATUS = 'REDIRECT_RETURN';
 			record.save();
+
+			// TODO: remove stubbed logic
+			mockUtils.sendMockWebhook(req.query.token);
 
 			res.render('return');
 		}

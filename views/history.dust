@@ -88,6 +88,7 @@
                     </div>
                   </div>
                 </div>
+
                 <div class="card">
                   <div class="card-header" id="headingConfirmPaymentSourceApi">
                     <h2 class="mb-0">
@@ -106,6 +107,7 @@
                     </div>
                   </div>
                 </div>
+
                 <div class="card">
                   <div class="card-header" id="headingCaptureOrderApi">
                     <h2 class="mb-0">
@@ -124,6 +126,22 @@
                     </div>
                   </div>
                 </div>
+
+                <div class="card">
+                  <div class="card-header" id="headingWebhook">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#webhook" aria-expanded="false" aria-controls="webhook">
+                        Webhook Details
+                      </button>
+                    </h2>
+                  </div>
+                  <div id="webhook" class="collapse" aria-labelledby="headingWebhook" data-parent="#orderDetails">
+                    <div class="card-body">
+                      <pre id="webhookDetails">{records[0].WEBHOOKJSON}</pre>                
+                    </div>
+                  </div>
+                </div>
+
               </div>
 
             </div>
