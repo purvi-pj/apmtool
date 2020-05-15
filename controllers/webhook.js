@@ -77,7 +77,7 @@ function ppWebhook(req, res, next) {
 
 		});
 	} else {
-		res.status(404).send('NOK');
+		res.status(200).send('OK');
 	}
 }
 
