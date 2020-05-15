@@ -10,7 +10,7 @@ function ppWebhook(req, res, next) {
 
 	console.log(util.format('INCOMING PAYPAL WEBHOOK...\n%s', JSON.stringify(req.body, null, 2)));
 
-	dbUtils.getOrderByOrderId({ orderId: req.body.id })
+	dbUtils.getOrderByOrderId({ orderId: req.body.resource.id })
 
 	.then((record) => {
 
@@ -31,7 +31,7 @@ function ppWebhook(req, res, next) {
 
 				const args = {
 					accessToken: accessTokenResult['access_token'],
-					orderId: req.body.id,
+					orderId: req.body.resource.id,
 					environment: record.ENVIRONMENT
 				};
 
