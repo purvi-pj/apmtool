@@ -81,6 +81,7 @@
                   <div id="createOrderApi" class="collapse" aria-labelledby="headingCreateOrderApi" data-parent="#orderDetails">
                     <div class="card-body">
                       <h6 class="card-title">REQUEST</h6>
+                      <pre id="createOrderRequestUrl">{records[0].CREATE_ORDER_API.REQUEST_URL}</pre>
                       <pre id="createOrderRequest">{records[0].CREATE_ORDER_API.REQUESTJSON}</pre>
                       <hr/>
                       <h6 class="card-title">RESPONSE</h6>
@@ -100,6 +101,7 @@
                   <div id="confirmPaymentSourceApi" class="collapse" aria-labelledby="headingConfirmPaymentSourceApi" data-parent="#orderDetails">
                     <div class="card-body">
                       <h6 class="card-title">REQUEST</h6>
+                      <pre id="confirmPaymentSourceRequestUrl">{records[0].CONFIRM_PAYMENT_SOURCE_API.REQUEST_URL}</pre>
                       <pre id="confirmPaymentSourceRequest">{records[0].CONFIRM_PAYMENT_SOURCE_API.REQUESTJSON}</pre>
                       <hr/>
                       <h6 class="card-title">RESPONSE</h6>
@@ -119,6 +121,7 @@
                   <div id="captureOrderApi" class="collapse" aria-labelledby="headingCaptureOrderApi" data-parent="#orderDetails">
                     <div class="card-body">
                       <h6 class="card-title">REQUEST</h6>
+                      <pre id="captureOrderRequestUrl">{records[0].CAPTURE_ORDER_API.REQUEST_URL}</pre>
                       <pre id="captureOrderRequest">{records[0].CAPTURE_ORDER_API.REQUESTJSON}</pre>
                       <hr/>
                       <h6 class="card-title">RESPONSE</h6>

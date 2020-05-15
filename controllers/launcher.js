@@ -32,7 +32,7 @@ function createOrder(req, res, next) {
 
 	// console.log(util.format('req.body = %s', JSON.stringify(args, null, 2)));
 
-	ordersUtils.createAccessToken()
+	ordersUtils.createAccessToken({ environment: req.body.environment })
 
 	.then((accessTokenResult) => {
 
@@ -61,7 +61,7 @@ function getOrder(req, res, next) {
 		orderId: req.body.orderId
 	};
 
-	ordersUtils.createAccessToken()
+	ordersUtils.createAccessToken({ environment: req.body.environment })
 
 	.then((accessTokenResult) => {
 
@@ -149,6 +149,7 @@ function getOrderInternalStatus(req, res, next) {
 function confirmPaymentSource(req, res, next) {
 
 	let args = {
+		environment: req.body.environment,
 		orderId: req.body.orderId,
 		name: req.body.name,
 		emailAddress: req.body.email,
@@ -161,7 +162,7 @@ function confirmPaymentSource(req, res, next) {
 		cancelUrl: process.env.CANCEL_URL
 	};
 
-	ordersUtils.createAccessToken()
+	ordersUtils.createAccessToken({ environment: req.body.environment })
 
 	.then((accessTokenResult) => {
 
@@ -184,7 +185,7 @@ function captureOrder(req, res, next) {
 		orderId: req.body.orderId
 	};
 
-	ordersUtils.createAccessToken()
+	ordersUtils.createAccessToken({ environment: req.body.environment })
 
 	.then((accessTokenResult) => {
 

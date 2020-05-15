@@ -12,14 +12,17 @@ $(function() {
 		// $( "#orderPaymentEnvironment" ).text(`${recordValues[recordIndex].ENVIRONMENT}`);
 		$( "#orderSummaryJson" ).text(`${recordValues[recordIndex].SUMMARYJSON}`);
 		$( "#createOrderCorrelationIds" ).text(`${recordValues[recordIndex].CREATE_ORDER_API.CORRELATION_ID}`);
+		$( "#createOrderRequestUrl" ).text(`${recordValues[recordIndex].CREATE_ORDER_API.REQUEST_URL}`);
 		$( "#createOrderRequest" ).text(`${recordValues[recordIndex].CREATE_ORDER_API.REQUESTJSON}`);
 		$( "#createOrderResponse" ).text(`${recordValues[recordIndex].CREATE_ORDER_API.RESPONSEJSON}`);
-		recordValues[recordIndex].CONFIRM_PAYMENT_SOURCE_API ? $( "#confirmPaymentSourceCorrelationIds" ).text(`${recordValues[recordIndex].CONFIRM_PAYMENT_SOURCE_API.CORRELATION_ID}`) : $( "#confirmPaymentSourceCorrelationIds" ).text('N/A');
-		recordValues[recordIndex].CONFIRM_PAYMENT_SOURCE_API ? $( "#confirmPaymentSourceRequest" ).text(`${recordValues[recordIndex].CONFIRM_PAYMENT_SOURCE_API.REQUESTJSON}`) : $( "#confirmPaymentSourceRequest" ).text('{}');
-		recordValues[recordIndex].CONFIRM_PAYMENT_SOURCE_API ? $( "#confirmPaymentSourceResponse" ).text(`${recordValues[recordIndex].CONFIRM_PAYMENT_SOURCE_API.RESPONSEJSON}`) : $( "#confirmPaymentSourceResponse" ).text('{}');
-		recordValues[recordIndex].CAPTURE_ORDER_API ? $( "#captureOrderCorrelationIds" ).text(`${recordValues[recordIndex].CAPTURE_ORDER_API.CORRELATION_ID}`) : $( "#captureOrderCorrelationIds" ).text('N/A');
-		recordValues[recordIndex].CAPTURE_ORDER_API ? $( "#captureOrderRequest" ).text(`${recordValues[recordIndex].CAPTURE_ORDER_API.REQUESTJSON}`) : $( "#captureOrderRequest" ).text('{}');
-		recordValues[recordIndex].CAPTURE_ORDER_API ? $( "#captureOrderResponse" ).text(`${recordValues[recordIndex].CAPTURE_ORDER_API.RESPONSEJSON}`) : $( "#captureOrderResponse" ).text('{}');
+		recordValues[recordIndex].CONFIRM_PAYMENT_SOURCE_API.CORRELATION_ID ? $( "#confirmPaymentSourceCorrelationIds" ).text(`${recordValues[recordIndex].CONFIRM_PAYMENT_SOURCE_API.CORRELATION_ID}`) : $( "#confirmPaymentSourceCorrelationIds" ).text('N/A');
+		recordValues[recordIndex].CONFIRM_PAYMENT_SOURCE_API.REQUEST_URL ? $( "#confirmPaymentSourceRequestUrl" ).text(`${recordValues[recordIndex].CONFIRM_PAYMENT_SOURCE_API.REQUEST_URL}`) : $( "#confirmPaymentSourceRequestUrl" ).text('');
+		recordValues[recordIndex].CONFIRM_PAYMENT_SOURCE_API.REQUESTJSON ? $( "#confirmPaymentSourceRequest" ).text(`${recordValues[recordIndex].CONFIRM_PAYMENT_SOURCE_API.REQUESTJSON}`) : $( "#confirmPaymentSourceRequest" ).text('{}');
+		recordValues[recordIndex].CONFIRM_PAYMENT_SOURCE_API.RESPONSEJSON ? $( "#confirmPaymentSourceResponse" ).text(`${recordValues[recordIndex].CONFIRM_PAYMENT_SOURCE_API.RESPONSEJSON}`) : $( "#confirmPaymentSourceResponse" ).text('{}');
+		recordValues[recordIndex].CAPTURE_ORDER_API.CORRELATION_ID ? $( "#captureOrderCorrelationIds" ).text(`${recordValues[recordIndex].CAPTURE_ORDER_API.CORRELATION_ID}`) : $( "#captureOrderCorrelationIds" ).text('N/A');
+		recordValues[recordIndex].CAPTURE_ORDER_API.REQUEST_URL ? $( "#captureOrderRequestUrl" ).text(`${recordValues[recordIndex].CAPTURE_ORDER_API.REQUEST_URL}`) : $( "#captureOrderRequestUrl" ).text('');
+		recordValues[recordIndex].CAPTURE_ORDER_API.REQUESTJSON ? $( "#captureOrderRequest" ).text(`${recordValues[recordIndex].CAPTURE_ORDER_API.REQUESTJSON}`) : $( "#captureOrderRequest" ).text('{}');
+		recordValues[recordIndex].CAPTURE_ORDER_API.RESPONSEJSON ? $( "#captureOrderResponse" ).text(`${recordValues[recordIndex].CAPTURE_ORDER_API.RESPONSEJSON}`) : $( "#captureOrderResponse" ).text('{}');
 		recordValues[recordIndex].WEBHOOKJSON ? $( "#webhookDetails" ).text(`${recordValues[recordIndex].WEBHOOKJSON}`) : $( "#webhookDetails" ).text('{}');
 
 	});
