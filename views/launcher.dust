@@ -26,7 +26,7 @@
                 </div>
                 <hr/>
                 <div id="progressUpdate">
-                </div>      
+                </div> 
               </div>
               <div id="modalFooter" class="modal-footer d-none">
                 <a class="btn btn-primary" href="/" role="button">Start Over</a>
@@ -98,11 +98,15 @@
                       <input type="text" name="phonenumber" class="form-control" value="14085551234">
                   </div>       
 
-                <div class="form-group">
+<!--                 <div class="form-group">
                     <label>Shipping Preference</label>
                     <div>
                         <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="shippingpreference" id="shipping_getfromfile" value="GET_FROM_FILE" checked>
+                          <input class="form-check-input" type="radio" name="shippingpreference" id="shipping_donotset" value="DO_NOT_SET" checked>
+                          <label class="form-check-label" for="shipping_donotset">DO NOT SET</label>
+                        </div>                      
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="shippingpreference" id="shipping_getfromfile" value="GET_FROM_FILE">
                           <label class="form-check-label" for="shipping_getfromfile">GET_FROM_FILE</label>
                         </div>
                         <div class="form-check form-check-inline">
@@ -114,11 +118,11 @@
                           <label class="form-check-label" for="shipping_set_provided_address">SET_PROVIDED_ADDRESS</label>
                         </div>        
                     </div>              
-                </div>                                                                 
+                </div>          -->                                                        
                 <div class="form-group">
                     <!-- <input type="submit" id="submitBtn" class="btn btn-primary" > -->
                     <button type="button" id="submitBtn" class="btn btn-primary" data-toggle="modal" data-target="#processingModal">
-                      Create Order
+                      Submit Order
                     </button>
                 </div>
             </form>

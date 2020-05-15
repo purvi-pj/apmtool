@@ -43,12 +43,22 @@ $(function() {
 				// Confirm payment source after successful order creation
 				confirmPaymentSource.done(function( data ) {
 
-					$( "#txnprogress").css('width', '50%').attr('aria-valuenow', 50);
-					$( "#progressUpdate" ).append( '<p>Payment Source confirmed...</p><p>Waiting for payment scheme approval...</p>');
+					if (data.statusCode < 400) {
 
-					var approvalurl = data.response.links.find(x => x.rel === 'approve').href;
+						$( "#txnprogress").css('width', '50%').attr('aria-valuenow', 50);
+						$( "#progressUpdate" ).append( '<p>Payment Source confirmed...</p><p>Waiting for payment scheme approval...</p>');
 
-					openPopUp(approvalurl);
+						var approvalurl = data.response.links.find(x => x.rel === 'payer-action').href;
+
+						openPopUp(approvalurl);
+
+					} else {
+
+						$( "#progressUpdate" ).append( '<p>Confirm Payment Source Failed...</p>');
+						$( "#progressUpdate" ).append( '<p><pre>' + JSON.stringify(data.response, null, 2) + '</pre></p>');
+						orderFailure(orderId);
+
+					}
 
 				});
 
@@ -70,7 +80,7 @@ $(function() {
 				if (windowObjectReference.closed) {
 
 					$( "#txnprogress").css('width', '75%').attr('aria-valuenow', 75);
-					$( "#progressUpdate" ).append( '<p>Approval Closed...</p><p>Verifying Transaction Status...</p>');	
+					$( "#progressUpdate" ).append( '<p>Approval Closed...</p><p>Verifying Approval Status...</p>');	
 
 					pollOrder(orderId, 1);
 
@@ -108,7 +118,7 @@ $(function() {
 						$( "#progressUpdate" ).append( '<p>Transaction Cancelled ...</p>');
 						orderFailure(orderId);
 					} else if (result.STATUS === 'REDIRECT_RETURN') {
-						getPPOrderStatus(orderId);
+						pollPPOrderStatus(orderId);
 					} else {
 						setTimeout(function() { pollOrder(orderId, retryAttempts+1) }, 10000);
 					}
@@ -118,18 +128,40 @@ $(function() {
 			}
 		}
 
-		function getPPOrderStatus(orderId) {
-			var getOrderRequest = $.post( getOrderUrl, { environment, orderId } );
+		// Stubbed out version
+		// function getPPOrderStatus(orderId) {
+		// 	var getOrderRequest = $.post( getOrderUrl, { environment, orderId } );
 
-			getOrderRequest.done(function( data ) {
-				if (data.statusCode < 400) {
-					$( "#progressUpdate" ).append( '<p>Transaction Status Verified...</p><p>Capturing Order...</p>');	
-					captureOrder(orderId);
-				} else {
-					$( "#progressUpdate" ).append('<hr/><p><svg class="bi bi-x-circle text-danger mx-2" width="32" height="32" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 010 .708l-7 7a.5.5 0 01-.708-.708l7-7a.5.5 0 01.708 0z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 000 .708l7 7a.5.5 0 00.708-.708l-7-7a.5.5 0 00-.708 0z" clip-rule="evenodd"/></svg>FAILURE</p>');										
-				}
-			});			
-		}
+		// 	getOrderRequest.done(function( data ) {
+		// 		if (data.statusCode < 400) {
+		// 			$( "#progressUpdate" ).append( '<p>Transaction Status Verified...</p><p>Capturing Order...</p>');	
+		// 			captureOrder(orderId);
+		// 		} else {
+		// 			$( "#progressUpdate" ).append('<hr/><p><svg class="bi bi-x-circle text-danger mx-2" width="32" height="32" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 010 .708l-7 7a.5.5 0 01-.708-.708l7-7a.5.5 0 01.708 0z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 000 .708l7 7a.5.5 0 00.708-.708l-7-7a.5.5 0 00-.708 0z" clip-rule="evenodd"/></svg>FAILURE</p>');										
+		// 		}
+		// 	});			
+		// }
+
+		function pollPPOrderStatus(orderId, retryAttempts) {
+
+			if (retryAttempts > 12) {
+				$( "#progressUpdate" ).append( '<p>PayPal Order Status Has Not Been Updated...</p>');
+				orderFailure(orderId);				
+			} else {
+
+				var getOrderRequest = $.post( getOrderUrl, { environment, orderId } );
+
+				getOrderRequest.done(function( data ) {
+					if (data.status === 'APPROVED') {
+						$( "#progressUpdate" ).append( '<p>PayPal status updated to `' + data.status + '`...</p><p>Capturing Order...</p>');	
+						captureOrder(orderId);
+					} else {
+						setTimeout(function() { pollPPOrderStatus(orderId, retryAttempts+1) }, 5000);
+						$( "#progressUpdate" ).append('<p>Polling - PayPal status is still `' + data.status + '`... </p>');
+					}
+				});		
+			}	
+		}		
 
 		function captureOrder(orderId) {
 			var captureOrderRequest = $.post( captureOrderUrl, { environment, orderId } );

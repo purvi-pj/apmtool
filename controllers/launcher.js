@@ -228,7 +228,7 @@ function handleReturn(req, res, next) {
 			record.save();
 
 			// TODO: remove stubbed logic
-			mockUtils.sendMockWebhook(req.query.token);
+			// mockUtils.sendMockWebhook(req.query.token);
 
 			res.render('return');
 		}
