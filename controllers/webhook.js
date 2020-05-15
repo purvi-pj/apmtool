@@ -4,67 +4,81 @@ const util 			= require('util'),
 	  moment 		= require('moment'),
       ordersUtils 	= require('../lib/orders'),
       dbUtils 		= require('../lib/db'),
+      PPWebhook 	= require('../schemas/ppWebhook'),
       _				= require('underscore');
 
 function ppWebhook(req, res, next) {
 
 	console.log(util.format('INCOMING PAYPAL WEBHOOK...\n%s', JSON.stringify(req.body, null, 2)));
 
-	dbUtils.getOrderByOrderId({ orderId: req.body.resource.id })
+	// Persist incoming webhook
+	let ppWebhook = new PPWebhook({
+		BODY: req.body
+	});		
 
-	.then((record) => {
+	ppWebhook.save();
 
-		if (record) {
+	// Confirm that resource id exists
+	if (req.body.resource && req.body.resource.id) {
 
-			const webhookEvent = {
-				RECEIVED_DATE: moment().format(),
-				BODY: req.body
-			};
+		dbUtils.getOrderByOrderId({ orderId: req.body.resource.id })
 
-			record.WEBHOOK.push(webhookEvent)
+		.then((record) => {
 
-			record.save();
+			if (record) {
 
-			ordersUtils.createAccessToken()
-
-			.then((accessTokenResult) => {
-
-				const args = {
-					accessToken: accessTokenResult['access_token'],
-					orderId: req.body.resource.id,
-					environment: record.ENVIRONMENT
+				const webhookEvent = {
+					RECEIVED_DATE: moment().format(),
+					BODY: req.body
 				};
 
-				return ordersUtils.getOrder(args);
+				record.WEBHOOK.push(webhookEvent)
 
-			}).then((result) => {
+				record.save();
 
-				res.status(200).send('OK');
-				
-			}).catch((err) => {
+				ordersUtils.createAccessToken()
 
-				console.log(err);
+				.then((accessTokenResult) => {
 
-				res.status(500).send('NOK');
+					const args = {
+						accessToken: accessTokenResult['access_token'],
+						orderId: req.body.resource.id,
+						environment: record.ENVIRONMENT
+					};
 
-			});
+					return ordersUtils.getOrder(args);
+
+				}).then((result) => {
+
+					res.status(200).send('OK');
+					
+				}).catch((err) => {
+
+					console.log(err);
+
+					res.status(500).send('NOK');
+
+				});
 
 
-		} else {
+			} else {
 
-			console.log('INCOMING WEBHOOK ORDER NOT FOUND...');
+				console.log('INCOMING WEBHOOK ORDER NOT FOUND...');
 
-			res.status(404).send('NOK');
+				res.status(404).send('NOK');
 
-		}
+			}
 
-	}).catch((err) => {
+		}).catch((err) => {
 
-		console.log('ERROR ON INCOMING WEBHOOK...');
+			console.log('ERROR ON INCOMING WEBHOOK...');
 
-		res.status(500).send('NOK');
+			res.status(500).send('NOK');
 
-	});
+		});
+	} else {
+		res.status(404).send('NOK');
+	}
 }
 
 module.exports = {
