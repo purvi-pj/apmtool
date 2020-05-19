@@ -1,16 +1,17 @@
 'use strict';
 
-const ordersUtils 	= require('../lib/orders'),
-	  PPOrder 		= require('../schemas/ppOrder'),
-	  dbUtils 		= require('../lib/db'),
-	  mockUtils 	= require('../lib/mockUtils'),
-	  util 			= require('util');
+const ordersUtils 		= require('../lib/orders'),
+	  PPOrder 			= require('../schemas/ppOrder'),
+	  dbUtils 			= require('../lib/db'),
+	  mockUtils 		= require('../lib/mockUtils'),
+	  paymentObjects 	= require('../config/paymentObjects'),
+	  util 				= require('util');
 
 function startOrder(req, res, next) {
 
 	console.log(JSON.stringify(req.user, null, 2));
 
-	res.render('launcher', { user: req.user });
+	res.render('launcher', { user: req.user, schemesJSON: paymentObjects });
 
 }
 
@@ -29,6 +30,10 @@ function createOrder(req, res, next) {
 		returnUrl: process.env.RETURN_URL,
 		cancelUrl: process.env.CANCEL_URL
 	};
+
+	if (req.body.bic) {
+		args.bic = req.body.bic;
+	}
 
 	// console.log(util.format('req.body = %s', JSON.stringify(args, null, 2)));
 
@@ -158,6 +163,7 @@ function confirmPaymentSource(req, res, next) {
 		amount: req.body.amount,
 		countryCode: req.body.countrycode,
 		scheme: req.body.paymentscheme,
+		bic: req.body.bic,
 		returnUrl: process.env.RETURN_URL,
 		cancelUrl: process.env.CANCEL_URL
 	};

@@ -36,6 +36,7 @@
 	},		
 	"ideal": {
 		"required": ["name","country_code"],
+		"optional": ["bic"],
 		"schema": {
 			"name": "",
 			"country_code": ""
@@ -72,6 +73,7 @@
 	},	
 	"sofort": {
 		"required": ["name","country_code"],
+		"optional": ["bic"],
 		"schema": {
 			"name": "",
 			"country_code": ""

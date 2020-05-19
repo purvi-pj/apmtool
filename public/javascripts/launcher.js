@@ -1,5 +1,22 @@
 $(function() {
 
+	$("#paymentscheme").change(function() {
+
+		$("#bic_optional").addClass("d-none");
+
+		var tag = $("#paymentscheme").val();
+
+		if (tag) {
+
+			// Determine mandatory fields and toggle display for fields
+			var mandatoryFields = schemesJSON[tag].optional;
+			$.each(mandatoryFields, function (index, value) {
+				var fieldId = ("#" + value + "_optional").replace(/\./g, '\\\.');
+				$(fieldId).removeClass("d-none");
+			});
+		}
+	});	
+
 	// Attach handler to button click event
 	$( "#submitBtn" ).click(function( event ) {
 
@@ -16,6 +33,7 @@ $(function() {
 			name 						= $form.find( "input[name='name']" ).val(),
 			email 						= $form.find( "input[name='email']" ).val(),
 			phonenumber 				= $form.find( "input[name='phonenumber']" ).val(),
+			bic 						= $form.find( "input[name='bic']" ).val(),
 			shippingpreference 			= $form.find( "input[name='shippingpreference']:checked" ).val(),
 			url 						= $form.attr( "action" ),
 			confirmPaymentSourceUrl 	= 'confirm',
@@ -38,7 +56,7 @@ $(function() {
 				orderId = data.orderId;
 
 				$( "#progressUpdate" ).empty().append( '<p>Created Order Id... ' + data.orderId  + '</p><p>Confirming Payment Source...</p>');
-				var confirmPaymentSource = $.post( confirmPaymentSourceUrl, { environment, orderId, paymentscheme, amount, currency, countrycode, name, email, phonenumber } );
+				var confirmPaymentSource = $.post( confirmPaymentSourceUrl, { environment, orderId, paymentscheme, amount, currency, countrycode, name, email, phonenumber, bic } );
 
 				// Confirm payment source after successful order creation
 				confirmPaymentSource.done(function( data ) {
