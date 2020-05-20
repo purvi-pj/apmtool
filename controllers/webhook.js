@@ -18,8 +18,175 @@ function ppWebhook(req, res, next) {
 
 	ppWebhook.save();
 
-	// Confirm that resource id exists
-	if (req.body.resource && req.body.resource.id) {
+	const WEBHOOK_EVENT_TYPE = req.body.event_type;
+
+	switch (WEBHOOK_EVENT_TYPE) {
+
+		case 'CHECKOUT.ORDER.APPROVED':
+
+			handleCheckoutOrderApprovedWebhook(req)
+
+			.then((resp) => {
+
+				res.status(resp.status).send(resp.content);
+
+			}).catch ((err) => {
+				res.status(err.status).send(err.content);
+			});
+		
+			break;
+
+		case 'PAYMENT.CAPTURE.COMPLETED':
+
+			handlePaymentCaptureCompleted(req)
+
+			.then((resp) => {
+
+				res.status(resp.status).send(resp.content);
+
+			}).catch ((err) => {
+
+				console.log(err);
+
+				res.status(500).send('NOK');
+			});
+
+			break;
+
+		default:
+			break;
+
+	};
+
+	// // Confirm that resource id exists
+	// if (req.body.resource && req.body.resource.id) {
+
+	// 	dbUtils.getOrderByOrderId({ orderId: req.body.resource.id })
+
+	// 	.then((record) => {
+
+	// 		if (record) {
+
+	// 			const webhookEvent = {
+	// 				RECEIVED_DATE: moment().format(),
+	// 				BODY: req.body
+	// 			};
+
+	// 			record.WEBHOOK.push(webhookEvent)
+
+	// 			record.save();
+
+	// 			ordersUtils.createAccessToken()
+
+	// 			.then((accessTokenResult) => {
+
+	// 				const args = {
+	// 					accessToken: accessTokenResult['access_token'],
+	// 					orderId: req.body.resource.id,
+	// 					environment: record.ENVIRONMENT
+	// 				};
+
+	// 				return ordersUtils.getOrder(args);
+
+	// 			}).then((result) => {
+
+	// 				res.status(200).send('OK');
+					
+	// 			}).catch((err) => {
+
+	// 				console.log(err);
+
+	// 				res.status(500).send('NOK');
+
+	// 			});
+
+
+	// 		} else {
+
+	// 			console.log('INCOMING WEBHOOK ORDER NOT FOUND...');
+
+	// 			res.status(404).send('NOK');
+
+	// 		}
+
+	// 	}).catch((err) => {
+
+	// 		console.log('ERROR ON INCOMING WEBHOOK...');
+
+	// 		res.status(500).send('NOK');
+
+	// 	});
+	// } else {
+	// 	res.status(200).send('OK');
+	// }
+}
+
+function handlePaymentCaptureCompleted(req) {
+	return new Promise((resolve, reject) => {
+
+		dbUtils.getOrderByCaptureId({ captureId: req.body.resource.id })
+
+		.then((record) => {
+
+			if (record) {
+
+				const webhookEvent = {
+					RECEIVED_DATE: moment().format(),
+					BODY: req.body
+				};
+
+				record.WEBHOOK.push(webhookEvent)
+
+				record.save();
+
+				// ordersUtils.createAccessToken()
+
+				// .then((accessTokenResult) => {
+
+				// 	const args = {
+				// 		accessToken: accessTokenResult['access_token'],
+				// 		orderId: record.ORDER_ID,
+				// 		environment: record.ENVIRONMENT
+				// 	};
+
+				// 	return ordersUtils.getOrder(args);
+
+				// }).then((result) => {
+
+				// 	resolve({ status: 200, content: 'OK' });
+					
+				// }).catch((err) => {
+
+				// 	console.log(err);
+
+				// 	reject({ status: 500, content: 'NOK' });
+
+				// });
+
+				resolve({ status: 200, content: 'OK' });
+
+
+			} else {
+
+				console.log('INCOMING WEBHOOK ORDER NOT FOUND...');
+
+				reject({ status: 404, content: 'NOK' });
+
+			}
+
+		}).catch((err) => {
+
+			console.log('ERROR ON INCOMING WEBHOOK...');
+
+			reject({ status: 500, content: 'NOK' });
+
+		});		
+
+	});	
+}
+
+function handleCheckoutOrderApprovedWebhook(req) {
+	return new Promise((resolve, reject) => {
 
 		dbUtils.getOrderByOrderId({ orderId: req.body.resource.id })
 
@@ -36,36 +203,38 @@ function ppWebhook(req, res, next) {
 
 				record.save();
 
-				ordersUtils.createAccessToken()
+				// ordersUtils.createAccessToken()
 
-				.then((accessTokenResult) => {
+				// .then((accessTokenResult) => {
 
-					const args = {
-						accessToken: accessTokenResult['access_token'],
-						orderId: req.body.resource.id,
-						environment: record.ENVIRONMENT
-					};
+				// 	const args = {
+				// 		accessToken: accessTokenResult['access_token'],
+				// 		orderId: req.body.resource.id,
+				// 		environment: record.ENVIRONMENT
+				// 	};
 
-					return ordersUtils.getOrder(args);
+				// 	return ordersUtils.getOrder(args);
 
-				}).then((result) => {
+				// }).then((result) => {
 
-					res.status(200).send('OK');
+				// 	resolve({ status: 200, content: 'OK' });
 					
-				}).catch((err) => {
+				// }).catch((err) => {
 
-					console.log(err);
+				// 	console.log(err);
 
-					res.status(500).send('NOK');
+				// 	reject({ status: 500, content: 'NOK' });
 
-				});
+				// });
+
+				resolve({ status: 200, content: 'OK' });
 
 
 			} else {
 
 				console.log('INCOMING WEBHOOK ORDER NOT FOUND...');
 
-				res.status(404).send('NOK');
+				reject({ status: 404, content: 'NOK' });
 
 			}
 
@@ -73,12 +242,11 @@ function ppWebhook(req, res, next) {
 
 			console.log('ERROR ON INCOMING WEBHOOK...');
 
-			res.status(500).send('NOK');
+			reject({ status: 500, content: 'NOK' });
 
-		});
-	} else {
-		res.status(200).send('OK');
-	}
+		});		
+
+	});
 }
 
 module.exports = {

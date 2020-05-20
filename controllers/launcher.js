@@ -52,8 +52,6 @@ function createOrder(req, res, next) {
 		res.json(result);
 	}).catch((err) => {
 
-		console.log(err);
-
 		res.json(err);
 
 	});
@@ -80,6 +78,10 @@ function getOrder(req, res, next) {
 		// console.log(JSON.stringify(result, null, 2));
 
 		res.json(result);
+	}).catch((err) => {
+
+		res.json(err);
+
 	});
 
 }

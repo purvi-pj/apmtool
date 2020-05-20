@@ -42,7 +42,7 @@ function validateUser(req, res, next) {
 }
 
 function mockWebhook(req, res, next) {
-	mockUtils.sendMockWebhook(req.query.token);
+	mockUtils.sendMockWebhook(req.query.token, req.query.webhook);
 
 	res.send('OK');
 }
