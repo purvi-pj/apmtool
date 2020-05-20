@@ -63,6 +63,7 @@ function createOrder(req, res, next) {
 function getOrder(req, res, next) {
 
 	let args = {
+		environment: req.body.environment,
 		orderId: req.body.orderId
 	};
 
