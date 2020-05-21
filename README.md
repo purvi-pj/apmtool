@@ -31,6 +31,10 @@ SESSION_SECRET=
 PP_MOCK_WEBHOOK_URL='http://127.0.0.1:3000/ppwebhook'
 ```
 
+### Node module dependencies
+* mongoosejs (https://mongoosejs.com/)
+* passport-local (http://www.passportjs.org/packages/passport-local/)
+
 ### Starting app on local development machine
 1. git clone project
 2. npm install

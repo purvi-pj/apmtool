@@ -14,60 +14,41 @@ const launcherController 	= require('../controllers/launcher'),
 	  historyController 	= require('../controllers/history'),
 	  sandboxController 	= require('../controllers/sandbox');
 
-/* GET home page. */
-// router.get('/', function(req, res, next) {
-//   res.render('index', { title: 'Express' });
-// });
-
-// module.exports = function (router) {
-
-/* GET home page. */
-	// router.get('/', function(req, res, next) {
-	//   res.render('index', { title: 'Express' });
-	// });	
-
+	// Render create order form
 	router.get('/', launcherController.startOrder);
 
+	// PayPal API routes
 	router.post('/create', urlencodedParser, launcherController.createOrder);
-
 	router.post('/confirm', launcherController.confirmPaymentSource);
-
 	router.post('/getOrder', launcherController.getOrder);
-
 	router.post('/getOrderSummary', launcherController.getOrderSummary);
+	router.post('/captureOrder', launcherController.captureOrder);	
 
+	// Retrieve internal order status
 	router.post('/getOrderStatus', launcherController.getOrderInternalStatus);
 
-	router.post('/captureOrder', launcherController.captureOrder);
-
-	router.get('/mockPaymentSchemeApproval', launcherController.mockApproval);
-
+	// Merchant redirect URLs (after buyer approval)
 	router.get('/return', launcherController.handleReturn);
-
 	router.get('/cancel', launcherController.handleCancel);
 
-	router.post('/ppwebhook', webhookController.ppWebhook);
+	// Mock payment scheme approval page (use for mocked APIs case)
+	router.get('/mockPaymentSchemeApproval', launcherController.mockApproval);
 
+	// Transaction history
 	router.get('/history', ensureLoggedIn('/login'), historyController.loadRecent);
-
 	router.post('/history', historyController.loadRecord);
 
+	// Authentication for site and /history access
 	router.get('/user/create', sandboxController.createUser);
-
-	router.get('/user/validate', sandboxController.validateUser);
-
+	router.get('/user/validate', sandboxController.validateUser);	
+	router.post('/createUser', ensureLoggedIn('/login'), launcherController.createUser);
+	router.get('/admin', ensureLoggedIn('/login'), launcherController.renderAdmin);
 	router.get('/login', launcherController.renderLogin);
-
-	router.post('/login', passport.authenticate('local', { successReturnToOrRedirect: '/', failureRedirect: '/login?error=Invalid+username+or+password', failureFlash: true   }));
-
+	router.post('/login', passport.authenticate('local', { successReturnToOrRedirect: '/', failureRedirect: '/login?error=Invalid+username+or+password', failureFlash: true   }));	
 	router.get('/logout', launcherController.logout);
 
-	router.get('/admin', ensureLoggedIn('/login'), launcherController.renderAdmin);
-
-	router.post('/createUser', ensureLoggedIn('/login'), launcherController.createUser);
-
+	// Webhooks
+	router.post('/ppwebhook', webhookController.ppWebhook);
 	router.get('/mockWebhook', sandboxController.mockWebhook);
-
-// };
 
 module.exports = router;

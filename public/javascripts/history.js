@@ -1,5 +1,6 @@
 $(function() {
 
+	// On click of order, update details on UI accordingly
 	$(".orderSummary").click(function( event ) {
 
 		var recordIndex = $(this).attr('itemid');
@@ -24,7 +25,6 @@ $(function() {
 		recordValues[recordIndex].CAPTURE_ORDER_API.REQUESTJSON ? $( "#captureOrderRequest" ).text(`${recordValues[recordIndex].CAPTURE_ORDER_API.REQUESTJSON}`) : $( "#captureOrderRequest" ).text('{}');
 		recordValues[recordIndex].CAPTURE_ORDER_API.RESPONSEJSON ? $( "#captureOrderResponse" ).text(`${recordValues[recordIndex].CAPTURE_ORDER_API.RESPONSEJSON}`) : $( "#captureOrderResponse" ).text('{}');
 		recordValues[recordIndex].WEBHOOKJSON ? $( "#webhookDetails" ).text(`${recordValues[recordIndex].WEBHOOKJSON}`) : $( "#webhookDetails" ).text('{}');
-
 	});
 
 	var clipboard = new ClipboardJS(document.getElementById('clipboardCopy'));

@@ -7,14 +7,14 @@ const ordersUtils 		= require('../lib/orders'),
 	  paymentObjects 	= require('../config/paymentObjects'),
 	  util 				= require('util');
 
+// Render form
 function startOrder(req, res, next) {
-
-	console.log(JSON.stringify(req.user, null, 2));
 
 	res.render('launcher', { user: req.user, schemesJSON: paymentObjects });
 
 }
 
+// Create Order
 function createOrder(req, res, next) {
 
 	let args = {
@@ -35,8 +35,6 @@ function createOrder(req, res, next) {
 		args.bic = req.body.bic;
 	}
 
-	// console.log(util.format('req.body = %s', JSON.stringify(args, null, 2)));
-
 	ordersUtils.createAccessToken({ environment: req.body.environment })
 
 	.then((accessTokenResult) => {
@@ -47,15 +45,13 @@ function createOrder(req, res, next) {
 
 	}).then((result) => {
 
-		// console.log(JSON.stringify(result, null, 2));
-
 		res.json(result);
+
 	}).catch((err) => {
 
 		res.json(err);
 
 	});
-
 }
 
 function getOrder(req, res, next) {
@@ -75,22 +71,19 @@ function getOrder(req, res, next) {
 
 	}).then((result) => {
 
-		// console.log(JSON.stringify(result, null, 2));
-
 		res.json(result);
+
 	}).catch((err) => {
 
 		res.json(err);
 
 	});
-
 }
 
+// Construct order summary JSON for UI display
 function getOrderSummary(req, res, next) {
 
 	const orderId = req.body.orderId;
-
-	// console.log(util.format('getOrderSummary for `%s`', orderId));
 
 	dbUtils.getOrderByOrderId({ orderId })
 
@@ -181,8 +174,6 @@ function confirmPaymentSource(req, res, next) {
 
 	}).then((result) => {
 
-		// console.log(JSON.stringify(result, null, 2));
-
 		res.json(result);
 	});	
 
@@ -204,8 +195,6 @@ function captureOrder(req, res, next) {
 
 	}).then((result) => {
 
-		// console.log(JSON.stringify(result, null, 2));
-
 		res.json(result);
 	}).catch((err) => {
 		console.log(util.format('ERR = %s', JSON.stringify(err, null, 2)));
@@ -216,8 +205,6 @@ function captureOrder(req, res, next) {
 function mockApproval(req, res, next) {
 
 	const model = {
-		// returnUrl: req.query.returnUrl,
-		// cancelUrl: req.query.cancelUrl
 		returnUrl: util.format('%s?token=%s', process.env.RETURN_URL, req.query.token),
 		cancelUrl: util.format('%s?token=%s', process.env.CANCEL_URL, req.query.token)
 	};
@@ -234,11 +221,9 @@ function handleReturn(req, res, next) {
 	.then((record) => {
 
 		if (record) {
+			// set internal order status
 			record.STATUS = 'REDIRECT_RETURN';
 			record.save();
-
-			// TODO: remove stubbed logic
-			// mockUtils.sendMockWebhook(req.query.token);
 
 			res.render('return');
 		}
@@ -262,6 +247,7 @@ function handleCancel(req, res, next) {
 	.then((record) => {
 
 		if (record) {
+			// set internal order status
 			record.STATUS = 'CANCELLED';
 			record.save();
 
@@ -275,7 +261,6 @@ function handleCancel(req, res, next) {
 		res.render('return');
 
 	});
-
 }
 
 function renderLogin(req, res, next) {
@@ -304,6 +289,7 @@ function createUser(req, res, next) {
 	});
 }
 
+// Mask value for client id
 function maskValue (value) {
 	if (value && value.length > 4) {
 		const last4 = value.substring(value.length -4);
