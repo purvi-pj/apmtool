@@ -160,8 +160,8 @@ function confirmPaymentSource(req, res, next) {
 		countryCode: req.body.countrycode,
 		scheme: req.body.paymentscheme,
 		bic: req.body.bic,
-		returnUrl: process.env.RETURN_URL,
-		cancelUrl: process.env.CANCEL_URL
+		returnUrl: req.body.approvalLinkBehavior == 'POPUP' ? process.env.RETURN_URL : process.env.FULL_PAGE_REDIRECT_RETURN_URL,
+		cancelUrl: req.body.approvalLinkBehavior == 'POPUP' ? process.env.CANCEL_URL : process.env.CANCEL_PAGE_REDIRECT_RETURN_URL
 	};
 
 	ordersUtils.createAccessToken({ environment: req.body.environment })
@@ -238,6 +238,32 @@ function handleReturn(req, res, next) {
 
 }
 
+function handleFullPageReturn(req, res, next) {
+
+	console.log('FULL PAGE RETURN REDIRECT FOR `%s`', req.query.token);
+
+	dbUtils.getOrderByOrderId({ orderId: req.query.token })
+
+	.then((record) => {
+
+		if (record) {
+			// set internal order status
+			record.STATUS = 'FULL_PAGE_REDIRECT_RETURN';
+			record.save();
+
+			res.render('fullPageReturn', { order: record });
+		}
+
+	}).catch((err) => {
+
+		console.log('ERROR ON FULL PAGE RETURN...');
+
+		res.render('fullPageReturn', { });
+
+	});
+
+}
+
 function handleCancel(req, res, next) {
 
 	console.log('CANCEL REDIRECT FOR `%s`', req.query.token);
@@ -261,6 +287,32 @@ function handleCancel(req, res, next) {
 		res.render('return');
 
 	});
+}
+
+function handleFullPageCancel(req, res, next) {
+
+	console.log('FULL PAGE CANCEL REDIRECT FOR `%s`', req.query.token);
+
+	dbUtils.getOrderByOrderId({ orderId: req.query.token })
+
+	.then((record) => {
+
+		if (record) {
+			// set internal order status
+			record.STATUS = 'FULL_PAGE_CANCELLED';
+			record.save();
+
+			res.render('fullPageCancel', { order: record });
+		}
+
+	}).catch((err) => {
+
+		console.log('ERROR ON FULL PAGE CANCEL...');
+
+		res.render('fullPageCancel', { });
+
+	});
+
 }
 
 function renderLogin(req, res, next) {
@@ -311,6 +363,8 @@ module.exports = {
 	mockApproval,
 	handleReturn,
 	handleCancel,
+	handleFullPageReturn,
+	handleFullPageCancel,
 	renderLogin,
 	renderAdmin,
 	createUser,

@@ -26,6 +26,7 @@ $(function() {
 		// Extract values from form
 		var $form 						= $("#createOrderForm" ),
 			environment 				= $form.find( "input[name='environment']:checked" ).val(),
+			approvalLinkBehavior		= $form.find( "input[name='approvalLinkBehavior']:checked" ).val(),
 			paymentscheme 				= $form.find( "select[name='paymentscheme']" ).val(),
 			amount 						= $form.find( "input[name='amount']" ).val(),
 			currency 					= $form.find( "input[name='currency']" ).val(),
@@ -62,7 +63,7 @@ $(function() {
 				$( "#progressUpdate" ).empty().append( '<p>Created Order Id... ' + data.orderId  + '</p><p>Confirming Payment Source...</p>');
 
 				// Call Confirm Payment Source API upon successful Create Order API
-				var confirmPaymentSource = $.post( confirmPaymentSourceUrl, { environment, orderId, paymentscheme, amount, currency, countrycode, name, email, phonenumber, bic } );
+				var confirmPaymentSource = $.post( confirmPaymentSourceUrl, { environment, orderId, paymentscheme, amount, currency, countrycode, name, email, phonenumber, bic, approvalLinkBehavior } );
 
 				confirmPaymentSource.done(function( data ) {
 
@@ -97,9 +98,12 @@ $(function() {
 		// Open approval URL in pop up window for desktop experiences
 		function openPopUp(approvalurl) {
 
-			windowObjectReference = window.open(approvalurl, "approvalPopUp", "width=1265,height=609,resizable,scrollbars,status");
-
-			pollPopUp();
+			if (approvalLinkBehavior == 'POPUP') {
+				windowObjectReference = window.open(approvalurl, "approvalPopUp", "width=1265,height=609,resizable,scrollbars,status");
+				pollPopUp();
+			} else {
+				window.location = approvalurl;
+			}
 
 			// Parent window polls for child window to close
 			function pollPopUp() {
@@ -134,11 +138,11 @@ $(function() {
 
 				getOrderInternalStatusRequest.done(function (result) {
 
-					if (result.STATUS === 'CANCELLED') {
+					if (result.STATUS === 'CANCELLED' || result.STATUS === 'FULL_PAGE_CANCELLED') {
 						$( "#progressUpdate" ).append( '<p>Transaction Cancelled ...</p>');
 						orderFailure(orderId);
-					} else if (result.STATUS === 'REDIRECT_RETURN') {
-						pollPPOrderStatus(orderId);
+					} else if (result.STATUS === 'REDIRECT_RETURN' || result.STATUS === 'FULL_PAGE_REDIRECT_RETURN') {
+						pollPPOrderStatus(orderId, 1);
 					} else {
 						setTimeout(function() { pollOrder(orderId, retryAttempts+1) }, 10000);
 					}

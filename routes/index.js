@@ -30,6 +30,8 @@ const launcherController 	= require('../controllers/launcher'),
 	// Merchant redirect URLs (after buyer approval)
 	router.get('/return', launcherController.handleReturn);
 	router.get('/cancel', launcherController.handleCancel);
+	router.get('/fullPageReturn', launcherController.handleFullPageReturn);
+	router.get('/fullPageCancel', launcherController.handleFullPageCancel);	
 
 	// Mock payment scheme approval page (use for mocked APIs case)
 	router.get('/mockPaymentSchemeApproval', launcherController.mockApproval);
