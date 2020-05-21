@@ -8,7 +8,7 @@ $(function() {
 
 	var $form 		= $("#fullPageReturnForm" ),
 		orderId 	= $form.find( "input[name='orderId']" ).val(),
-		environment = $form.find( "input[name='environment']:checked" ).val();
+		environment = $form.find( "input[name='environment']" ).val();
 
 	// Define in context API locations
 	var confirmPaymentSourceUrl 	= 'confirm',
