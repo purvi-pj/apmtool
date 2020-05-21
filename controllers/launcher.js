@@ -160,8 +160,8 @@ function confirmPaymentSource(req, res, next) {
 		countryCode: req.body.countrycode,
 		scheme: req.body.paymentscheme,
 		bic: req.body.bic,
-		returnUrl: req.body.approvalLinkBehavior == 'POPUP' ? process.env.RETURN_URL : process.env.FULL_PAGE_REDIRECT_RETURN_URL,
-		cancelUrl: req.body.approvalLinkBehavior == 'POPUP' ? process.env.CANCEL_URL : process.env.CANCEL_PAGE_REDIRECT_RETURN_URL
+		returnUrl: req.body.approvalLinkBehavior == 'POPUP' ? process.env.RETURN_URL : process.env.FULL_PAGE_RETURN_URL,
+		cancelUrl: req.body.approvalLinkBehavior == 'POPUP' ? process.env.CANCEL_URL : process.env.FULL_PAGE_CANCEL_URL
 	};
 
 	ordersUtils.createAccessToken({ environment: req.body.environment })
