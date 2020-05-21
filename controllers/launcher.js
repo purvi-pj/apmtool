@@ -221,9 +221,12 @@ function handleReturn(req, res, next) {
 	.then((record) => {
 
 		if (record) {
-			// set internal order status
-			record.STATUS = 'REDIRECT_RETURN';
-			record.save();
+
+			// set internal order status only if STATUS is PAYER_ACTION_REQUIRED (prevent overwriting statues on multiple returns)
+			if (record.STATUS == 'PAYER_ACTION_REQUIRED') {
+				record.STATUS = 'REDIRECT_RETURN';
+				record.save();
+			}
 
 			res.render('return');
 		}
@@ -247,9 +250,12 @@ function handleFullPageReturn(req, res, next) {
 	.then((record) => {
 
 		if (record) {
-			// set internal order status
-			record.STATUS = 'FULL_PAGE_REDIRECT_RETURN';
-			record.save();
+
+			// set internal order status only if STATUS is PAYER_ACTION_REQUIRED (prevent overwriting statues on multiple returns)
+			if (record.STATUS == 'PAYER_ACTION_REQUIRED') {
+				record.STATUS = 'FULL_PAGE_REDIRECT_RETURN';
+				record.save();
+			}
 
 			res.render('fullPageReturn', { order: record });
 		}
@@ -273,9 +279,12 @@ function handleCancel(req, res, next) {
 	.then((record) => {
 
 		if (record) {
-			// set internal order status
-			record.STATUS = 'CANCELLED';
-			record.save();
+
+			// set internal order status only if STATUS is PAYER_ACTION_REQUIRED (prevent overwriting statues on multiple returns)
+			if (record.STATUS == 'PAYER_ACTION_REQUIRED') {
+				record.STATUS = 'CANCELLED';
+				record.save();
+			}
 
 			res.render('return');
 		}
@@ -298,9 +307,12 @@ function handleFullPageCancel(req, res, next) {
 	.then((record) => {
 
 		if (record) {
-			// set internal order status
-			record.STATUS = 'FULL_PAGE_CANCELLED';
-			record.save();
+
+			// set internal order status only if STATUS is PAYER_ACTION_REQUIRED (prevent overwriting statues on multiple returns)
+			if (record.STATUS == 'PAYER_ACTION_REQUIRED') {
+				record.STATUS = 'FULL_PAGE_CANCELLED';
+				record.save();
+			}
 
 			res.render('fullPageCancel', { order: record });
 		}

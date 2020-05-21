@@ -161,15 +161,32 @@ $(function() {
 				var getOrderRequest = $.post( getOrderUrl, { environment, orderId } );
 
 				getOrderRequest.done(function( data ) {
-					if (data.status === 'APPROVED') {
-						$( "#progressUpdate" ).append( '<p>PayPal status updated to `' + data.status + '`...</p><p>Capturing Order...</p>');	
-						captureOrder(orderId);
-					} else if (data.status) {
-						setTimeout(function() { pollPPOrderStatus(orderId, retryAttempts+1) }, 5000);
-						$( "#progressUpdate" ).append('<p>Polling - PayPal status is still `' + data.status + '`... </p>');
-					} else {
-						setTimeout(function() { pollPPOrderStatus(orderId, retryAttempts+1) }, 5000);
-					}
+
+					// If existing status is already beyond `PAYER_ACTION_REQUIRED` state, do not overwrite and display existing state
+					switch(data.status) {
+						case 'COMPLETED':
+							$( "#progressUpdate" ).append( '<p>Order has already been captured...</p>');
+							orderSuccess(orderId);					
+							break;
+						case 'VOIDED':
+							$( "#progressUpdate" ).append( '<p>Order has already been voided...</p>');
+							orderFailure(orderId);								
+							break;
+						// case 'CANCELLED':
+						// 	$( "#progressUpdate" ).append( '<p>Order has already been cancelled...</p>');
+						// 	orderFailure(orderId);								
+						// 	break;		
+						case 'APPROVED':
+							$( "#progressUpdate" ).append( '<p>PayPal status updated to `' + data.status + '`...</p><p>Capturing Order...</p>');	
+							captureOrder(orderId);					
+							break;
+						case undefined:
+							setTimeout(function() { pollPPOrderStatus(orderId, retryAttempts+1) }, 5000);
+							break;
+						default:
+							setTimeout(function() { pollPPOrderStatus(orderId, retryAttempts+1) }, 5000);
+							$( "#progressUpdate" ).append('<p>Polling - PayPal status is still `' + data.status + '`... </p>');
+					}					
 				});		
 			}	
 		}		

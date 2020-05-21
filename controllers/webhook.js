@@ -45,9 +45,7 @@ function ppWebhook(req, res, next) {
 				res.status(resp.status).send(resp.content);
 
 			}).catch ((err) => {
-
 				console.log(err);
-
 				res.status(500).send('NOK');
 			});
 
@@ -55,70 +53,7 @@ function ppWebhook(req, res, next) {
 
 		default:
 			break;
-
 	};
-
-	// // Confirm that resource id exists
-	// if (req.body.resource && req.body.resource.id) {
-
-	// 	dbUtils.getOrderByOrderId({ orderId: req.body.resource.id })
-
-	// 	.then((record) => {
-
-	// 		if (record) {
-
-	// 			const webhookEvent = {
-	// 				RECEIVED_DATE: moment().format(),
-	// 				BODY: req.body
-	// 			};
-
-	// 			record.WEBHOOK.push(webhookEvent)
-
-	// 			record.save();
-
-	// 			ordersUtils.createAccessToken()
-
-	// 			.then((accessTokenResult) => {
-
-	// 				const args = {
-	// 					accessToken: accessTokenResult['access_token'],
-	// 					orderId: req.body.resource.id,
-	// 					environment: record.ENVIRONMENT
-	// 				};
-
-	// 				return ordersUtils.getOrder(args);
-
-	// 			}).then((result) => {
-
-	// 				res.status(200).send('OK');
-					
-	// 			}).catch((err) => {
-
-	// 				console.log(err);
-
-	// 				res.status(500).send('NOK');
-
-	// 			});
-
-
-	// 		} else {
-
-	// 			console.log('INCOMING WEBHOOK ORDER NOT FOUND...');
-
-	// 			res.status(404).send('NOK');
-
-	// 		}
-
-	// 	}).catch((err) => {
-
-	// 		console.log('ERROR ON INCOMING WEBHOOK...');
-
-	// 		res.status(500).send('NOK');
-
-	// 	});
-	// } else {
-	// 	res.status(200).send('OK');
-	// }
 }
 
 function handlePaymentCaptureCompleted(req) {
@@ -165,23 +100,14 @@ function handlePaymentCaptureCompleted(req) {
 
 				resolve({ status: 200, content: 'OK' });
 
-
 			} else {
-
 				console.log('INCOMING WEBHOOK ORDER NOT FOUND...');
-
 				reject({ status: 404, content: 'NOK' });
-
 			}
-
 		}).catch((err) => {
-
 			console.log('ERROR ON INCOMING WEBHOOK...');
-
 			reject({ status: 500, content: 'NOK' });
-
 		});		
-
 	});	
 }
 
@@ -229,23 +155,14 @@ function handleCheckoutOrderApprovedWebhook(req) {
 
 				resolve({ status: 200, content: 'OK' });
 
-
 			} else {
-
 				console.log('INCOMING WEBHOOK ORDER NOT FOUND...');
-
 				reject({ status: 404, content: 'NOK' });
-
 			}
-
 		}).catch((err) => {
-
 			console.log('ERROR ON INCOMING WEBHOOK...');
-
 			reject({ status: 500, content: 'NOK' });
-
 		});		
-
 	});
 }
 
