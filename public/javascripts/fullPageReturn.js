@@ -8,63 +8,111 @@ $(function() {
 
 	var $form 		= $("#fullPageReturnForm" ),
 		orderId 	= $form.find( "input[name='orderId']" ).val(),
-		environment = $form.find( "input[name='environment']" ).val();
+		environment = $form.find( "input[name='environment']" ).val(),
+		clientType	= $form.find( "input[name='clientType']" ).val();
 
 	// Define in context API locations
 	var confirmPaymentSourceUrl 	= 'confirm',
 		getOrderUrl 				= 'getOrder',
 		getOrderSummaryUrl 			= 'getOrderSummary',
+		getOrderInternalStatusUrl 	= 'getOrderStatus',
 		captureOrderUrl 			= 'captureOrder';		
 
-	pollPPOrderStatus(orderId, 1);
+
+	if (clientType == 'WEBHOOK_CLIENT') {
+		pollInternalOrderStatus(orderId, 1);
+	} else {
+		pollPPOrderStatus(orderId, 1);
+	}
 
 	// Poll PayPal order status for any status update (used for non webhook use case)
 	function pollPPOrderStatus(orderId, retryAttempts) {
 
-			var getOrderRequest = $.post( getOrderUrl, { environment, orderId } );
+		var getOrderRequest = $.post( getOrderUrl, { environment, orderId, clientType } );
 
-			getOrderRequest.done(function( data ) {
+		getOrderRequest.done(function( data ) {
 
-				// Set maximum attempts to poll
-				if (retryAttempts > 12) {
-					$( "#progressUpdate" ).append( '<p>Polling stopped - PayPal status of `' + data.status + '`...</p>');
-					orderFailure(orderId);		
-				} else {				
+			// Set maximum attempts to poll
+			if (retryAttempts > 12) {
+				$( "#progressUpdate" ).append( '<p>Polling stopped - PayPal status of `' + data.status + '`...</p>');
+				orderFailure(orderId);		
+			} else {				
 
-					// If existing status is already beyond `PAYER_ACTION_REQUIRED` state, do not overwrite and display existing state
-					switch(data.status) {
-						case 'COMPLETED':
-							$( "#progressUpdate" ).append( '<p>Order has already been captured...</p>');
-							orderSuccess(orderId);					
-							break;
-						case 'VOIDED':
-							$( "#progressUpdate" ).append( '<p>Order has already been voided...</p>');
-							orderFailure(orderId);								
-							break;
-						// case 'CANCELLED':
-						// 	$( "#progressUpdate" ).append( '<p>Order has already been cancelled...</p>');
-						// 	orderFailure(orderId);								
-						// 	break;						
-						case 'APPROVED':
-							$( "#progressUpdate" ).append( '<p>PayPal status updated to `' + data.status + '`...</p><p>Capturing Order...</p>');	
-							captureOrder(orderId);					
-							break;
-						case undefined:
-							setTimeout(function() { pollPPOrderStatus(orderId, retryAttempts+1) }, 5000);
-							break;
-						default:
-							setTimeout(function() { pollPPOrderStatus(orderId, retryAttempts+1) }, 5000);
-							$( "#progressUpdate" ).append('<p>Polling - PayPal status is still `' + data.status + '`... </p>');
-					}
+				// If existing status is already beyond `PAYER_ACTION_REQUIRED` state, do not overwrite and display existing state
+				switch(data.status) {
+					case 'COMPLETED':
+						$( "#progressUpdate" ).append( '<p>Order has already been captured...</p>');
+						orderSuccess(orderId);					
+						break;
+					case 'VOIDED':
+						$( "#progressUpdate" ).append( '<p>Order has already been voided...</p>');
+						orderFailure(orderId);								
+						break;
+					// case 'CANCELLED':
+					// 	$( "#progressUpdate" ).append( '<p>Order has already been cancelled...</p>');
+					// 	orderFailure(orderId);								
+					// 	break;						
+					case 'APPROVED':
+						$( "#progressUpdate" ).append( '<p>PayPal status updated to `' + data.status + '`...</p><p>Capturing Order...</p>');	
+						captureOrder(orderId);					
+						break;
+					case undefined:
+						setTimeout(function() { pollPPOrderStatus(orderId, retryAttempts+1) }, 5000);
+						break;
+					default:
+						setTimeout(function() { pollPPOrderStatus(orderId, retryAttempts+1) }, 5000);
+						$( "#progressUpdate" ).append('<p>Polling - PayPal status is still `' + data.status + '`... </p>');
+				}
+			}
+		});					
+	}		
+
+	// Poll internal order status for cancelled, redirect return, or abandoned use cases
+	function pollInternalOrderStatus(orderId, retryAttempts) {
+
+		// Only poll 5 times and then mark this transaction as failed due to abandonement on pop up
+		if (retryAttempts > 20) {
+			$( "#progressUpdate" ).append( '<p>Payment Authorization Unknown...</p>');
+			orderFailure(orderId);
+		} else {
+
+			$( "#progressUpdate" ).append( '<p>Waiting for `CHECKOUT.ORDER.APPROVED` webhook...</p>');
+
+			// Poll internal status for `CANCELLED` or `REDIRECT_RETURN`
+			var getOrderInternalStatusRequest = $.post( getOrderInternalStatusUrl, { orderId } );
+
+			getOrderInternalStatusRequest.done(function (result) {
+
+				switch(result.STATUS) {
+					case 'CANCELLED':
+					case 'FULL_PAGE_CANCELLED':
+						$( "#progressUpdate" ).append( '<p>Transaction Cancelled ...</p>');
+						orderFailure(orderId);						
+						break;
+					case 'REDIRECT_RETURN':
+					case 'FULL_PAGE_REDIRECT_RETURN':
+						if (clientType === 'POLLING_CLIENT') {
+							pollPPOrderStatus(orderId, 1);
+						} else {
+							setTimeout(function() { pollInternalOrderStatus(orderId, retryAttempts+1) }, 10000);
+						}
+						break;
+					case 'COMPLETED':
+						$( "#progressUpdate" ).append( '<p>Webhook received...</p><p>Order Captured...</p>');
+						orderSuccess(orderId);
+						break;
+					default:
+						setTimeout(function() { pollInternalOrderStatus(orderId, retryAttempts+1) }, 10000);
+
 				}
 
-			});		
-			
-	}		
+			});
+		}
+	}	
 
 	// Call capture order API
 	function captureOrder(orderId) {
-		var captureOrderRequest = $.post( captureOrderUrl, { environment, orderId } );
+		var captureOrderRequest = $.post( captureOrderUrl, { environment, orderId, clientType } );
 
 		captureOrderRequest.done(function( data ) {
 			if (data.statusCode < 400) {

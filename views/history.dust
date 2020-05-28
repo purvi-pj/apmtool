@@ -111,6 +111,26 @@
                 </div>
 
                 <div class="card">
+                  <div class="card-header" id="headingGetOrderApi">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#getOrderApi" aria-expanded="false" aria-controls="getOrderApi">
+                        Get Order API (<span id="getOrderCorrelationIds">{records[0].GET_ORDER_API.CORRELATION_ID}</span>)
+                      </button>
+                    </h2>
+                  </div>
+                  <div id="getOrderApi" class="collapse" aria-labelledby="headingGetOrderApi" data-parent="#orderDetails">
+                    <div class="card-body">
+                      <h6 class="card-title">REQUEST</h6>
+                      <pre id="getOrderRequestUrl">{records[0].GET_ORDER_API.REQUEST_URL}</pre>
+                      <!-- <pre id="captureOrderRequest">{records[0].CAPTURE_ORDER_API.REQUESTJSON}</pre> -->
+                      <hr/>
+                      <h6 class="card-title">RESPONSE</h6>
+                      <pre id="getOrderResponse">{records[0].GET_ORDER_API.RESPONSEJSON}</pre>                      
+                    </div>
+                  </div>
+                </div>                
+
+                <div class="card">
                   <div class="card-header" id="headingCaptureOrderApi">
                     <h2 class="mb-0">
                       <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#captureOrderApi" aria-expanded="false" aria-controls="captureOrderApi">

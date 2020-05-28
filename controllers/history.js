@@ -57,6 +57,7 @@ function convertRecordForDisplay (record) {
 		STATUS: record.STATUS,
 		ENVIRONMENT: record.ENVIRONMENT,
 		CLIENT_ID: maskValue(record.CLIENT_ID),
+		CLIENT_TYPE: record.CLIENT_TYPE,
 		BUYER_NAME: record.BUYER_NAME,
 		BUYER_EMAIL: record.BUYER_EMAIL,
 		BUYER_COUNTRY: record.BUYER_COUNTRY,

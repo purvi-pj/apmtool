@@ -129,31 +129,54 @@ function handleCheckoutOrderApprovedWebhook(req) {
 
 				record.save();
 
-				// ordersUtils.createAccessToken()
+				// Call GET Order to confirm status, and then capture
 
-				// .then((accessTokenResult) => {
+				ordersUtils.createAccessToken({ environment: record.ENVIRONMENT, clientType: record.CLIENT_TYPE })
 
-				// 	const args = {
-				// 		accessToken: accessTokenResult['access_token'],
-				// 		orderId: req.body.resource.id,
-				// 		environment: record.ENVIRONMENT
-				// 	};
+				.then((accessTokenResult) => {
 
-				// 	return ordersUtils.getOrder(args);
+					const args = {
+						accessToken: accessTokenResult['access_token'],
+						orderId: record.ORDER_ID,
+						environment: record.ENVIRONMENT
+					};
 
-				// }).then((result) => {
+					ordersUtils.getOrder(args)
 
-				// 	resolve({ status: 200, content: 'OK' });
-					
-				// }).catch((err) => {
+					.then((result) => {
 
-				// 	console.log(err);
+						if (result.statusCode === 200) {
+							record.STATUS = result.status;
+							record.save();
 
-				// 	reject({ status: 500, content: 'NOK' });
+							ordersUtils.captureOrder(args)
 
-				// });
+							.then((captureOrderResult) => {
 
-				resolve({ status: 200, content: 'OK' });
+								if (captureOrderResult.statusCode < 400) {
+									// Response status code of capture order is successful
+									resolve({ status: 200, content: 'OK' });
+								} else {
+									reject({ status: 500, content: 'NOK' });
+								}
+
+							});
+
+						} else {
+							reject({ status: 500, content: 'NOK' });
+						}
+
+					});
+
+				}).catch((err) => {
+
+					console.log(err);
+
+					reject({ status: 500, content: 'NOK' });
+
+				});
+
+				// resolve({ status: 200, content: 'OK' });
 
 			} else {
 				console.log('INCOMING WEBHOOK ORDER NOT FOUND...');

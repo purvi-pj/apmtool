@@ -39,6 +39,7 @@
     <form id="fullPageReturnForm">
       <input type="hidden" name="orderId" value="{order.ORDER_ID}" />
       <input type="hidden" name="environment" value="{order.ENVIRONMENT}" />
+      <input type="hidden" name="clientType" value="{order.CLIENT_TYPE}" />
     </form>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>

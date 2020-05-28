@@ -7,6 +7,7 @@ let ppOrder = function() {
 	const ppOrderSchema = mongoose.Schema({
 		INSERTION_DATE: { type: Date, default: Date.now },
 		ENVIRONMENT: String,
+		CLIENT_TYPE: String,
 		CLIENT_ID: String,
 		ORDER_ID: String,
 		PAYMENT_SCHEME: String,

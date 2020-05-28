@@ -27,6 +27,7 @@ function createOrder(req, res, next) {
 		countryCode: req.body.countrycode,
 		scheme: req.body.paymentscheme,
 		shippingPreference: req.body.shippingpreference,
+		clientType: req.body.clientType,
 		returnUrl: process.env.RETURN_URL,
 		cancelUrl: process.env.CANCEL_URL
 	};
@@ -35,7 +36,7 @@ function createOrder(req, res, next) {
 		args.bic = req.body.bic;
 	}
 
-	ordersUtils.createAccessToken({ environment: req.body.environment })
+	ordersUtils.createAccessToken({ environment: req.body.environment, clientType: req.body.clientType })
 
 	.then((accessTokenResult) => {
 
@@ -61,7 +62,7 @@ function getOrder(req, res, next) {
 		orderId: req.body.orderId
 	};
 
-	ordersUtils.createAccessToken({ environment: req.body.environment })
+	ordersUtils.createAccessToken({ environment: req.body.environment, clientType: req.body.clientType })
 
 	.then((accessTokenResult) => {
 
@@ -98,6 +99,7 @@ function getOrderSummary(req, res, next) {
 				PAYMENT_SCHEME: record.PAYMENT_SCHEME,
 				STATUS: record.STATUS,
 				ENVIRONMENT: record.ENVIRONMENT,
+				CLIENT_TYPE: record.CLIENT_TYPE,
 				CLIENT_ID: maskValue(record.CLIENT_ID),
 				BUYER_NAME: record.BUYER_NAME,
 				BUYER_EMAIL: record.BUYER_EMAIL,
@@ -164,7 +166,7 @@ function confirmPaymentSource(req, res, next) {
 		cancelUrl: req.body.approvalLinkBehavior == 'POPUP' ? process.env.CANCEL_URL : process.env.FULL_PAGE_CANCEL_URL
 	};
 
-	ordersUtils.createAccessToken({ environment: req.body.environment })
+	ordersUtils.createAccessToken({ environment: req.body.environment, clientType: req.body.clientType })
 
 	.then((accessTokenResult) => {
 
@@ -185,7 +187,7 @@ function captureOrder(req, res, next) {
 		orderId: req.body.orderId
 	};
 
-	ordersUtils.createAccessToken({ environment: req.body.environment })
+	ordersUtils.createAccessToken({ environment: req.body.environment, clientType: req.body.clientType })
 
 	.then((accessTokenResult) => {
 

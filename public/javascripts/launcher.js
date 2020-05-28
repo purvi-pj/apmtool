@@ -25,6 +25,7 @@ $(function() {
 
 		// Extract values from form
 		var $form 						= $("#createOrderForm" ),
+			clientType					= $form.find( "input[name='clientType']:checked" ).val(),
 			environment 				= $form.find( "input[name='environment']:checked" ).val(),
 			approvalLinkBehavior		= $form.find( "input[name='approvalLinkBehavior']:checked" ).val(),
 			paymentscheme 				= $form.find( "select[name='paymentscheme']" ).val(),
@@ -47,7 +48,7 @@ $(function() {
 			orderId 					= '';
 
 		// Initiate create order
-		var createOrderRequest = $.post( url, { environment, paymentscheme, amount, currency, countrycode, name, email, phonenumber, shippingpreference } );
+		var createOrderRequest = $.post( url, { environment, clientType, paymentscheme, amount, currency, countrycode, name, email, phonenumber, shippingpreference } );
 
 		// On create order completion, update progress on parent page
 		createOrderRequest.done(function( data ) {
@@ -63,7 +64,7 @@ $(function() {
 				$( "#progressUpdate" ).empty().append( '<p>Created Order Id... ' + data.orderId  + '</p><p>Confirming Payment Source...</p>');
 
 				// Call Confirm Payment Source API upon successful Create Order API
-				var confirmPaymentSource = $.post( confirmPaymentSourceUrl, { environment, orderId, paymentscheme, amount, currency, countrycode, name, email, phonenumber, bic, approvalLinkBehavior } );
+				var confirmPaymentSource = $.post( confirmPaymentSourceUrl, { environment, clientType, orderId, paymentscheme, amount, currency, countrycode, name, email, phonenumber, bic, approvalLinkBehavior } );
 
 				confirmPaymentSource.done(function( data ) {
 
@@ -128,24 +129,43 @@ $(function() {
 		function pollOrder(orderId, retryAttempts) {
 
 			// Only poll 5 times and then mark this transaction as failed due to abandonement on pop up
-			if (retryAttempts > 5) {
+			if (retryAttempts > 20) {
 				$( "#progressUpdate" ).append( '<p>Payment Authorization Unknown...</p>');
 				orderFailure(orderId);
 			} else {
+
+				if (clientType === 'WEBHOOK_CLIENT') {
+					$( "#progressUpdate" ).append( '<p>Waiting for `CHECKOUT.ORDER.APPROVED` webhook...</p>');
+				}
 
 				// Poll internal status for `CANCELLED` or `REDIRECT_RETURN`
 				var getOrderInternalStatusRequest = $.post( getOrderInternalStatusUrl, { orderId } );
 
 				getOrderInternalStatusRequest.done(function (result) {
 
-					if (result.STATUS === 'CANCELLED' || result.STATUS === 'FULL_PAGE_CANCELLED') {
-						$( "#progressUpdate" ).append( '<p>Transaction Cancelled ...</p>');
-						orderFailure(orderId);
-					} else if (result.STATUS === 'REDIRECT_RETURN' || result.STATUS === 'FULL_PAGE_REDIRECT_RETURN') {
-						pollPPOrderStatus(orderId, 1);
-					} else {
-						setTimeout(function() { pollOrder(orderId, retryAttempts+1) }, 10000);
+					switch(result.STATUS) {
+						case 'CANCELLED':
+						case 'FULL_PAGE_CANCELLED':
+							$( "#progressUpdate" ).append( '<p>Transaction Cancelled ...</p>');
+							orderFailure(orderId);						
+							break;
+						case 'REDIRECT_RETURN':
+						case 'FULL_PAGE_REDIRECT_RETURN':
+							if (clientType === 'POLLING_CLIENT') {
+								pollPPOrderStatus(orderId, 1);
+							} else {
+								setTimeout(function() { pollOrder(orderId, retryAttempts+1) }, 10000);
+							}
+							break;
+						case 'COMPLETED':
+							$( "#progressUpdate" ).append( '<p>Webhook received...</p><p>Order Captured...</p>');
+							orderSuccess(orderId);
+							break;
+						default:
+							setTimeout(function() { pollOrder(orderId, retryAttempts+1) }, 10000);
+
 					}
+
 				});
 			}
 		}
@@ -158,7 +178,7 @@ $(function() {
 				orderFailure(orderId);				
 			} else {
 
-				var getOrderRequest = $.post( getOrderUrl, { environment, orderId } );
+				var getOrderRequest = $.post( getOrderUrl, { environment, orderId, clientType } );
 
 				getOrderRequest.done(function( data ) {
 
@@ -193,7 +213,7 @@ $(function() {
 
 		// Call capture order API
 		function captureOrder(orderId) {
-			var captureOrderRequest = $.post( captureOrderUrl, { environment, orderId } );
+			var captureOrderRequest = $.post( captureOrderUrl, { environment, orderId, clientType } );
 
 			captureOrderRequest.done(function( data ) {
 				if (data.statusCode < 400) {

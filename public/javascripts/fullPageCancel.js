@@ -8,7 +8,8 @@ $(function() {
 
 	var $form 		= $("#fullPageReturnForm" ),
 		orderId 	= $form.find( "input[name='orderId']" ).val(),
-		environment = $form.find( "input[name='environment']" ).val();
+		environment = $form.find( "input[name='environment']" ).val(),
+		clientType	= $form.find( "input[name='clientType']" ).val();
 
 	// Define in context API locations
 	var confirmPaymentSourceUrl 	= 'confirm',
@@ -21,7 +22,7 @@ $(function() {
 	// Poll PayPal order status for any status update (used for non webhook use case)
 	function pollPPOrderStatus(orderId, retryAttempts) {
 
-		var getOrderRequest = $.post( getOrderUrl, { environment, orderId } );
+		var getOrderRequest = $.post( getOrderUrl, { environment, orderId, clientType } );
 
 		getOrderRequest.done(function( data ) {
 
