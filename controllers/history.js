@@ -25,13 +25,11 @@ function loadRecord(req, res, next) {
 
 	if (req.body.orderId) {
 
-		dbUtils.getOrderByOrderId({ orderId: req.body.orderId })
+		dbUtils.getOrderObjectByOrderId({ orderId: req.body.orderId })
 
 		.then((record) => {
 
-			record = convertRecordForDisplay(record);			
-
-			const records = [ record ];
+			const records = [ convertRecordForDisplay(record) ];
 
 			res.render("history", { records, orderId: req.body.orderId });
 
@@ -70,6 +68,10 @@ function convertRecordForDisplay (record) {
 		summary.CORRELATION_IDS.push(record.CONFIRM_PAYMENT_SOURCE_API.CORRELATION_ID);
 	}
 
+	if (record.GET_ORDER_API.CORRELATION_ID) {
+		summary.CORRELATION_IDS.push(record.GET_ORDER_API.CORRELATION_ID);
+	}	
+
 	if (record.CAPTURE_ORDER_API.CORRELATION_ID) {
 		summary.CORRELATION_IDS.push(record.CAPTURE_ORDER_API.CORRELATION_ID);
 	}
@@ -80,7 +82,7 @@ function convertRecordForDisplay (record) {
 	record.CREATE_ORDER_API.RESPONSEJSON = JSON.stringify(record.CREATE_ORDER_API.RESPONSE, null, 2);
 	record.CONFIRM_PAYMENT_SOURCE_API.REQUESTJSON = JSON.stringify(record.CONFIRM_PAYMENT_SOURCE_API.REQUEST, null, 2);
 	record.CONFIRM_PAYMENT_SOURCE_API.RESPONSEJSON = JSON.stringify(record.CONFIRM_PAYMENT_SOURCE_API.RESPONSE, null, 2);	
-	record.GET_ORDER_API.REQUESTJSON = JSON.stringify(record.GET_ORDER_API.REQUEST, null, 2);
+	// record.GET_ORDER_API.REQUESTJSON = JSON.stringify(record.GET_ORDER_API.REQUEST, null, 2);
 	record.GET_ORDER_API.RESPONSEJSON = JSON.stringify(record.GET_ORDER_API.RESPONSE, null, 2);			
 	record.CAPTURE_ORDER_API.REQUESTJSON = JSON.stringify(record.CAPTURE_ORDER_API.REQUEST, null, 2);
 	record.CAPTURE_ORDER_API.RESPONSEJSON = JSON.stringify(record.CAPTURE_ORDER_API.RESPONSE, null, 2);	
