@@ -10,7 +10,22 @@ const ordersUtils 		= require('../lib/orders'),
 // Render form
 function startOrder(req, res, next) {
 
-	res.render('launcher', { user: req.user, schemesJSON: paymentObjects });
+	const { environment, clientType, approvalLinkBehavior, paymentscheme, amount, currency, countrycode, bic, name, email } = req.query;
+
+	const prefillValue = {
+		environment: environment || 'SANDBOX',
+		clientType: clientType || 'WEBHOOK_CLIENT',
+		approvalLinkBehavior: approvalLinkBehavior || 'POPUP',
+		paymentscheme: paymentscheme || 'ideal',
+		amount: amount || '1.00',
+		currency: currency || 'EUR',
+		countrycode: countrycode || 'NL',
+		bic: bic || '',
+		name: name || 'Test User',
+		email: email || 'test@test.com'
+	};
+
+	res.render('launcher', { user: req.user, schemesJSON: paymentObjects, prefillValue });
 
 }
 

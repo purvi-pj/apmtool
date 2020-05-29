@@ -15,7 +15,27 @@ $(function() {
 				$(fieldId).removeClass("d-none");
 			});
 		}
-	});	
+	});		
+
+	// Prefill values
+	$("#createOrderForm").find("input[name='environment']").val([prefillJSON.environment]);
+	$("#createOrderForm").find("input[name='clientType']").val([prefillJSON.clientType]);
+	$("#createOrderForm").find("input[name='approvalLinkBehavior']").val([prefillJSON.approvalLinkBehavior]);
+	$("#createOrderForm").find("select[name='paymentscheme']").val([prefillJSON.paymentscheme]);
+	$("#createOrderForm").find("input[name='amount']").val([prefillJSON.amount]);
+	$("#createOrderForm").find("input[name='currency']").val([prefillJSON.currency]);
+	$("#createOrderForm").find("input[name='countrycode']").val([prefillJSON.countrycode]);
+	$("#createOrderForm").find("input[name='bic']").val([prefillJSON.bic]);
+	$("#createOrderForm").find("input[name='name']").val([prefillJSON.name]);
+	$("#createOrderForm").find("input[name='email']").val([prefillJSON.email]);
+
+	// After prefill, determine whether to show bic
+	var prefillScheme = $("#paymentscheme").val();
+	var mandatoryFields = schemesJSON[prefillScheme].optional;
+	$.each(mandatoryFields, function (index, value) {
+		var fieldId = ("#" + value + "_optional").replace(/\./g, '\\\.');
+		$(fieldId).removeClass("d-none");
+	});
 
 	// Attach handler to button click event
 	$( "#submitBtn" ).click(function( event ) {
@@ -38,6 +58,9 @@ $(function() {
 			bic 						= $form.find( "input[name='bic']" ).val(),
 			shippingpreference 			= $form.find( "input[name='shippingpreference']:checked" ).val(),
 			url 						= $form.attr( "action" );
+
+		// Apply "sticky" selected settings to start over link
+		$("#startOverLink").attr("href", `/?environment=${environment}&clientType=${clientType}&approvalLinkBehavior=${approvalLinkBehavior}&paymentscheme=${paymentscheme}&amount=${amount}&currency=${currency}&countrycode=${countrycode}&bic=${bic}&name=${name}&email=${email}`);
 
 		// Define in context API locations
 		var confirmPaymentSourceUrl 	= 'confirm',

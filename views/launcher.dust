@@ -29,7 +29,7 @@
                 </div> 
               </div>
               <div id="modalFooter" class="modal-footer d-none">
-                <a class="btn btn-primary" href="/" role="button">Start Over</a>
+                <a id="startOverLink" class="btn btn-primary" href="/" role="button">Start Over</a>
                 <a class="btn btn-primary mx-2" href="/history" role="buton">See Details</a>
               </div>              
             </div>
@@ -107,7 +107,7 @@
                   </div>    
                 </div>          
 
-                  <div id="bic_optional" class="form-group">
+                  <div id="bic_optional" class="form-group d-none">
                       <label for="bic">BIC (optional)</label>
                       <input type="text" name="bic" class="form-control" value="">
                   </div>     
@@ -163,6 +163,7 @@
 
     <script>
         var schemesJSON = {schemesJSON|js|s};
+        var prefillJSON = {prefillValue|js|s};
     </script>
 
   </body>
