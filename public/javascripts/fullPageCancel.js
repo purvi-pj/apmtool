@@ -29,11 +29,11 @@ $(function() {
 			// If existing status is already beyond `PAYER_ACTION_REQUIRED` state, do not overwrite and display existing state
 			switch(data.status) {
 				case 'COMPLETED':
-					$( "#progressUpdate" ).append( '<p>Order has already been captured...</p>');
+					$( "#progressUpdate" ).append(`<p>[${ getTimeString() }] Order has already been captured...</p>`);
 					orderSuccess(orderId);					
 					break;
 				case 'VOIDED':
-					$( "#progressUpdate" ).append( '<p>Order has already been voided...</p>');
+					$( "#progressUpdate" ).append(`<p>[${ getTimeString() }] Order has already been voided...</p>`);
 					orderFailure(orderId);								
 					break;
 				// case 'CANCELLED':
@@ -41,7 +41,7 @@ $(function() {
 				// 	orderFailure(orderId);								
 				// 	break;		
 				case 'APPROVED':
-					$( "#progressUpdate" ).append( '<p>PayPal status updated to `' + data.status + '`...</p><p>If not captured, order will be auto refunded...</p>');	
+					$( "#progressUpdate" ).append(`<p>[${ getTimeString() }] PayPal status updated to '${ data.status }'...</p><p>If not captured, order will be auto refunded...</p>`);	
 					orderFailure(orderId);								
 					break;
 				case undefined:
@@ -84,5 +84,9 @@ $(function() {
 			});
 		}
 	}	
+
+	function getTimeString() {
+		return new Date().toLocaleTimeString([], { hour12: false });
+	}		
 
 });

@@ -84,7 +84,7 @@ $(function() {
 				orderId = data.orderId;
 
 				// Update modal on UI
-				$( "#progressUpdate" ).empty().append( '<p>Created Order Id... ' + data.orderId  + '</p><p>Confirming Payment Source...</p>');
+				$( "#progressUpdate" ).empty().append( `<p>[${ getTimeString() }] Created Order Id... ${ data.orderId}</p><p>[${ getTimeString() }] Confirming Payment Source...</p>`);
 
 				// Call Confirm Payment Source API upon successful Create Order API
 				var confirmPaymentSource = $.post( confirmPaymentSourceUrl, { environment, clientType, orderId, paymentscheme, amount, currency, countrycode, name, email, phonenumber, bic, approvalLinkBehavior } );
@@ -96,7 +96,7 @@ $(function() {
 
 						// Update modal on UI
 						$( "#txnprogress").css('width', '50%').attr('aria-valuenow', 50);
-						$( "#progressUpdate" ).append( '<p>Payment Source confirmed...</p><p>Waiting for payment scheme approval...</p>');
+						$( "#progressUpdate" ).append( `<p>[${ getTimeString() }] Payment Source confirmed...</p><p>[${ getTimeString() }] Waiting for payment scheme approval...</p>`);
 
 						// Open approval URL returned from Confirm Payment API
 						var approvalurl = data.response.links.find(x => x.rel === 'payer-action').href;
@@ -105,7 +105,7 @@ $(function() {
 					} else {
 
 						// On failed Confirm Payment API, update modal on UI with error
-						$( "#progressUpdate" ).append( '<p>Confirm Payment Source Failed...</p>');
+						$( "#progressUpdate" ).append( `<p>[${ getTimeString() }] Confirm Payment Source Failed...</p>`);
 						$( "#progressUpdate" ).append( '<p><pre>' + JSON.stringify(data.response, null, 2) + '</pre></p>');
 						orderFailure(orderId);
 					}
@@ -113,7 +113,7 @@ $(function() {
 			} else {
 
 				// On failed Create Order API, update modal on UI with error
-				$( "#progressUpdate" ).empty().append( '<p>Order Creation Failed...</p>');
+				$( "#progressUpdate" ).empty().append( `<p>[${ getTimeString() }] Order Creation Failed...</p>`);
 				$( "#progressUpdate" ).append( '<p><pre>' + JSON.stringify(data.response, null, 2) + '</pre></p>');
 				orderFailure();
 			}
@@ -121,6 +121,8 @@ $(function() {
 
 		// Open approval URL in pop up window for desktop experiences
 		function openPopUp(approvalurl) {
+
+			var windowObjectReference;
 
 			if (approvalLinkBehavior == 'POPUP') {
 				windowObjectReference = window.open(approvalurl, "approvalPopUp", "width=1265,height=609,resizable,scrollbars,status");
@@ -131,11 +133,11 @@ $(function() {
 
 			// Parent window polls for child window to close
 			function pollPopUp() {
-				if (windowObjectReference.closed) {
+				if (!windowObjectReference || windowObjectReference.closed) {
 
 					// On child window close, update modal on UI
 					$( "#txnprogress").css('width', '75%').attr('aria-valuenow', 75);
-					$( "#progressUpdate" ).append( '<p>Approval Closed...</p><p>Verifying Approval Status...</p>');	
+					$( "#progressUpdate" ).append( `<p>[${ getTimeString() }] Approval Closed...</p><p>[${ getTimeString() }] Verifying Approval Status...</p>`);	
 
 					// On child window close, poll internal DB for status change (triggered by incoming webhook from PayPal)
 					pollOrder(orderId, 1);
@@ -153,12 +155,12 @@ $(function() {
 
 			// Only poll 5 times and then mark this transaction as failed due to abandonement on pop up
 			if (retryAttempts > 20) {
-				$( "#progressUpdate" ).append( '<p>Payment Authorization Unknown...</p>');
+				$( "#progressUpdate" ).append( `<p>[${ getTimeString() }] Payment Authorization Unknown...</p>`);
 				orderFailure(orderId);
 			} else {
 
 				if (clientType === 'WEBHOOK_CLIENT') {
-					$( "#progressUpdate" ).append( '<p>Waiting for `CHECKOUT.ORDER.APPROVED` webhook...</p>');
+					$( "#progressUpdate" ).append( `<p>[${ getTimeString() }] Waiting for 'CHECKOUT.ORDER.APPROVED' webhook...</p>`);
 				}
 
 				// Poll internal status for `CANCELLED` or `REDIRECT_RETURN`
@@ -169,7 +171,7 @@ $(function() {
 					switch(result.STATUS) {
 						case 'CANCELLED':
 						case 'FULL_PAGE_CANCELLED':
-							$( "#progressUpdate" ).append( '<p>Transaction Cancelled ...</p>');
+							$( "#progressUpdate" ).append(`<p>[${ getTimeString() }] Transaction Cancelled ...</p>`);
 							orderFailure(orderId);						
 							break;
 						case 'REDIRECT_RETURN':
@@ -181,7 +183,7 @@ $(function() {
 							}
 							break;
 						case 'COMPLETED':
-							$( "#progressUpdate" ).append( '<p>Webhook received...</p><p>Order Captured...</p>');
+							$( "#progressUpdate" ).append(`<p>[${ getTimeString() }] Webhook received...</p><p[${ getTimeString() }] Order Captured...</p>`);
 							orderSuccess(orderId);
 							break;
 						default:
@@ -197,7 +199,7 @@ $(function() {
 		function pollPPOrderStatus(orderId, retryAttempts) {
 
 			if (retryAttempts > 12) {
-				$( "#progressUpdate" ).append( '<p>PayPal Order Status Has Not Been Updated...</p>');
+				$( "#progressUpdate" ).append(`<p>[${ getTimeString() }] PayPal Order Status Has Not Been Updated...</p>`);
 				orderFailure(orderId);				
 			} else {
 
@@ -208,11 +210,11 @@ $(function() {
 					// If existing status is already beyond `PAYER_ACTION_REQUIRED` state, do not overwrite and display existing state
 					switch(data.status) {
 						case 'COMPLETED':
-							$( "#progressUpdate" ).append( '<p>Order has already been captured...</p>');
+							$( "#progressUpdate" ).append(`<p>[${ getTimeString() }] Order has already been captured...</p>`);
 							orderSuccess(orderId);					
 							break;
 						case 'VOIDED':
-							$( "#progressUpdate" ).append( '<p>Order has already been voided...</p>');
+							$( "#progressUpdate" ).append(`<p>[${ getTimeString() }] Order has already been voided...</p>`);
 							orderFailure(orderId);								
 							break;
 						// case 'CANCELLED':
@@ -220,7 +222,7 @@ $(function() {
 						// 	orderFailure(orderId);								
 						// 	break;		
 						case 'APPROVED':
-							$( "#progressUpdate" ).append( '<p>PayPal status updated to `' + data.status + '`...</p><p>Capturing Order...</p>');	
+							$( "#progressUpdate" ).append(`<p>[${ getTimeString() }] PayPal status updated to '${data.status}'...</p><p>[${ getTimeString() }] Capturing Order...</p>`);	
 							captureOrder(orderId);					
 							break;
 						case undefined:
@@ -228,7 +230,7 @@ $(function() {
 							break;
 						default:
 							setTimeout(function() { pollPPOrderStatus(orderId, retryAttempts+1) }, 5000);
-							$( "#progressUpdate" ).append('<p>Polling - PayPal status is still `' + data.status + '`... </p>');
+							$( "#progressUpdate" ).append(`<p>[${ getTimeString() }] Polling - PayPal status is still '${data.status}'... </p>`);
 					}					
 				});		
 			}	
@@ -240,10 +242,10 @@ $(function() {
 
 			captureOrderRequest.done(function( data ) {
 				if (data.statusCode < 400) {
-					$( "#progressUpdate" ).append( '<p>Order Captured...</p>');
+					$( "#progressUpdate" ).append(`<p>[${ getTimeString() }] Order Captured...</p>`);
 					orderSuccess(orderId);
 				} else {
-					$( "#progressUpdate" ).append( '<p>Order Capture Failed...</p>');
+					$( "#progressUpdate" ).append(`<p>[${ getTimeString() }] Order Capture Failed...</p>`);
 					orderFailure(orderId);
 				}
 			});
@@ -280,4 +282,8 @@ $(function() {
 			}
 		}
 	});    
+
+	function getTimeString() {
+		return new Date().toLocaleTimeString([], { hour12: false });
+	}
 });

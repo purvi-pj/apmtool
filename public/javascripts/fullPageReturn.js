@@ -34,18 +34,18 @@ $(function() {
 
 			// Set maximum attempts to poll
 			if (retryAttempts > 12) {
-				$( "#progressUpdate" ).append( '<p>Polling stopped - PayPal status of `' + data.status + '`...</p>');
+				$( "#progressUpdate" ).append( `<p>[${ getTimeString() }] Polling stopped - PayPal status of '${ data.status }'...</p>`);
 				orderFailure(orderId);		
 			} else {				
 
 				// If existing status is already beyond `PAYER_ACTION_REQUIRED` state, do not overwrite and display existing state
 				switch(data.status) {
 					case 'COMPLETED':
-						$( "#progressUpdate" ).append( '<p>Order has already been captured...</p>');
+						$( "#progressUpdate" ).append( `<p>[${ getTimeString() }] Order has already been captured...</p>`);
 						orderSuccess(orderId);					
 						break;
 					case 'VOIDED':
-						$( "#progressUpdate" ).append( '<p>Order has already been voided...</p>');
+						$( "#progressUpdate" ).append( `<p>[${ getTimeString() }] Order has already been voided...</p>`);
 						orderFailure(orderId);								
 						break;
 					// case 'CANCELLED':
@@ -53,7 +53,7 @@ $(function() {
 					// 	orderFailure(orderId);								
 					// 	break;						
 					case 'APPROVED':
-						$( "#progressUpdate" ).append( '<p>PayPal status updated to `' + data.status + '`...</p><p>Capturing Order...</p>');	
+						$( "#progressUpdate" ).append( `<p>[${ getTimeString() }] PayPal status updated to '${ data.status }'...</p><p>Capturing Order...</p>`);	
 						captureOrder(orderId);					
 						break;
 					case undefined:
@@ -61,7 +61,7 @@ $(function() {
 						break;
 					default:
 						setTimeout(function() { pollPPOrderStatus(orderId, retryAttempts+1) }, 5000);
-						$( "#progressUpdate" ).append('<p>Polling - PayPal status is still `' + data.status + '`... </p>');
+						$( "#progressUpdate" ).append(`<p>[${ getTimeString() }] Polling - PayPal status is still '${ data.status }'... </p>`);
 				}
 			}
 		});					
@@ -72,11 +72,11 @@ $(function() {
 
 		// Only poll 5 times and then mark this transaction as failed due to abandonement on pop up
 		if (retryAttempts > 20) {
-			$( "#progressUpdate" ).append( '<p>Payment Authorization Unknown...</p>');
+			$( "#progressUpdate" ).append(`<p>[${ getTimeString() }] Payment Authorization Unknown...</p>`);
 			orderFailure(orderId);
 		} else {
 
-			$( "#progressUpdate" ).append( '<p>Waiting for `CHECKOUT.ORDER.APPROVED` webhook...</p>');
+			$( "#progressUpdate" ).append(`<p>[${ getTimeString() }] Waiting for 'CHECKOUT.ORDER.APPROVED' webhook...</p>`);
 
 			// Poll internal status for `CANCELLED` or `REDIRECT_RETURN`
 			var getOrderInternalStatusRequest = $.post( getOrderInternalStatusUrl, { orderId } );
@@ -86,7 +86,7 @@ $(function() {
 				switch(result.STATUS) {
 					case 'CANCELLED':
 					case 'FULL_PAGE_CANCELLED':
-						$( "#progressUpdate" ).append( '<p>Transaction Cancelled ...</p>');
+						$( "#progressUpdate" ).append(`<p>[${ getTimeString() }] Transaction Cancelled ...</p>`);
 						orderFailure(orderId);						
 						break;
 					case 'REDIRECT_RETURN':
@@ -98,7 +98,7 @@ $(function() {
 						}
 						break;
 					case 'COMPLETED':
-						$( "#progressUpdate" ).append( '<p>Webhook received...</p><p>Order Captured...</p>');
+						$( "#progressUpdate" ).append(`<p>[${ getTimeString() }] Webhook received...</p><p>Order Captured...</p>`);
 						orderSuccess(orderId);
 						break;
 					default:
@@ -116,10 +116,10 @@ $(function() {
 
 		captureOrderRequest.done(function( data ) {
 			if (data.statusCode < 400) {
-				$( "#progressUpdate" ).append( '<p>Order Captured...</p>');
+				$( "#progressUpdate" ).append(`<p>[${ getTimeString() }] Order Captured...</p>`);
 				orderSuccess(orderId);
 			} else {
-				$( "#progressUpdate" ).append( '<p>Order Capture Failed...</p>');
+				$( "#progressUpdate" ).append(`<p>[${ getTimeString() }] Order Capture Failed...</p>`);
 				orderFailure(orderId);
 			}
 		});
@@ -154,6 +154,10 @@ $(function() {
 				$( "#progressUpdate" ).append( '<hr/<p><pre>' + JSON.stringify(data, null, 2) + '</pre></p>');
 			});
 		}
+	}	
+
+	function getTimeString() {
+		return new Date().toLocaleTimeString([], { hour12: false });
 	}	
 
 });
