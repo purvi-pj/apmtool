@@ -59,10 +59,11 @@
 		}
 	},		
 	"payu": {
-		"required": ["name","country_code"],
+		"required": ["name","country_code","email"],
 		"schema": {
 			"name": "",
-			"country_code": ""
+			"country_code": "",
+			"email": ""
 		}
 	},
 	"poli": {
