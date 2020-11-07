@@ -75,7 +75,7 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
-mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true});
+mongoose.connect(process.env.MONGO_ATLAS_URI, {useNewUrlParser: true, ssl: true, sslValidate: false});
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
