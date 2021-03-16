@@ -51,7 +51,11 @@ function createOrder(req, res, next) {
 		args.bic = req.body.bic;
 	}
 
-	ordersUtils.createAccessToken({ environment: req.body.environment, clientType: req.body.clientType })
+  ordersUtils.createAccessToken({
+    environment: req.body.environment,
+    clientType: req.body.clientType,
+    scheme: args.scheme
+  })
 
 	.then((accessTokenResult) => {
 
@@ -77,7 +81,10 @@ function getOrder(req, res, next) {
 		orderId: req.body.orderId
 	};
 
-	ordersUtils.createAccessToken({ environment: req.body.environment, clientType: req.body.clientType })
+  ordersUtils.createAccessToken({
+    environment: req.body.environment, clientType: req.body.clientType,
+    scheme: req.body.paymentscheme
+  })
 
 	.then((accessTokenResult) => {
 
@@ -172,7 +179,8 @@ function confirmPaymentSource(req, res, next) {
 		name: req.body.name,
 		emailAddress: req.body.email,
 		phoneNumber: req.body.phonenumber,
-		currency: req.body.currency,
+    currency: req.body.currency,
+		expiresInDays: req.body.expiresInDays,
 		amount: req.body.amount,
 		countryCode: req.body.countrycode,
 		scheme: req.body.paymentscheme,
@@ -181,7 +189,11 @@ function confirmPaymentSource(req, res, next) {
 		cancelUrl: req.body.approvalLinkBehavior == 'POPUP' ? process.env.CANCEL_URL : process.env.FULL_PAGE_CANCEL_URL
 	};
 
-	ordersUtils.createAccessToken({ environment: req.body.environment, clientType: req.body.clientType })
+  ordersUtils.createAccessToken({
+    environment: req.body.environment,
+    clientType: req.body.clientType,
+    scheme: req.body.paymentscheme
+  })
 
 	.then((accessTokenResult) => {
 
