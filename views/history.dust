@@ -38,7 +38,7 @@
               {#records}
                 <tr class='orderRecord' status={STATUS}>
                   <th scope="row">
-                    <span class="orderSummary" itemid="{$idx}">{ORDER_ID}<br/>({STATUS})</span>
+                    <span class="orderSummary" itemid="{$idx}">{ORDER_ID}({ENVIRONMENT})<br/>({STATUS})</span>
                   </th>
                 </tr>
               {/records}                                 
