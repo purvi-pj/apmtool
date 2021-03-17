@@ -108,11 +108,14 @@ $(function () {
 
   // After prefill, determine whether to show bic
   var prefillScheme = $("#paymentscheme").val();
+  prePopulateNonInstantFields(prefillScheme);
   var mandatoryFields = schemesJSON[prefillScheme].optional;
   $.each(mandatoryFields, function (index, value) {
     var fieldId = ("#" + value + "_optional").replace(/\./g, '\\\.');
     $(fieldId).removeClass("d-none");
   });
+
+  
 
   // Attach handler to button click event
   $("#submitBtn").click(function (event) {
@@ -459,6 +462,4 @@ $(function () {
   function getTimeString() {
     return new Date().toLocaleTimeString([], { hour12: false });
   }
-
-
 });

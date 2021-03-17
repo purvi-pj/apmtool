@@ -30,7 +30,7 @@
               </div>
               <div id="modalFooter" class="modal-footer d-none">
                 <a id="startOverLink" class="btn btn-primary" href="/" role="button">Start Over</a>
-                <a class="btn btn-primary mx-2" href="/history" role="buton">See Details</a>
+                <a class="btn btn-primary mx-2" href="/history" target="_blank" role="buton">See Details</a>
               </div>              
             </div>
           </div>
