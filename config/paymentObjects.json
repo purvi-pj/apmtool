@@ -65,7 +65,16 @@
 			"name": "",
 			"country_code": ""
 		}
-	},		
+  },	
+  "boletobancario": {
+		"required": ["name","country_code","email","expiry_date"],
+		"schema": {
+			"name": "",
+			"country_code": "",
+			"expiry_date": "",
+			"email": ""
+		}
+  },	
 	"p24": {
 		"required": ["name","country_code","email"],
 		"schema": {

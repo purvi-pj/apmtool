@@ -79,7 +79,7 @@
                           <option value="alipay">alipay</option>
                           <option value="bancontact">bancontact</option>
                           <option value="blik">blik</option>
-                <!--          <option value="boletobancario">boletobancario(non-instant)</option> -->
+                          <option value="boletobancario">boletobancario(non-instant)</option>
                           <option value="eps">eps</option>
                           <option value="giropay">giropay</option>
                           <option value="ideal" selected>ideal</option>

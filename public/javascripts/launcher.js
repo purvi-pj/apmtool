@@ -45,7 +45,7 @@ $(function () {
         defaultSettings("PT", "EUR", false)
         break;
       case 'boletobancario':
-        defaultSettings("BR", "EUR", false)
+        defaultSettings("BR", "BRL", true)
         break;
       case 'ideal':
         defaultSettings("NL", "EUR", false)
