@@ -36,9 +36,9 @@
             </thead>            
             <tbody>
               {#records}
-                <tr class='orderRecord' status={STATUS}>
+                <tr class='orderRecord orderSummary' status={STATUS} itemid="{$idx}">
                   <th scope="row">
-                    <span class="orderSummary" itemid="{$idx}">{ORDER_ID}({ENVIRONMENT})<br/>({STATUS})</span>
+                    <span >{ORDER_ID}({ENVIRONMENT})<br/>({STATUS})</span>
                   </th>
                 </tr>
               {/records}                                 
@@ -197,8 +197,9 @@
     cursor:pointer;
   }
   .orderRecord:hover{
-    background-color: #e9ecef;
+    background-color: #e9ecef !important;
     border: 1px solid #8e9ba9;
+    z-index:10;
   }
   </style>
         
