@@ -37,6 +37,7 @@ $(function () {
     } else {
       $("#pollingClientGrp").show();
     }
+    $('#boleto_fields').addClass('d-none');
     switch (apmTag) {
       case 'oxxo':
         defaultSettings("MX", "MXN", true)
@@ -46,6 +47,7 @@ $(function () {
         break;
       case 'boletobancario':
         defaultSettings("BR", "BRL", true)
+        $('#boleto_fields').removeClass('d-none');
         break;
       case 'ideal':
         defaultSettings("NL", "EUR", false)
@@ -133,6 +135,13 @@ $(function () {
       currency = $form.find("input[name='currency']").val(),
       countrycode = $form.find("input[name='countrycode']").val(),
       expiresInDays = $form.find("input[name='expiresInDays']").val(),
+      taxid = $form.find("input[name='taxid']").val(),
+      taxid_type = $form.find("input[name='taxid_type']").val(),
+      address_line_1 = $form.find("input[name='address_line_1']").val(),
+      address_line_2 = $form.find("input[name='address_line_2']").val(),
+      admin_area_2 = $form.find("input[name='admin_area_2']").val(),
+      admin_area_1 = $form.find("input[name='admin_area_1']").val(),
+      postal_code = $form.find("input[name='postal_code']").val(),
       name = $form.find("input[name='name']").val(),
       email = $form.find("input[name='email']").val(),
       phonenumber = $form.find("input[name='phonenumber']").val(),
@@ -168,7 +177,11 @@ $(function () {
         $("#progressUpdate").empty().append(`<p>[${getTimeString()}] Created Order Id... ${data.orderId}</p><p>[${getTimeString()}] Confirming Payment Source...</p>`);
 
         // Call Confirm Payment Source API upon successful Create Order API
-        var confirmPaymentSource = $.post(confirmPaymentSourceUrl, { environment, clientType, orderId, paymentscheme, amount, currency, countrycode, name, email, phonenumber, bic, approvalLinkBehavior, expiresInDays });
+        var confirmPaymentSource = $.post(confirmPaymentSourceUrl, {
+          environment, clientType, orderId, paymentscheme, amount, currency,
+          countrycode, name, email, phonenumber, bic, approvalLinkBehavior, expiresInDays,
+          taxid,taxid_type, address_line_1,address_line_2,admin_area_1,admin_area_2,postal_code,
+        });
 
         confirmPaymentSource.done(function (data) {
 
