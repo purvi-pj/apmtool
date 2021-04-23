@@ -30,7 +30,7 @@ $(function () {
 
     //example
     captureStatus = getUrlParameter('capturestatus');
-    orderStatus = getUrlParameter('orderstatus');
+    orderStatus = getUrlParameter('resourcestatus');
     if (orderStatus ==="completed" && captureStatus === "pending") {
       $("#progressUpdate").append(`<p>[${getTimeString()}] Order has already been completed...</p>`);
       $("#progressUpdate").append(`<p>[${getTimeString()}] This is a non instant payment which is captured using webhooks...</p>`);
