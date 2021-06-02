@@ -49,6 +49,22 @@
 			"name": "",
 			"country_code": ""
 		}
+  },
+  "oxxo": {
+		"required": ["name","country_code","email","expiry_date"],
+		"schema": {
+			"name": "",
+			"country_code": "",
+			"expiry_date": "",
+			"email": ""
+		}
+  },
+  "multibanco": {
+		"required": ["name","country_code"],
+		"schema": {
+			"name": "",
+			"country_code": ""
+		}
 	},		
 	"p24": {
 		"required": ["name","country_code","email"],
