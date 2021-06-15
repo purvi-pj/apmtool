@@ -3,7 +3,8 @@
   "version": "1.1.12",
   "private": true,
   "scripts": {
-    "start": "DEBUG=express node ./bin/www"
+    "start": "DEBUG=express node ./bin/www",
+    "deploy": "heroku git:remote -a apmtool && git push heroku master"
   },
   "dependencies": {
     "adaro": "~1.0.4",

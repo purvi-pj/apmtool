@@ -1,178 +1,201 @@
 <!DOCTYPE html>
 <html>
-  <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>Unbranded APM Launcher</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-
-        <div class="modal fade" id="processingModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="processingModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="processingModalLabel">Processing Order...</h5>
-              </div>
-              <div class="modal-body">
-                Please follow the instructions on the pop up with your selected payment provider...
-                <hr/>
-                <div class="progress">
-                  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" id="txnprogress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
-                </div>
-                <hr/>
-                <div id="progressUpdate">
-                </div> 
-              </div>
-              <div id="modalFooter" class="modal-footer d-none">
-                <a id="startOverLink" class="btn btn-primary" href="/" role="button">Start Over</a>
-                <a class="btn btn-primary mx-2" href="/history" role="buton">See Details</a>
-              </div>              
-            </div>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Unbranded APM Launcher</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+<body>
+  <div class="modal fade" id="processingModal" data-backdrop="static" tabindex="-1" role="dialog"
+    aria-labelledby="processingModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="processingModalLabel">Processing Order...</h5>
+        </div>
+        <div class="modal-body">
+          Please follow the instructions on the pop up with your selected payment provider...
+          <hr />
+          <div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" id="txnprogress"
+              aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
           </div>
-        </div>  
+          <hr />
+          <div id="progressUpdate">
+          </div>
+        </div>
+        <div id="modalFooter" class="modal-footer d-none">
+          <a id="startOverLink" class="btn btn-primary" href="/" role="button">Start Over</a>
+          <a class="btn btn-primary mx-2" href="/history" target="_blank" role="buton">See Details</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        <div id="ordersLauncherContent" class="container">
-            <form id="createOrderForm" action="create" method="POST">          
+  <div id="ordersLauncherContent" class="container">
+    <form id="createOrderForm" action="create" method="POST">
 
-                <div class="form-group">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="environment" id="sandboxenv" value="SANDBOX" checked>
-                      <label class="form-check-label" for="sandboxenv">SANDBOX</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="environment" id="liveenv" value="LIVE">
-                      <label class="form-check-label" for="liveenv">LIVE</label>
-                    </div>       
-                </div>
+      <div class="form-group">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="environment" id="sandboxenv" value="SANDBOX" checked>
+          <label class="form-check-label" for="sandboxenv">SANDBOX</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="environment" id="liveenv" value="LIVE">
+          <label class="form-check-label" for="liveenv">LIVE</label>
+        </div>
+      </div>
 
-                <div class="form-group">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="clientType" id="webhookClient" value="WEBHOOK_CLIENT" checked>
-                      <label class="form-check-label" for="webhookClient">WEBHOOK_CLIENT</label>
-                    </div>
-                    <div class="form-check form-check-inline" id="pollingClientGrp">
-                      <input class="form-check-input" type="radio" name="clientType" id="pollingClient" value="POLLING_CLIENT">
-                      <label class="form-check-label" for="pollingClient">POLLING_CLIENT</label>
-                    </div>       
-                </div>        
+      <div class="form-group">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="clientType" id="webhookClient" value="WEBHOOK_CLIENT"
+            checked>
+          <label class="form-check-label" for="webhookClient">WEBHOOK_CLIENT</label>
+        </div>
+        <div class="form-check form-check-inline" id="pollingClientGrp">
+          <input class="form-check-input" type="radio" name="clientType" id="pollingClient" value="POLLING_CLIENT">
+          <label class="form-check-label" for="pollingClient">POLLING_CLIENT</label>
+        </div>
+      </div>
 
-                <div class="form-group">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="approvalLinkBehavior" id="approvalLinkPopUp" value="POPUP" checked>
-                      <label class="form-check-label" for="approvalLinkPopUp">POP UP</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="approvalLinkBehavior" id="approvalLinkFullPage" value="FULLPAGE">
-                      <label class="form-check-label" for="approvalLinkFullPage">FULL PAGE REDIRECT</label>
-                    </div>       
-                </div>                        
+      <div class="form-group">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="approvalLinkBehavior" id="approvalLinkPopUp" value="POPUP"
+            checked>
+          <label class="form-check-label" for="approvalLinkPopUp">POP UP</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="approvalLinkBehavior" id="approvalLinkFullPage"
+            value="FULLPAGE">
+          <label class="form-check-label" for="approvalLinkFullPage">FULL PAGE REDIRECT</label>
+        </div>
+      </div>
 
-                <div class="form-row">    
-                  <div class="form-group col-md-4">
-                      <label for="paymentscheme">Payment Scheme</label>
-                      <select class="form-control" id="paymentscheme" name="paymentscheme">
-                          <option value="alipay">alipay</option>
-                          <option value="bancontact">bancontact</option>
-                          <option value="blik">blik</option>
-                <!--          <option value="boletobancario">boletobancario(non-instant)</option> -->
-                          <option value="eps">eps</option>
-                          <option value="giropay">giropay</option>
-                          <option value="ideal" selected>ideal</option>
-                          <option value="mybank">mybank</option>
-                 <!--         <option value="multibanco">multibanco(non-instant)</option> -->
-                          <option value="oxxo">oxxo(non-instant)</option>
-                          <option value="p24">p24</option>
-                          <option value="payu">payu</option>
-                          <option value="poli">poli</option>
-                          <option value="sofort">sofort</option>
-                          <option value="trustly">trustly</option>
-                          <option value="trustpay">trustpay</option>
-                          <option value="verkkopankki">verkkopankki</option>
-                          <option value="wechatpay">wechatpay</option>
-                      </select>
-                  </div>                                             
-                  <div class="form-group col-md-3">
-                      <label for="amount">Amount</label>
-                      <input type="text" name="amount" class="form-control" value="1.00">
-                  </div>
-                  <div class="form-group col-md-3">
-                      <label for="currency">Currency</label>
-                      <input type="text" name="currency" class="form-control" value="EUR">
-                  </div>
-                  <div class="form-group col-md-2">
-                      <label for="countrycode">Country Code</label>
-                      <input type="text" name="countrycode" class="form-control" value="NL">
-                  </div>    
-                </div>          
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="paymentscheme">Payment Scheme</label>
+          <select class="form-control" id="paymentscheme" name="paymentscheme">
+            <option value="alipay">alipay</option>
+            <option value="bancontact">bancontact</option>
+            <option value="blik">blik</option>
+            <option value="boletobancario">boletobancario(non-instant)</option>
+            <option value="eps">eps</option>
+            <option value="giropay">giropay</option>
+            <option value="ideal" selected>ideal</option>
+            <option value="mybank">mybank</option>
+            <option value="multibanco">multibanco(non-instant)</option>
+            <option value="oxxo">oxxo(non-instant)</option>
+            <option value="p24">p24</option>
+            <option value="payu">payu</option>
+            <option value="poli">poli</option>
+            <option value="sofort">sofort</option>
+            <option value="trustly">trustly</option>
+            <option value="trustpay">trustpay</option>
+            <option value="verkkopankki">verkkopankki</option>
+            <option value="wechatpay">wechatpay</option>
+          </select>
+        </div>
+        <div class="form-group col-md-3">
+          <label for="amount">Amount</label>
+          <input type="text" name="amount" class="form-control" value="1.00">
+        </div>
+        <div class="form-group col-md-3">
+          <label for="currency">Currency</label>
+          <input type="text" name="currency" class="form-control" value="EUR">
+        </div>
+        <div class="form-group col-md-2">
+          <label for="countrycode">Country Code</label>
+          <input type="text" name="countrycode" class="form-control" value="NL">
+        </div>
+      </div>
 
-                  <div id="bic_optional" class="form-group d-none">
-                      <label for="bic">BIC (optional)</label>
-                      <input type="text" name="bic" class="form-control" value="">
-                  </div>   
-
-                  <div id="expires_optional" class="form-group d-none">
-                      <label for="expiresInDays">Expires in days:(eg: 1 or 2)</label>
-                      <input type="text" name="expiresInDays" class="form-control" value="2">
-                  </div>  
-
-                  <div class="form-group">
-                      <label for="name">Buyer Name</label>
-                      <input type="text" name="name" class="form-control" value="Test McTesterson">
-                  </div>
-                  <div class="form-group">
-                      <label for="email">Buyer Email Address</label>
-                      <input type="text" name="email" class="form-control" value="test@test.com">
-                  </div>                    
-<!--              <div class="form-group">
-                      <label for="phonenumber">Buyer Phone Number</label>
-                      <input type="text" name="phonenumber" class="form-control" value="">
-                  </div>       --> 
-
-<!--                 <div class="form-group">
-                    <label>Shipping Preference</label>
-                    <div>
-                        <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="shippingpreference" id="shipping_donotset" value="DO_NOT_SET" checked>
-                          <label class="form-check-label" for="shipping_donotset">DO NOT SET</label>
-                        </div>                      
-                        <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="shippingpreference" id="shipping_getfromfile" value="GET_FROM_FILE">
-                          <label class="form-check-label" for="shipping_getfromfile">GET_FROM_FILE</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="shippingpreference" id="shipping_no_shipping" value="NO_SHIPPING">
-                          <label class="form-check-label" for="shipping_no_shipping">NO_SHIPPING</label>
-                        </div>       
-                        <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="shippingpreference" id="shipping_set_provided_address" value="SET_PROVIDED_ADDRESS">
-                          <label class="form-check-label" for="shipping_set_provided_address">SET_PROVIDED_ADDRESS</label>
-                        </div>        
-                    </div>              
-                </div>          -->                                                        
-                <div class="form-group">
-                    <!-- <input type="submit" id="submitBtn" class="btn btn-primary" > -->
-                    <button type="button" id="submitBtn" class="btn btn-primary" data-toggle="modal" data-target="#processingModal">
-                      Submit Order
-                    </button>
-                </div>
-            </form>
+      <div class="form-row">
+        <div id="bic_optional" class="form-group col-md-3 d-none">
+          <label for="bic">BIC (optional)</label>
+          <input type="text" name="bic" class="form-control" value="">
         </div>
 
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>  
+        <div id="expires_optional" class="form-group col-md-3 d-none">
+          <label for="expiresInDays">Expires in days:(eg: 1 or 2)</label>
+          <input type="text" name="expiresInDays" class="form-control" value="2">
+        </div>
+        <div class="form-group col-md-3">
+          <label for="name">Buyer Name</label>
+          <input type="text" name="name" class="form-control" value="Test McTesterson">
+        </div>
+        <div class="form-group col-md-3">
+          <label for="email">Buyer Email Address</label>
+          <input type="text" name="email" class="form-control" value="test@test.com">
+        </div>
+      </div>
+      <div id="boleto_fields" class="form-group">
+        <br/>
+        <h4>Tax Details:</h4>
+        <hr />
+        <div class="form-row">
+          <div id="taxid_optional" class="form-group col-md-6">
+            <label for="taxid">Tax Id</label>
+            <input type="text" name="taxid" class="form-control" value="71265469000109">
+          </div>
+          <div id="taxid_type_optional" class="form-group col-md-6">
+            <label for="taxid_type">Tax Id Type: (eg: BR_CPF/BR_CNPJ)</label>
+            <input type="text" name="taxid_type" class="form-control" value="BR_CNPJ">
+          </div>
+        </div>
+        <div>
+          <br/>
+          <h4>Shipping Address:</h4>
+          <hr />
+          <div class="form-row">
+            <div id="address_line_1" class="form-group col-md-6">
+              <label for="address_line_1">Address line 1</label>
+              <input type="text" name="address_line_1" class="form-control" value="1048 - Bela Vista">
+            </div>
+            <div id="address_line_2" class="form-group col-md-6">
+              <label for="address_line_2">Address line 2</label>
+              <input type="text" name="address_line_2" class="form-control" value="13º e 14º, Av. Paulista">
+            </div>
+          </div>
+          <div class="form-row">
+            <div id="admin_area_2" class="form-group col-md-4">
+              <label for="admin_area_2">Addess City</label>
+              <input type="text" name="admin_area_2" class="form-control" value="São Paulo">
+            </div>
+            <div id="admin_area_1" class="form-group col-md-4">
+              <label for="admin_area_1">Country Code</label>
+              <input type="text" name="admin_area_1" class="form-control" value="SP">
+            </div>
+            <div id="postal_code" class="form-group col-md-4">
+              <label for="postal_code">Postal code</label>
+              <input type="text" name="postal_code" class="form-control" value="01310-100">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <button type="button" id="submitBtn" class="btn btn-primary" data-toggle="modal" data-target="#processingModal">
+          Submit Order
+        </button>
+      </div>
+    </form>
+  </div>
 
-    <script src="/javascripts/launcher.js"></script>      
-
-    <script>
-        var schemesJSON = {schemesJSON|js|s};
-        var prefillJSON = {prefillValue|js|s};
-    </script>
-
-  </body>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+  <script src="/javascripts/launcher.js"></script>
+  <script>
+    var schemesJSON = {schemesJSON|js|s};
+    var prefillJSON = {prefillValue|js|s};
+  </script>
+</body>
 </html>

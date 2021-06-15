@@ -27,9 +27,25 @@ $(function() {
 		recordValues[recordIndex].CAPTURE_ORDER_API.REQUEST_URL ? $( "#captureOrderRequestUrl" ).text(`${recordValues[recordIndex].CAPTURE_ORDER_API.REQUEST_URL}`) : $( "#captureOrderRequestUrl" ).text('');
 		recordValues[recordIndex].CAPTURE_ORDER_API.REQUESTJSON ? $( "#captureOrderRequest" ).text(`${recordValues[recordIndex].CAPTURE_ORDER_API.REQUESTJSON}`) : $( "#captureOrderRequest" ).text('{}');
 		recordValues[recordIndex].CAPTURE_ORDER_API.RESPONSEJSON ? $( "#captureOrderResponse" ).text(`${recordValues[recordIndex].CAPTURE_ORDER_API.RESPONSEJSON}`) : $( "#captureOrderResponse" ).text('{}');
-		recordValues[recordIndex].WEBHOOKJSON ? $( "#webhookDetails" ).text(`${recordValues[recordIndex].WEBHOOKJSON}`) : $( "#webhookDetails" ).text('{}');
+    recordValues[recordIndex].WEBHOOKJSON ? $("#webhookDetails").text(`${recordValues[recordIndex].WEBHOOKJSON}`) : $("#webhookDetails").text('{}');
+    
+
+
+
 	});
 
-	var clipboard = new ClipboardJS(document.getElementById('clipboardCopy'));
-
+  var clipboard = new ClipboardJS(document.getElementById('clipboardCopy'));
+  
+  var orderItems = document.querySelectorAll(".orderRecord");
+  if (orderItems) {
+    orderItems.forEach(val => {
+      let status = val.getAttribute('status')
+      if (status == "COMPLETED") {
+        val.style.backgroundColor = '#e6f2e9';
+      } else if (status == "CANCELLED"
+        || status == "DECLINED") {
+          val.style.backgroundColor = '#eecccc';
+      }
+    })
+  }
 });

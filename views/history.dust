@@ -36,8 +36,10 @@
             </thead>            
             <tbody>
               {#records}
-                <tr>
-                  <th scope="row"><span class="orderSummary" itemid="{$idx}">{ORDER_ID}<br/>({STATUS})</span></th>
+                <tr class='orderRecord orderSummary' status={STATUS} itemid="{$idx}">
+                  <th scope="row">
+                    <span >{ORDER_ID}({ENVIRONMENT})<br/>({STATUS})</span>
+                  </th>
                 </tr>
               {/records}                                 
             </tbody>
@@ -130,6 +132,7 @@
                   </div>
                 </div>                
 
+              {#records[0].CAPTURE_ORDER_API.CORRELATION_ID}
                 <div class="card">
                   <div class="card-header" id="headingCaptureOrderApi">
                     <h2 class="mb-0">
@@ -149,7 +152,7 @@
                     </div>
                   </div>
                 </div>
-
+              {/records[0].CAPTURE_ORDER_API.CORRELATION_ID}
                 <div class="card">
                   <div class="card-header" id="headingWebhook">
                     <h2 class="mb-0">
@@ -189,6 +192,16 @@
      <script type="text/javascript" src="/javascripts/clipboard.min.js"></script> 
 
 
+  <style>
+  .orderRecord{
+    cursor:pointer;
+  }
+  .orderRecord:hover{
+    background-color: #e9ecef !important;
+    border: 1px solid #8e9ba9;
+    z-index:10;
+  }
+  </style>
         
   </body>
 </html>
