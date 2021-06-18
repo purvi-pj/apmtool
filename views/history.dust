@@ -132,7 +132,6 @@
                   </div>
                 </div>                
 
-              {#records[0].CAPTURE_ORDER_API.CORRELATION_ID}
                 <div class="card">
                   <div class="card-header" id="headingCaptureOrderApi">
                     <h2 class="mb-0">
@@ -152,7 +151,6 @@
                     </div>
                   </div>
                 </div>
-              {/records[0].CAPTURE_ORDER_API.CORRELATION_ID}
                 <div class="card">
                   <div class="card-header" id="headingWebhook">
                     <h2 class="mb-0">

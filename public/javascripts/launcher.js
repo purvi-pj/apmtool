@@ -39,57 +39,63 @@ $(function () {
     }
     $('#boleto_fields').addClass('d-none');
     switch (apmTag) {
-      case 'oxxo':
-        defaultSettings("MX", "MXN", true)
-        break;
-      case 'multibanco':
-        defaultSettings("PT", "EUR", false)
-        break;
+      case 'alipay':
+        defaultSettings("CN", "EUR", false)
+        break;      
+      case 'bancontact':
+        defaultSettings("BE", "EUR", false)
+        break;      
+      case 'blik':
+        defaultSettings("PL", "PLN", false)
+        break;        
       case 'boletobancario':
         defaultSettings("BR", "BRL", true)
         $('#boleto_fields').removeClass('d-none');
-        break;
-      case 'ideal':
-        defaultSettings("NL", "EUR", false)
-        break;
-      case 'sofort':
-        defaultSettings("NL", "EUR", false)
-        break;
-      case 'mybank':
-        defaultSettings("IT", "EUR", false)
-        break;
+        break;      
       case 'eps':
         defaultSettings("AT", "EUR", false)
-        break;
+        break;        
       case 'giropay':
         defaultSettings("DE", "EUR", false)
-        break;
-      case 'bancontact':
-        defaultSettings("BE", "EUR", false)
+        break;        
+      case 'ideal':
+        defaultSettings("NL", "EUR", false)
+        break;        
+      case 'multibanco':
+        defaultSettings("PT", "EUR", false)
+        break;      
+      case 'mybank':
+        defaultSettings("IT", "EUR", false)
+        break;        
+      case 'oxxo':
+        defaultSettings("MX", "MXN", true)
         break;
       case 'p24':
         defaultSettings("PL", "EUR", false)
-        break;
-      case 'alipay':
-        defaultSettings("CN", "EUR", false)
-        break;
-      case 'wechatpay':
-        defaultSettings("CN", "EUR", false)
-        break;
-      case 'verkkopankki':
-        defaultSettings("FI", "EUR", false)
-        break;
-      case 'blik':
-        defaultSettings("PL", "PLN", false)
-        break;
+        break;        
       case 'payu':
         defaultSettings("CZ", "CZK", false)
         break;
       case 'poli':
         defaultSettings("PL", "PLN", false)
+        break;    
+      case 'safetypay':
+        defaultSettings("NL", "EUR", false)
+        break;    
+      case 'satispay':
+        defaultSettings("IT", "EUR", false)
+        break;                      
+      case 'sofort':
+        defaultSettings("NL", "EUR", false)
         break;
       case 'trustly':
         defaultSettings("FI", "EUR", false)
+        break;        
+      case 'verkkopankki':
+        defaultSettings("FI", "EUR", false)
+        break;
+      case 'wechatpay':
+        defaultSettings("CN", "EUR", false)
         break;
       default:
         defaultSettings("", "", false)

@@ -92,6 +92,8 @@
             <option value="p24">p24</option>
             <option value="payu">payu</option>
             <option value="poli">poli</option>
+            <option value="safetypay">safetypay</option>
+            <option value="satispay">satispay</option>
             <option value="sofort">sofort</option>
             <option value="trustly">trustly</option>
             <option value="trustpay">trustpay</option>
