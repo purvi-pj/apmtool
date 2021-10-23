@@ -9,6 +9,7 @@ let ppOrder = function() {
 		ENVIRONMENT: String,
 		CLIENT_TYPE: String,
 		CLIENT_ID: String,
+		ACCESS_TOKEN: String,
 		ORDER_ID: String,
 		PAYMENT_SCHEME: String,
 		STATUS: String,
