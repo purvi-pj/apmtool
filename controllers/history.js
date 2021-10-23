@@ -95,10 +95,11 @@ function convertRecordForDisplay (record) {
 }
 
 function maskValue (value) {
-	if (value && value.length > 4) {
-		const last4 = value.substring(value.length -4);
+	if (value && value.length > 8) {
+		const first4 = value.substring(0,4);
+		const last4 = value.substring(value.length - 4);
 
-		return util.format('%s%s', value.substring(0, value.length - 4).replace(/[a-zA-Z0-9]/g, "*"), last4);
+		return util.format('%s%s%s', first4, value.substring(4, value.length - 4).replace(/[a-zA-Z0-9]/g, "*"), last4);
 	} else {
 		return 'N/A';
 	}
