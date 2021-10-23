@@ -162,37 +162,41 @@ function handlePaymentCaptureCompleted(req) {
           };
           record.WEBHOOK.push(webhookEvent)
           record.save();
-          ordersUtils.createAccessToken({ environment: record.ENVIRONMENT, clientType: record.CLIENT_TYPE })
-            .then((accessTokenResult) => {
-              const args = {
-                accessToken: accessTokenResult['access_token'],
-                orderId: record.ORDER_ID,
-                environment: record.ENVIRONMENT
-              };
-              ordersUtils.getOrder(args)
-                .then((result) => {
-                  if (result.statusCode === 200) {
-                    record.STATUS = result.status;
-                    record.save();
-                    if (result.response.processing_instruction !== "ORDER_COMPLETE_ON_PAYMENT_APPROVAL") {
-                      ordersUtils.captureOrder(args)
-                        .then((captureOrderResult) => {
-                          if (captureOrderResult.statusCode < 400) {
-                            // Response status code of capture order is successful
-                            resolve({ status: 200, content: 'OK' });
-                          } else {
-                            reject({ status: 500, content: 'NOK' });
-                          }
-                        });
-                    }
-                  } else {
-                    reject({ status: 500, content: 'NOK' });
-                  }
-                });
-            }).catch((err) => {
-              console.log(err);
-              reject({ status: 500, content: 'NOK' });
-            });
+
+          // If webhook indicates that payment capture has already been completed, why are we trying to capture it again?
+
+          // ordersUtils.createAccessToken({ environment: record.ENVIRONMENT, clientType: record.CLIENT_TYPE })
+          //   .then((accessTokenResult) => {
+          //     const args = {
+          //       accessToken: accessTokenResult['access_token'],
+          //       orderId: record.ORDER_ID,
+          //       environment: record.ENVIRONMENT
+          //     };
+          //     ordersUtils.getOrder(args)
+          //       .then((result) => {
+          //         if (result.statusCode === 200) {
+          //           record.STATUS = result.status;
+          //           record.save();
+          //           if (result.response.processing_instruction !== "ORDER_COMPLETE_ON_PAYMENT_APPROVAL") {
+          //             ordersUtils.captureOrder(args)
+          //               .then((captureOrderResult) => {
+          //                 if (captureOrderResult.statusCode < 400) {
+          //                   // Response status code of capture order is successful
+          //                   resolve({ status: 200, content: 'OK' });
+          //                 } else {
+          //                   reject({ status: 500, content: 'NOK' });
+          //                 }
+          //               });
+          //           }
+          //         } else {
+          //           reject({ status: 500, content: 'NOK' });
+          //         }
+          //       });
+          //   }).catch((err) => {
+          //     console.log(err);
+          //     reject({ status: 500, content: 'NOK' });
+          //   });
+
           resolve({ status: 200, content: 'OK' });
         } else {
           console.log('INCOMING WEBHOOK ORDER NOT FOUND...');
@@ -221,58 +225,68 @@ function handleCheckoutOrderApprovedWebhook(req) {
 
           record.WEBHOOK.push(webhookEvent)
 
-          record.save();
+          // record.save();
 
           // Call GET Order to confirm status, and then capture
 
-          ordersUtils.createAccessToken({ environment: record.ENVIRONMENT, clientType: record.CLIENT_TYPE })
+          // ordersUtils.createAccessToken({ environment: record.ENVIRONMENT, clientType: record.CLIENT_TYPE })
 
-            .then((accessTokenResult) => {
+          //   .then((accessTokenResult) => {
 
-              const args = {
-                accessToken: accessTokenResult['access_token'],
-                orderId: record.ORDER_ID,
-                environment: record.ENVIRONMENT
-              };
+          const args = {
+            accessToken: record.ACCESS_TOKEN,
+            orderId: record.ORDER_ID,
+            environment: record.ENVIRONMENT
+          };
 
-              ordersUtils.getOrder(args)
+          ordersUtils.getOrder(args)
 
-                .then((result) => {
+            .then((result) => {
 
-                  if (result.statusCode === 200) {
-                    if (result.response.processing_instruction !== "ORDER_COMPLETE_ON_PAYMENT_APPROVAL") {
-                      record.STATUS = result.status;
-                    } else {
-                    record.STATUS = lodash.get(result,'response.purchase_units[0].payments.captures[0].status',"")
-                    }
-                    record.save();
-                    if (result.response.processing_instruction !== "ORDER_COMPLETE_ON_PAYMENT_APPROVAL") {
-                      ordersUtils.captureOrder(args)
+              if (result.statusCode === 200) {
+                record.STATUS = result.status;
+                // TODO: CHECK if non-instant capture status is correct
+                // if (result.response.processing_instruction !== "ORDER_COMPLETE_ON_PAYMENT_APPROVAL") {
+                //   record.STATUS = result.status;
+                // } else {
+                //   record.STATUS = lodash.get(result,'response.purchase_units[0].payments.captures[0].status',"")
+                // }
 
-                        .then((captureOrderResult) => {
+                record.save();
 
-                          if (captureOrderResult.statusCode < 400) {
-                            // Response status code of capture order is successful
-                            resolve({ status: 200, content: 'OK' });
-                          } else {
-                            reject({ status: 500, content: 'NOK' });
-                          }
+                console.log(util.format('HANDLE_CHECKOUT_ORDER_APPROVED_WEBHOOK GET_ORDER RESULT = %s', JSON.stringify(result, null, 2)));
 
-                        });
-                    }
-                  } else {
-                    reject({ status: 500, content: 'NOK' });
-                  }
+                // Only capture if order is not already completed
+                if (result.status === 'APPROVED' && result.response.processing_instruction !== "ORDER_COMPLETE_ON_PAYMENT_APPROVAL") {
+                  ordersUtils.captureOrder(args)
 
-                });
+                    .then((captureOrderResult) => {
 
-            }).catch((err) => {
+                      if (captureOrderResult.statusCode < 400) {
+                        // Response status code of capture order is successful
+                        resolve({ status: 200, content: 'OK' });
+                      } else {
+                        reject({ status: 500, content: 'NOK' });
+                      }
 
-              console.log(err);
-
-              reject({ status: 500, content: 'NOK' });
+                    });
+                // If order is already completed, response with OK
+                } else {
+                  resolve({ status: 200, content: 'OK' });
+                }
+              } else {
+                reject({ status: 500, content: 'NOK' });
+              }
 
             });
+
+            // }).catch((err) => {
+
+            //   console.log(err);
+
+            //   reject({ status: 500, content: 'NOK' });
+
+            // });
 
           // resolve({ status: 200, content: 'OK' });
 
