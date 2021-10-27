@@ -7,7 +7,7 @@ const dbUtils 		= require('../lib/db'),
 
 function loadRecent(req, res, next) {
 
-	dbUtils.getRecentOrders({ limit: 10 })
+	dbUtils.getRecentOrders({ limit: 15 })
 
 	.then((records) => {
 
