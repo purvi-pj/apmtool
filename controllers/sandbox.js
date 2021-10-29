@@ -7,7 +7,7 @@ const util 			= require('util'),
 
 function createUser(req, res, next) {
 
-	dbUtils.createUser({ username: 'eric', password: `paypal123`} )
+	dbUtils.createUser({ username: 'admin', password: `paypal123`} )
 
 	.then((result) => {
 	
