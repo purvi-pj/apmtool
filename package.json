@@ -37,6 +37,7 @@
     "mocha": "^9.1.3",
     "mongodb-memory-server": "^7.5.1",
     "nock": "^13.1.4",
-    "nyc": "^15.1.0"
+    "nyc": "^15.1.0",
+    "supertest": "^6.1.6"
   }
 }
