@@ -29,7 +29,7 @@ function ppWebhook(req, res, next) {
           res.status(resp.status).send(resp.content);
         }).catch((err) => {
           console.log(err);
-          res.status(500).send('NOK');
+          res.status(err.status).send(err.content);
         });
       break;
     case 'CHECKOUT.ORDER.APPROVED':
@@ -46,7 +46,7 @@ function ppWebhook(req, res, next) {
           res.status(resp.status).send(resp.content);
         }).catch((err) => {
           console.log(err);
-          res.status(500).send('NOK');
+          res.status(err.status).send(err.content);
         });
       break;
     case 'PAYMENT.CAPTURE.COMPLETED':
@@ -55,7 +55,7 @@ function ppWebhook(req, res, next) {
           res.status(resp.status).send(resp.content);
         }).catch((err) => {
           console.log(err);
-          res.status(500).send('NOK');
+          res.status(err.status).send(err.content);
         });
       break;
     default:
