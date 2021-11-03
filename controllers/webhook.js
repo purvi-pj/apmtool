@@ -23,43 +23,42 @@ function ppWebhook(req, res, next) {
 
    console.log(util.format('INCOMING PAYPAL `%s` WEBHOOK FOR `%s`...', WEBHOOK_EVENT_TYPE, getOrderDetailsFromWebHook(req.body)));
 
-   switch (WEBHOOK_EVENT_TYPE) {
-
-      case 'PAYMENT.CAPTURE.DENIED':
-         handlePaymentCaptureDenied(req).then((resp) => {
-            res.status(resp.status).send(resp.content);
-         }).catch((err) => {
-            console.log(err);
-            res.status(500).send('NOK');
-         });
-         break;
-
-      case 'CHECKOUT.ORDER.APPROVED':
-         handleCheckoutOrderApprovedWebhook(req).then((resp) => {
-               res.status(resp.status).send(resp.content);
-            }).catch((err) => {
-               res.status(err.status).send(err.content);
-            });
-         break;
-
-      case 'PAYMENT.CAPTURE.PENDING':
-         handlePaymentCapturePending(req).then((resp) => {
-               res.status(resp.status).send(resp.content);
-            }).catch((err) => {
-               console.log(err);
-               res.status(500).send('NOK');
-            });
-         break;
-
-      case 'PAYMENT.CAPTURE.COMPLETED':
-         handlePaymentCaptureCompleted(req).then((resp) => {
-               res.status(resp.status).send(resp.content);
-            }).catch((err) => {
-               console.log(err);
-               res.status(500).send('NOK');
-            });
-         break;
-
+  switch (WEBHOOK_EVENT_TYPE) {
+    case 'PAYMENT.CAPTURE.DENIED':
+      handlePaymentCaptureDenied(req)
+        .then((resp) => {
+          res.status(resp.status).send(resp.content);
+        }).catch((err) => {
+          console.log(err);
+          res.status(err.status).send(err.content);
+        });
+      break;
+    case 'CHECKOUT.ORDER.APPROVED':
+      handleCheckoutOrderApprovedWebhook(req)
+        .then((resp) => {
+          res.status(resp.status).send(resp.content);
+        }).catch((err) => {
+          res.status(err.status).send(err.content);
+        });
+      break;
+    case 'PAYMENT.CAPTURE.PENDING':
+      handlePaymentCapturePending(req)
+        .then((resp) => {
+          res.status(resp.status).send(resp.content);
+        }).catch((err) => {
+          console.log(err);
+          res.status(err.status).send(err.content);
+        });
+      break;
+    case 'PAYMENT.CAPTURE.COMPLETED':
+      handlePaymentCaptureCompleted(req)
+        .then((resp) => {
+          res.status(resp.status).send(resp.content);
+        }).catch((err) => {
+          console.log(err);
+          res.status(err.status).send(err.content);
+        });
+      break;
     default:
       break;
   };
