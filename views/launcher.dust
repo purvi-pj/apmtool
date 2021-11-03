@@ -64,6 +64,18 @@
 
       <div class="form-group">
         <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="isDefaultClientCredentials" id="isDefaultClient" value="DEFAULT_CLIENT"
+            checked>
+          <label class="form-check-label" for="isDefaultClient">DEFAULT_CLIENT_CREDENTIALS</label>
+        </div>
+        <div class="form-check form-check-inline" id="isNotDefaultClientGrp">
+          <input class="form-check-input" type="radio" name="isDefaultClientCredentials" id="isNotDefaultClient" value="CUSTOM_CLIENT">
+          <label class="form-check-label" for="isNotDefaultClient">CUSTOM_CLIENT_CREDENTIALS</label>
+        </div>
+      </div>      
+
+      <div class="form-group">
+        <div class="form-check form-check-inline">
           <input class="form-check-input" type="radio" name="approvalLinkBehavior" id="approvalLinkPopUp" value="POPUP"
             checked>
           <label class="form-check-label" for="approvalLinkPopUp">POP UP</label>
@@ -74,6 +86,17 @@
           <label class="form-check-label" for="approvalLinkFullPage">FULL PAGE REDIRECT</label>
         </div>
       </div>
+
+      <div id="client_credential_fields" class="form-row d-none">
+        <div id="custom_client_id" class="form-group col-md-6">
+          <label for="customClientId">PayPal Client ID</label>
+          <input type="text" name="customClientId" class="form-control" value="">
+        </div>
+        <div id="custom_client_secret" class="form-group col-md-6">
+          <label for="customClientSecret">PayPal Client Secret</label>
+          <input type="text" name="customClientSecret" class="form-control" value="">
+        </div>
+      </div>      
 
       <div class="form-row">
         <div class="form-group col-md-4">
@@ -134,6 +157,7 @@
           <input type="text" name="email" class="form-control" value="test@test.com">
         </div>
       </div>
+
       <div id="boleto_fields" class="form-group">
         <br/>
         <h4>Tax Details:</h4>

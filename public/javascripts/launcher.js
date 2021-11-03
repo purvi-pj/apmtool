@@ -4,6 +4,15 @@ $(function () {
     return ['oxxo', 'multibanco', 'boletobancario'].some(val => val === apm);
   }
 
+  $("input[name='isDefaultClientCredentials']").change(function() {
+
+    $("input[name='customClientId']").val("");
+    $("input[name='customClientSecret']").val("");
+
+    $("#client_credential_fields").toggleClass("d-none");
+    
+  });
+
   $("#paymentscheme").change(function () {
     $("#bic_optional").addClass("d-none");
 
@@ -25,18 +34,21 @@ $(function () {
     function defaultSettings(country, currency, showExpiryField) {
       $("#createOrderForm").find("input[name='countrycode']").val(country);
       $("#createOrderForm").find("input[name='currency']").val(currency);
+
       if (showExpiryField) {
         $("#expires_optional").removeClass("d-none");
       } else {
         $("#expires_optional").addClass("d-none");
       }
     }
+
     if (isNonInstantApm(apmTag)) {
       $("#pollingClientGrp").hide();
       $("#webhookClient").prop("checked", true);
     } else {
       $("#pollingClientGrp").show();
     }
+
     $('#boleto_fields').addClass('d-none');
     switch (apmTag) {
       case 'alipay':
@@ -123,8 +135,6 @@ $(function () {
     $(fieldId).removeClass("d-none");
   });
 
-  
-
   // Attach handler to button click event
   $("#submitBtn").click(function (event) {
 
@@ -135,6 +145,8 @@ $(function () {
     var $form = $("#createOrderForm"),
       clientType = $form.find("input[name='clientType']:checked").val(),
       environment = $form.find("input[name='environment']:checked").val(),
+      customClientId = $form.find("input[name='customClientId']").val(),
+      customClientSecret = $form.find("input[name='customClientSecret']").val(),
       approvalLinkBehavior = $form.find("input[name='approvalLinkBehavior']:checked").val(),
       paymentscheme = $form.find("select[name='paymentscheme']").val(),
       amount = $form.find("input[name='amount']").val(),
@@ -167,7 +179,7 @@ $(function () {
       orderId = '';
 
     // Initiate create order
-    var createOrderRequest = $.post(url, { environment, clientType, paymentscheme, amount, currency, countrycode, name, email, phonenumber, shippingpreference, expiresInDays });
+    var createOrderRequest = $.post(url, { environment, clientType, customClientId, customClientSecret, paymentscheme, amount, currency, countrycode, name, email, phonenumber, shippingpreference, expiresInDays });
 
     // On create order completion, update progress on parent page
     createOrderRequest.done(function (data) {
@@ -184,7 +196,7 @@ $(function () {
 
         // Call Confirm Payment Source API upon successful Create Order API
         var confirmPaymentSource = $.post(confirmPaymentSourceUrl, {
-          environment, clientType, orderId, paymentscheme, amount, currency,
+          environment, clientType, customClientId, customClientSecret, orderId, paymentscheme, amount, currency,
           countrycode, name, email, phonenumber, bic, approvalLinkBehavior, expiresInDays,
           taxid,taxid_type, address_line_1,address_line_2,admin_area_1,admin_area_2,postal_code,
         });
@@ -252,7 +264,7 @@ $(function () {
           $("#txnprogress").css('width', '100%').removeClass('progress-bar-animated').addClass('bg-success').attr('aria-valuenow', 100);
 
           $("#modalFooter").removeClass('d-none');
-          $.post(getOrderUrl, { environment, orderId, clientType, paymentscheme });
+          $.post(getOrderUrl, { environment, orderId, customClientId, customClientSecret, clientType, paymentscheme });
 
           // getOrderRequest.done(function (result) {
           //   debugger;
@@ -398,7 +410,7 @@ $(function () {
         orderFailure(orderId);
       } else {
 
-        var getOrderRequest = $.post(getOrderUrl, { environment, orderId, clientType });
+        var getOrderRequest = $.post(getOrderUrl, { environment, customClientId, customClientSecret, orderId, clientType });
 
         getOrderRequest.done(function (data) {
 
@@ -433,7 +445,7 @@ $(function () {
 
     // Call capture order API
     function captureOrder(orderId) {
-      var captureOrderRequest = $.post(captureOrderUrl, { environment, orderId, clientType });
+      var captureOrderRequest = $.post(captureOrderUrl, { environment, orderId, clientType, customClientId, customClientSecret });
 
       captureOrderRequest.done(function (data) {
         if (data.statusCode < 400) {
