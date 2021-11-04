@@ -34,7 +34,7 @@ const launcherController 	= require('../controllers/launcher'),
 	router.get('/fullPageCancel', launcherController.handleFullPageCancel);	
 
 	// Mock payment scheme approval page (use for mocked APIs case)
-	router.get('/mockPaymentSchemeApproval', launcherController.mockApproval);
+	// router.get('/mockPaymentSchemeApproval', launcherController.mockApproval);
 
 	// Transaction history
 	router.get('/history', ensureLoggedIn('/login'), historyController.loadRecent);
@@ -51,6 +51,6 @@ const launcherController 	= require('../controllers/launcher'),
 
 	// Webhooks
 	router.post('/ppwebhook', webhookController.ppWebhook);
-	router.get('/mockWebhook', sandboxController.mockWebhook);
+	// router.get('/mockWebhook', sandboxController.mockWebhook);
 
 module.exports = router;
