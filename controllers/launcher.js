@@ -255,15 +255,15 @@ function captureOrder(req, res, next) {
 
 }
 
-function mockApproval(req, res, next) {
+// function mockApproval(req, res, next) {
 
-	const model = {
-		returnUrl: util.format('%s?token=%s', process.env.RETURN_URL, req.query.token),
-		cancelUrl: util.format('%s?token=%s', process.env.CANCEL_URL, req.query.token)
-	};
+// 	const model = {
+// 		returnUrl: util.format('%s?token=%s', process.env.RETURN_URL, req.query.token),
+// 		cancelUrl: util.format('%s?token=%s', process.env.CANCEL_URL, req.query.token)
+// 	};
 
-	res.render('mockPaymentSchemeApproval', model);
-}
+// 	res.render('mockPaymentSchemeApproval', model);
+// }
 
 function handleReturn(req, res, next) {
 
@@ -425,7 +425,7 @@ module.exports = {
 	getOrderInternalStatus,
 	confirmPaymentSource,
 	captureOrder,
-	mockApproval,
+	// mockApproval,
 	handleReturn,
 	handleCancel,
 	handleFullPageReturn,
