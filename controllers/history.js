@@ -7,7 +7,7 @@ const dbUtils 		= require('../lib/db'),
 
 function loadRecent(req, res, next) {
 
-	dbUtils.getRecentOrders({ limit: 10 })
+	dbUtils.getRecentOrders({ limit: 15 })
 
 	.then((records) => {
 
@@ -80,8 +80,11 @@ function convertRecordForDisplay (record) {
 	record.SUMMARYJSON = JSON.stringify(summary, null, 2);
 	record.CREATE_ORDER_API.REQUESTJSON = JSON.stringify(record.CREATE_ORDER_API.REQUEST, null, 2);
 	record.CREATE_ORDER_API.RESPONSEJSON = JSON.stringify(record.CREATE_ORDER_API.RESPONSE, null, 2);
-	record.CONFIRM_PAYMENT_SOURCE_API.REQUESTJSON = JSON.stringify(record.CONFIRM_PAYMENT_SOURCE_API.REQUEST, null, 2);
-	record.CONFIRM_PAYMENT_SOURCE_API.RESPONSEJSON = JSON.stringify(record.CONFIRM_PAYMENT_SOURCE_API.RESPONSE, null, 2);	
+	if (record.CONFIRM_PAYMENT_SOURCE_API) {
+		record.CONFIRM_PAYMENT_SOURCE_API.REQUESTJSON = JSON.stringify(record.CONFIRM_PAYMENT_SOURCE_API.REQUEST, null, 2);
+		record.CONFIRM_PAYMENT_SOURCE_API.RESPONSEJSON = JSON.stringify(record.CONFIRM_PAYMENT_SOURCE_API.RESPONSE, null, 2);	
+	}
+	
 	// record.GET_ORDER_API.REQUESTJSON = JSON.stringify(record.GET_ORDER_API.REQUEST, null, 2);
 	record.GET_ORDER_API.RESPONSEJSON = JSON.stringify(record.GET_ORDER_API.RESPONSE, null, 2);			
 	record.CAPTURE_ORDER_API.REQUESTJSON = JSON.stringify(record.CAPTURE_ORDER_API.REQUEST, null, 2);
@@ -92,10 +95,11 @@ function convertRecordForDisplay (record) {
 }
 
 function maskValue (value) {
-	if (value && value.length > 4) {
-		const last4 = value.substring(value.length -4);
+	if (value && value.length > 8) {
+		const first4 = value.substring(0,4);
+		const last4 = value.substring(value.length - 4);
 
-		return util.format('%s%s', value.substring(0, value.length - 4).replace(/[a-zA-Z0-9]/g, "*"), last4);
+		return util.format('%s%s%s', first4, value.substring(4, value.length - 4).replace(/[a-zA-Z0-9]/g, "*"), last4);
 	} else {
 		return 'N/A';
 	}

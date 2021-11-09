@@ -51,10 +51,17 @@ function createOrder(req, res, next) {
 		args.bic = req.body.bic;
 	}
 
+	if (req.body.customClientId) {
+		args.customClientId = req.body.customClientId;
+		args.customClientSecret = req.body.customClientSecret;
+	}
+
   ordersUtils.createAccessToken({
     environment: req.body.environment,
     clientType: req.body.clientType,
-    scheme: args.scheme
+    scheme: args.scheme,
+    customClientId: req.body.customClientId,
+    customClientSecret: req.body.customClientSecret
   })
 
 	.then((accessTokenResult) => {
@@ -82,8 +89,11 @@ function getOrder(req, res, next) {
 	};
 
   ordersUtils.createAccessToken({
-    environment: req.body.environment, clientType: req.body.clientType,
-    scheme: req.body.paymentscheme
+    environment: req.body.environment, 
+    clientType: req.body.clientType,
+    scheme: req.body.paymentscheme,
+    customClientId: req.body.customClientId,
+    customClientSecret: req.body.customClientSecret
   })
 
 	.then((accessTokenResult) => {
@@ -199,7 +209,9 @@ function confirmPaymentSource(req, res, next) {
   ordersUtils.createAccessToken({
     environment: req.body.environment,
     clientType: req.body.clientType,
-    scheme: req.body.paymentscheme
+    scheme: req.body.paymentscheme,
+    customClientId: req.body.customClientId,
+    customClientSecret: req.body.customClientSecret
   })
 
 	.then((accessTokenResult) => {
@@ -221,7 +233,12 @@ function captureOrder(req, res, next) {
 		orderId: req.body.orderId
 	};
 
-	ordersUtils.createAccessToken({ environment: req.body.environment, clientType: req.body.clientType })
+	ordersUtils.createAccessToken({ 
+		environment: req.body.environment, 
+		clientType: req.body.clientType,
+    	customClientId: req.body.customClientId,
+    	customClientSecret: req.body.customClientSecret 
+	})
 
 	.then((accessTokenResult) => {
 
@@ -238,15 +255,15 @@ function captureOrder(req, res, next) {
 
 }
 
-function mockApproval(req, res, next) {
+// function mockApproval(req, res, next) {
 
-	const model = {
-		returnUrl: util.format('%s?token=%s', process.env.RETURN_URL, req.query.token),
-		cancelUrl: util.format('%s?token=%s', process.env.CANCEL_URL, req.query.token)
-	};
+// 	const model = {
+// 		returnUrl: util.format('%s?token=%s', process.env.RETURN_URL, req.query.token),
+// 		cancelUrl: util.format('%s?token=%s', process.env.CANCEL_URL, req.query.token)
+// 	};
 
-	res.render('mockPaymentSchemeApproval', model);
-}
+// 	res.render('mockPaymentSchemeApproval', model);
+// }
 
 function handleReturn(req, res, next) {
 
@@ -408,7 +425,7 @@ module.exports = {
 	getOrderInternalStatus,
 	confirmPaymentSource,
 	captureOrder,
-	mockApproval,
+	// mockApproval,
 	handleReturn,
 	handleCancel,
 	handleFullPageReturn,
