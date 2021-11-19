@@ -98,6 +98,17 @@
          "country_code": ""
       }
    },
+   "pay_upon_invoice": {
+      "required": ["birth_date","name","email","phone","billing_address","experience_context"],
+      "schema": {
+         "birth_date": "",
+         "name": {},
+         "email": "",
+         "phone": {},
+         "billing_address": {},
+         "experience_context": {}
+      }
+   },
    "safetypay": {
       "required": ["name","country_code"],
       "schema": {

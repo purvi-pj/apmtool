@@ -86,9 +86,13 @@ function convertRecordForDisplay (record) {
 	}
 	
 	// record.GET_ORDER_API.REQUESTJSON = JSON.stringify(record.GET_ORDER_API.REQUEST, null, 2);
-	record.GET_ORDER_API.RESPONSEJSON = JSON.stringify(record.GET_ORDER_API.RESPONSE, null, 2);			
-	record.CAPTURE_ORDER_API.REQUESTJSON = JSON.stringify(record.CAPTURE_ORDER_API.REQUEST, null, 2);
-	record.CAPTURE_ORDER_API.RESPONSEJSON = JSON.stringify(record.CAPTURE_ORDER_API.RESPONSE, null, 2);	
+	if (record.GET_ORDER_API) { 
+		record.GET_ORDER_API.RESPONSEJSON = JSON.stringify(record.GET_ORDER_API.RESPONSE, null, 2);			
+	}
+	if (record.CAPTURE_ORDER_API) { 
+		record.CAPTURE_ORDER_API.REQUESTJSON = JSON.stringify(record.CAPTURE_ORDER_API.REQUEST, null, 2);
+		record.CAPTURE_ORDER_API.RESPONSEJSON = JSON.stringify(record.CAPTURE_ORDER_API.RESPONSE, null, 2);	
+	}
 	record.WEBHOOKJSON = JSON.stringify(record.WEBHOOK, null, 2);
 
 	return record;	

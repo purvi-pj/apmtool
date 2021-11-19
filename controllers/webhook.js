@@ -60,6 +60,15 @@ function ppWebhook(req, res, next) {
          });
          break;
 
+      case 'CHECKOUT.ORDER.COMPLETED':
+         handleCheckoutOrderCompletedWebhook(req).then((resp) => {
+            res.status(resp.status).send(resp.content);
+         }).catch((err) => {
+            console.log(err);
+            res.status(err.status).send(err.content);
+         });
+         break;
+
       default:
          break;
       };
@@ -322,6 +331,53 @@ function handleCheckoutOrderApprovedWebhook(req) {
                   reject({ status: 500, content: 'NOK' });
                }
             });
+         } else {
+            console.log('INCOMING WEBHOOK ORDER NOT FOUND...');
+            reject({ status: 404, content: 'NOK' });
+         }
+      }).catch((err) => {
+         console.log('ERROR ON INCOMING WEBHOOK...');
+         reject({ status: 500, content: 'NOK' });
+      });
+   });
+}
+
+// Handle CHECKOUT.ORDER.COMPLETED webhook
+// Add webhook to order details
+// Get latest status of order capture (COMPLETED) from GET Order API and save to record
+function handleCheckoutOrderCompletedWebhook(req) {
+   return new Promise((resolve, reject) => {
+
+      // Retrieve order details from DB
+      dbUtils.getOrderByOrderId({ orderId: req.body.resource.id }).then((record) => {
+
+         // If order record exists      
+         if (record) {
+
+            // Persist webhook to order record
+            const webhookEvent = {
+               RECEIVED_DATE: moment().format(),
+               BODY: req.body
+            };
+            record.WEBHOOK.push(webhookEvent)
+
+            // Set arguments for GET order call
+            const args = {
+               accessToken: record.ACCESS_TOKEN,
+               orderId: record.ORDER_ID,
+               environment: record.ENVIRONMENT
+            };
+
+            ordersUtils.getOrder(args).then((result) => {
+               if (result.statusCode === 200) {
+                  record.STATUS = result.body.status
+                  record.save();
+                  resolve({ status: 200, content: 'OK' });
+               } else {
+                  record.save();
+                  reject({ status: 500, content: 'NOK' });
+               }
+            });            
          } else {
             console.log('INCOMING WEBHOOK ORDER NOT FOUND...');
             reject({ status: 404, content: 'NOK' });

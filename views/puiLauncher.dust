@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PUI - Unbranded APM Launcher</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+<body>
+  <div class="modal fade" id="processingModal" data-backdrop="static" tabindex="-1" role="dialog"
+    aria-labelledby="processingModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="processingModalLabel">Processing Order...</h5>
+        </div>
+        <div class="modal-body">
+          Please follow the instructions on the pop up with your selected payment provider...
+          <hr />
+          <div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" id="txnprogress"
+              aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+          </div>
+          <hr />
+          <div id="progressUpdate">
+          </div>
+        </div>
+        <div id="modalFooter" class="modal-footer d-none">
+          <a id="startOverLink" class="btn btn-primary" href="/" role="button">Start Over</a>
+          <a class="btn btn-primary mx-2" href="/history" target="_blank" role="buton">See Details</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="ordersLauncherContent" class="container">
+    <form id="createOrderForm" action="create" method="POST">
+
+      <div class="form-group">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="environment" id="sandboxenv" value="SANDBOX" checked>
+          <label class="form-check-label" for="sandboxenv">SANDBOX</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="environment" id="liveenv" value="LIVE">
+          <label class="form-check-label" for="liveenv">LIVE</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="clientType" id="webhookClient" value="WEBHOOK_CLIENT"
+            checked>
+          <label class="form-check-label" for="webhookClient">WEBHOOK_CLIENT</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="isDefaultClientCredentials" id="isDefaultClient" value="DEFAULT_CLIENT"
+            checked>
+          <label class="form-check-label" for="isDefaultClient">DEFAULT_CLIENT_CREDENTIALS</label>
+        </div>
+        <div class="form-check form-check-inline" id="isNotDefaultClientGrp">
+          <input class="form-check-input" type="radio" name="isDefaultClientCredentials" id="isNotDefaultClient" value="CUSTOM_CLIENT">
+          <label class="form-check-label" for="isNotDefaultClient">CUSTOM_CLIENT_CREDENTIALS</label>
+        </div>
+      </div>      
+
+      <div id="client_credential_fields" class="form-row d-none">
+        <div id="custom_client_id" class="form-group col-md-6">
+          <label for="customClientId">PayPal Client ID</label>
+          <input type="text" name="customClientId" class="form-control" value="">
+        </div>
+        <div id="custom_client_secret" class="form-group col-md-6">
+          <label for="customClientSecret">PayPal Client Secret</label>
+          <input type="text" name="customClientSecret" class="form-control" value="">
+        </div>
+      </div>      
+
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="paymentscheme">Payment Scheme</label>
+          <select class="form-control" id="paymentscheme" name="paymentscheme" value="pui" disabled >
+            <option value="pay_upon_invoice">pay_upon_invoice</option>
+          </select>
+        </div>
+        <div class="form-group col-md-3">
+          <label for="amount">Amount</label>
+          <input type="text" name="amount" class="form-control" value="10.00">
+        </div>
+        <div class="form-group col-md-3">
+          <label for="currency">Currency</label>
+          <input type="text" name="currency" class="form-control" value="EUR">
+        </div>
+        <div class="form-group col-md-2">
+          <label for="countrycode">Country Code</label>
+          <input type="text" name="countrycode" class="form-control" value="DE">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div>
+          <br/>
+          <h4>Buyer Info:</h4>
+          <div class="form-group">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="emailType" id="emailType" value="customEmail" checked>
+              <label class="form-check-label" for="emailType">Custom Email</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="emailType" id="emailType" value="defaultEmail">
+              <label class="form-check-label" for="emailType">Default Emails</label>
+            </div>
+          </div>
+          <hr />
+          <div class="form-row">
+            <div class="form-group col-md-3">
+              <label for="name">Birth Date</label>
+              <input type="text" name="birthDate" class="form-control" value="1990-01-01">
+            </div>
+            <div class="form-group col-md-3">
+              <label for="name">Name Prefix</label>
+              <input type="text" name="prefix" class="form-control" value="Mr">
+            </div>
+            <div class="form-group col-md-3">
+              <label for="name">First Name</label>
+              <input type="text" name="firstName" class="form-control" value="Heinz">
+            </div>
+            <div class="form-group col-md-3">
+              <label for="name">Last Name</label>
+              <input type="text" name="lastName" class="form-control" value="Steeger">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-3" id="custom_email_type">
+              <label for="email">Email Address</label>
+              <input type="text" name="email" class="form-control" value="test@test.com">
+            </div>
+            <div class="form-group col-md-6 d-none" id="default_email_type">
+              <label for="email">Email Address</label>
+              <select class="form-control" id="email" name="email">
+                <option value="payment_source_info_cannot_be_verified@example.com">payment_source_info_cannot_be_verified@example.com</option>
+                <option value="payment_source_declined_by_processor@example.com">payment_source_declined_by_processor@example.com</option>
+                <option value="payment_source_cannot_be_used@example.com">payment_source_cannot_be_used@example.com</option>
+              </select>
+            </div>
+            
+            <div class="form-group col-md-3">
+              <label for="name">Phone</label>
+              <input type="phone" name="phone" class="form-control" value="17744455553">
+            </div>
+            <div class="form-group col-md-3">
+              <label for="name">Calling Prefix</label>
+              <input type="text" name="phonePrefix" class="form-control" value="49">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div>
+          <br/>
+          <h4>Billing Address:</h4>
+          <hr />
+          
+          <div class="form-row">
+            <div id="address_line_1" class="form-group col-md-6">
+              <label for="address_line_1">Address line 1</label>
+              <input type="text" name="address_line_1" class="form-control" value="84 Schönhauser Allee">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div id="address_city" class="form-group col-md-4">
+              <label for="address_city">Address City</label>
+              <input type="text" name="address_city" class="form-control" value="Berlin">
+            </div>
+            <div id="address_country_code" class="form-group col-md-4">
+              <label for="address_country_code">Country Code</label>
+              <input type="text" name="address_country_code" class="form-control" value="DE">
+            </div>
+            <div id="address_postal_code" class="form-group col-md-4">
+              <label for="address_postal_code">Postal code</label>
+              <input type="text" name="address_postal_code" class="form-control" value="10439">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div>
+          <br/>
+          <h4>Experience Context:</h4>
+          <hr />
+          
+          <div class="form-row">
+            <div id="brand_name" class="form-group col-md-3">
+              <label for="brand_name">Brand Name</label>
+              <input type="text" name="brand_name" class="form-control" value="Buy All The Things">
+            </div>
+            <div id="merchant_language" class="form-group col-md-3">
+              <label for="merchant_language">Merchant Language</label>
+              <input type="text" name="merchant_language" class="form-control" value="de">
+            </div>
+            <div id="merchant_country_code" class="form-group col-md-3">
+              <label for="merchant_country_code">Merchant Country Code</label>
+              <input type="text" name="merchant_country_code" class="form-control" value="DE">
+            </div>
+            <div id="shipping_preference" class="form-group col-md-3">
+              <label for="shipping_preference">Shipping Preference</label>
+              <input type="text" name="shipping_preference" class="form-control" value="GET_FROM_FILE">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div id="logo_url" class="form-group col-md-6">
+              <label for="logo_url">Logo URL</label>
+              <input type="text" name="logo_url" class="form-control" value="https://www.paypalobjects.com/webstatic/mktg/logo-center/PP_Acceptance_Marks_for_LogoCenter_76x48.png">
+            </div>
+            
+            <div id="return_url" class="form-group col-md-3">
+              <label for="return_url">Return URL</label>
+              <input type="text" name="return_url" class="form-control" value="https://bron.com">
+            </div>
+            <div id="cancel_url" class="form-group col-md-3">
+              <label for="cancel_url">Cancel URL</label>
+              <input type="text" name="cancel_url" class="form-control" value="https://bron.com">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div id="customer_service_instruction1" class="form-group col-md-3">
+              <label for="customer_service_instruction1">Customer Service Instruction 1</label>
+              <input type="text" name="customer_service_instruction1" class="form-control" value="Rosenweg 20">
+            </div>
+            <div id="customer_service_instruction2" class="form-group col-md-3">
+              <label for="customer_service_instruction2">Customer Service Instruction 2</label>
+              <input type="text" name="customer_service_instruction2" class="form-control" value="12345 Berlin">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <button type="button" id="submitBtn" class="btn btn-primary" data-toggle="modal" data-target="#processingModal">
+          Submit Order
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+  <script src="/javascripts/puiLauncher.js"></script>
+  <script>
+    var schemesJSON = {schemesJSON|js|s};
+    var prefillJSON = {prefillValue|js|s};
+  </script>
+</body>
+</html>
