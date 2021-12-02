@@ -89,7 +89,7 @@ $(function () {
         defaultSettings("CZ", "CZK", false)
         break;
       case 'poli':
-        defaultSettings("PL", "PLN", false)
+        defaultSettings("AU", "AUD", false)
         break;    
       case 'safetypay':
         defaultSettings("NL", "EUR", false)
@@ -102,7 +102,10 @@ $(function () {
         break;
       case 'trustly':
         defaultSettings("FI", "EUR", false)
-        break;        
+        break;
+      case 'trustpay':
+        defaultSettings("CZ", "CZK", false)
+        break;      
       case 'verkkopankki':
         defaultSettings("FI", "EUR", false)
         break;
@@ -207,6 +210,10 @@ $(function () {
           if (data.statusCode < 400) {
             $("#txnprogress").css('width', '50%').attr('aria-valuenow', 50);
             var approvalurl = data.response.links.find(x => x.rel === 'payer-action').href;
+            if (environment === 'STAGE') {
+              // Port 20915 does not redirect successfully
+              approvalurl = approvalurl.substring(0,30) + approvalurl.substring(36);
+            }
 
             if (isNonInstantApm(paymentscheme)) {
               $("#progressUpdate").append(`<p>[${getTimeString()}] Payment Source confirmed...</p>`);
