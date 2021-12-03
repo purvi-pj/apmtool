@@ -5,6 +5,8 @@ const ordersUtils 		= require('../lib/orders'),
 	  dbUtils 			= require('../lib/db'),
 	  mockUtils 		= require('../lib/mockUtils'),
 	  paymentObjects 	= require('../config/paymentObjects'),
+	  devConfig			= require('../config/development'),
+	  config			= require('../config/config'),
 	  util 				= require('util');
 
 // Render form
@@ -25,7 +27,8 @@ function startOrder(req, res, next) {
 		email: email || 'test@test.com'
 	};
 
-	res.render('launcher', { user: req.user, schemesJSON: paymentObjects, prefillValue });
+	const stageRadio = process.env.NODE_ENV === 'development' ? devConfig.stageRadio : config.stageRadio;
+	res.render('launcher', { user: req.user, schemesJSON: paymentObjects, prefillValue, stageRadio });
 
 }
 

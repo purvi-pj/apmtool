@@ -15,7 +15,7 @@ https://developer.paypal.com/docs/checkout/integration-features/alternative-paym
 ### Development Configurations
 * Local environmental configs should be created at `.env`
 ```
-MONGODB_URI=
+MONGO_ATLAS_URI=
 PP_SANDBOX_CLIENT_ID_PRIMARY=
 PP_SANDBOX_CLIENT_ID_NO_WEBHOOK=
 PP_SANDBOX_CLIENT_SECRET_PRIMARY=
@@ -29,6 +29,7 @@ CANCEL_URL='http://127.0.0.1:3000/cancel'
 PP_MOCK_APPROVAL_URL='http://127.0.0.1:3000/mockPaymentSchemeApproval'
 SESSION_SECRET=
 PP_MOCK_WEBHOOK_URL='http://127.0.0.1:3000/ppwebhook'
+NODE_ENV=
 ```
 
 ### Node module dependencies
