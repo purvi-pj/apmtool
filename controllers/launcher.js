@@ -25,7 +25,8 @@ function startOrder(req, res, next) {
 		email: email || 'test@test.com'
 	};
 
-	res.render('launcher', { user: req.user, schemesJSON: paymentObjects, prefillValue });
+	const stageRadio = process.env.NODE_ENV === 'development';
+	res.render('launcher', { user: req.user, schemesJSON: paymentObjects, prefillValue, stageRadio });
 
 }
 
