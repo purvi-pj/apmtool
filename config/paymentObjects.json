@@ -4,21 +4,24 @@
       "schema": {
          "name": "",
          "country_code": ""
-      }
+      },
+      "autoCapture": false
    },
    "bancontact": {
       "required": ["name","country_code"],
       "schema": {
          "name": "",
          "country_code": ""
-      }
+      },
+      "autoCapture": false
    }, 
    "blik": {
       "required": ["name","country_code"],
       "schema": {
          "name": "",
          "country_code": ""
-      }
+      },
+      "autoCapture": false
    },    
    "boletobancario": {
       "required": ["name","country_code","email","expiry_date"],
@@ -27,14 +30,16 @@
          "country_code": "",
          "expiry_date": "",
          "email": ""
-      }
+      },
+      "autoCapture": true
    },     
    "eps": {
       "required": ["name","country_code"],
       "schema": {
          "name": "",
          "country_code": ""
-      }
+      },
+      "autoCapture": false
    },    
    "giropay": {
       "required": ["name","country_code"],
@@ -42,7 +47,8 @@
       "schema": {
          "name": "",
          "country_code": ""
-      }
+      },
+      "autoCapture": false
    },    
    "ideal": {
       "required": ["name","country_code"],
@@ -50,21 +56,24 @@
       "schema": {
          "name": "",
          "country_code": ""
-      }
+      },
+      "autoCapture": false
    }, 
    "mybank": {
       "required": ["name","country_code"],
       "schema": {    
          "name": "",
          "country_code": ""
-      }
+      },
+      "autoCapture": false
    },
    "multibanco": {
       "required": ["name","country_code"],
       "schema": {
          "name": "",
          "country_code": ""
-      }
+      },
+      "autoCapture": true
    },  
    "oxxo": {
       "required": ["name","country_code","email","expiry_date"],
@@ -73,7 +82,8 @@
          "country_code": "",
          "expiry_date": "",
          "email": ""
-      }
+      },
+      "autoCapture": true
    },   
    "p24": {
       "required": ["name","country_code","email"],
@@ -81,7 +91,8 @@
          "name": "",
          "country_code": "",
          "email": ""
-      }
+      },
+      "autoCapture": false
    },    
    "payu": {
       "required": ["name","country_code","email"],
@@ -89,14 +100,16 @@
          "name": "",
          "country_code": "",
          "email": ""
-      }
+      },
+      "autoCapture": false
    },
    "poli": {
       "required": ["name","country_code"],
       "schema": {
          "name": "",
-         "country_code": ""
-      }
+         "country_code": "" 
+      },
+      "autoCapture": true
    },
    "pay_upon_invoice": {
       "required": ["birth_date","name","email","phone","billing_address","experience_context"],
@@ -114,14 +127,16 @@
       "schema": {
          "name": "",
          "country_code": ""
-      }
+      },
+      "autoCapture": false
    },     
    "satispay": {
       "required": ["name","country_code"],
       "schema": {
          "name": "",
          "country_code": ""
-      }
+      },
+      "autoCapture": false
    },     
    "sofort": {
       "required": ["name","country_code"],
@@ -129,21 +144,24 @@
       "schema": {
          "name": "",
          "country_code": ""
-      }
+      },
+      "autoCapture": false
    },          
    "trustly": {
       "required": ["name","country_code"],
       "schema": {    
          "name": "",
          "country_code": ""
-      }
+      },
+      "autoCapture": false
    },    
    "trustpay": {
       "required": ["name","country_code"],
       "schema": {    
          "name": "",
          "country_code": ""
-      }
+      },
+      "autoCapture": true
    },    
    "verkkopankki": {
       "required": ["name","country_code","email"],
@@ -151,13 +169,15 @@
          "name": "",
          "country_code": "",
          "email": ""
-      }
+      },
+      "autoCapture": false
    },    
    "wechatpay": {
       "required": ["name","country_code"],
       "schema": {
          "name": "",
          "country_code": ""
-      }
+      },
+      "autoCapture": false
    }     
 }

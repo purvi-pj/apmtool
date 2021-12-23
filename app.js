@@ -49,11 +49,16 @@ passport.deserializeUser(function(id, cb) {
 });
 
 var app = express();
+var dustOptions = {
+	helpers: [
+		"dustjs-helpers",
+	]
+};
 
 app.use(require('express-session')({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
 
 // view engine setup
-app.engine('dust', adaro.dust());
+app.engine('dust', adaro.dust(dustOptions));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'dust');
 
