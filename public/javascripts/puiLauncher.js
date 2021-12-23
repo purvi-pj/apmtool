@@ -41,7 +41,7 @@ $(function () {
         prefix = $form.find("input[name='prefix']").val(),
         firstName = $form.find("input[name='firstName']").val(),
         lastName = $form.find("input[name='lastName']").val(),
-        phoneNumber = $form.find("input[name='phone']").val(),
+        phoneNumber = $form.find("input[name='phoneNumber']").val(),
         email = $form.find("input[name='email']").val(),
         phonePrefix = $form.find("input[name='phonePrefix']").val(),
         brandName = $form.find("input[name='brand_name']").val(),
@@ -59,7 +59,7 @@ $(function () {
       // Apply "sticky" selected settings to start over link
       $("#startOverLink").attr("href", `pui?clientType=${clientType}&environment=${environment}&paymentscheme=${paymentscheme}&amount,
         currency=${amount}&countrycode=${countrycode}&address_line_1=${address_line_1}&address_city=${address_city}&address_country_code=${address_country_code}&address_postal_code=${address_postal_code}&
-        birthDate=${birthDate}&prefix=${prefix}&firstName=${firstName}&lastName=${lastName}&phone=${phoneNumber}&email=${email}&phonePrefix=${phonePrefix}&brandName=${brandName}&merchantLanguage=${merchantLanguage}&
+        birthDate=${birthDate}&prefix=${prefix}&firstName=${firstName}&lastName=${lastName}&phoneNumber=${phoneNumber}&email=${email}&phonePrefix=${phonePrefix}&brandName=${brandName}&merchantLanguage=${merchantLanguage}&
         merchantCountryCode=${merchantCountryCode}&shippingPreference=${shippingPreference}&logoUrl=${logoUrl}&returnUrl=${returnUrl}&cancelUrl=${cancelUrl}&customerServiceInstruction1=${customerServiceInstruction1}&
         customerServiceInstruction2=${customerServiceInstruction2}`);
   
@@ -210,7 +210,7 @@ $(function () {
       $("#createOrderForm").find("select[name='prefix']").val([prefillJSON.prefix]);
       $("#createOrderForm").find("input[name='firstName']").val([prefillJSON.firstName]);
       $("#createOrderForm").find("input[name='lastName']").val([prefillJSON.lastName]);
-      $("#createOrderForm").find("input[name='phone']").val([prefillJSON.phone]);
+      $("#createOrderForm").find("input[name='phoneNumber']").val([prefillJSON.phone]);
       $("#createOrderForm").find("input[name='email']").val([prefillJSON.email]);
       $("#createOrderForm").find("input[name='phonePrefix']").val([prefillJSON.phonePrefix]);
       $("#createOrderForm").find("input[name='brandName']").val([prefillJSON.brandName]);
