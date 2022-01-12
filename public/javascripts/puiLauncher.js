@@ -41,7 +41,7 @@ $(function () {
         prefix = $form.find("input[name='prefix']").val(),
         firstName = $form.find("input[name='firstName']").val(),
         lastName = $form.find("input[name='lastName']").val(),
-        phoneNumber = $form.find("input[name='phoneNumber']").val(),
+        phoneNumber = $form.find("input[name='phone']").val(),
         email = $form.find("input[name='email']").val(),
         phonePrefix = $form.find("input[name='phonePrefix']").val(),
         brandName = $form.find("input[name='brand_name']").val(),

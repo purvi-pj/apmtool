@@ -43,7 +43,8 @@ function startOrder(req, res, next) {
         customerServiceInstruction2: customerServiceInstruction2 || '12345 Berlin'
 	};
 
-	res.render('puiLauncher', { user: req.user, schemesJSON: paymentObjects, prefillValue });
+	const stageRadio = process.env.NODE_ENV === 'development';
+	res.render('puiLauncher', { user: req.user, schemesJSON: paymentObjects, prefillValue, stageRadio });
 
 }
 
