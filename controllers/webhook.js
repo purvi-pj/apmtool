@@ -370,7 +370,7 @@ function handleCheckoutOrderCompletedWebhook(req) {
 
             ordersUtils.getOrder(args).then((result) => {
                if (result.statusCode === 200) {
-                  record.STATUS = result.body.status
+                  record.STATUS = result.status;
                   record.save();
                   resolve({ status: 200, content: 'OK' });
                } else {

@@ -59,6 +59,7 @@ describe('lib/orders Unit Tests', function () {
     });
 
     after(async () => {
+        nock.cleanAll();
         await mongoose.disconnect();
         await mongoServer.stop();
     });
