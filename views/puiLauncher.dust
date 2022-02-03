@@ -149,7 +149,7 @@
             </div>
             <div class="form-group col-md-6 d-none" id="default_email_type">
               <label for="email">Email Address</label>
-              <select class="form-control" id="email" name="email">
+              <select class="form-control" id="email" name="default_email">
                 <option value="payment_source_info_cannot_be_verified@example.com">payment_source_info_cannot_be_verified@example.com</option>
                 <option value="payment_source_declined_by_processor@example.com">payment_source_declined_by_processor@example.com</option>
                 <option value="payment_source_cannot_be_used@example.com">payment_source_cannot_be_used@example.com</option>

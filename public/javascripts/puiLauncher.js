@@ -42,7 +42,7 @@ $(function () {
         firstName = $form.find("input[name='firstName']").val(),
         lastName = $form.find("input[name='lastName']").val(),
         phoneNumber = $form.find("input[name='phone']").val(),
-        email = $form.find("input[name='email']").val(),
+        email = $form.find("input[name='emailType']:checked").val() === "customEmail" ? $form.find("input[name='email']").val() : $form.find("select[name='default_email']").val(),
         phonePrefix = $form.find("input[name='phonePrefix']").val(),
         brandName = $form.find("input[name='brand_name']").val(),
         merchantLanguage = $form.find("input[name='merchant_language']").val(),
