@@ -111,6 +111,34 @@
       },
       "autoCapture": true
    },
+   "pay_upon_invoice": {
+      "required": ["birth_date","name","email","phone","billing_address","experience_context"],
+      "schema": {
+         "birth_date": "",
+         "name": {
+            "given_name": "",
+            "surname": ""
+         },
+         "email": "",
+         "phone": {
+            "national_number": "",
+            "country_code": ""
+         },
+         "billing_address": {
+            "address_line_1": "",
+            "admin_area_2": "",
+            "postal_code": "",
+            "country_code": ""
+         },
+         "experience_context": {
+            "locale": "",
+            "return_url": "",
+            "cancel_url": "",
+            "customer_service_instructions": []
+         }
+      },
+      "autoCapture": true
+   },
    "safetypay": {
       "required": ["name","country_code"],
       "schema": {
