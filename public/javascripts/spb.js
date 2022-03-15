@@ -22,6 +22,14 @@ $(function () {
         $("#paypal-standalone-button-container").width($("#standaloneButtonWidth").val());
     });
 
+    $("#verticalButtonBackgroundColorUpdate").click(function() {
+        $("#verticalBackground").css("background-color", $("#verticalButtonBackgroundColor").val());
+    });
+
+    $("#standaloneButtonBackgroundColorUpdate").click(function() {
+        $("#standaloneBackground").css("background-color", $("#standaloneButtonBackgroundColor").val());
+    });
+
   $("#environment").change(function () {
 
     var environment = $("#environment").val();

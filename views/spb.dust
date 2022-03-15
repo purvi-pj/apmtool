@@ -90,14 +90,22 @@
         </div>
         <div class="col">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body" id="verticalBackground">
                     <h5 class="card-title">Vertical Buttons</h5>
                     <div class="form-row">
-                        <div class="form-group col-md-2">
+                        <div class="form-group col-md-3">
                             <input type="text" id="verticalButtonWidth" name="verticalButtonWidth" class="form-control" placeholder="Button Width">
                         </div>
                         <div class="form-group col-md-2">
                             <button id="verticalButtonWidthUpdate" type="button" class="btn btn-primary">Update</button>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <input type="text" id="verticalButtonBackgroundColor" name="verticalButtonBackgroundColor" class="form-control" placeholder="Background Color">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <button id="verticalButtonBackgroundColorUpdate" type="button" class="btn btn-primary">Update</button>
                         </div>
                     </div>
                 <!-- Set up a container element for the button -->
@@ -105,14 +113,22 @@
                 </div>
             </div>
             <div class="card">
-                <div class="card-body">
+                <div class="card-body" id="standaloneBackground">
                     <h5 class="card-title">Standalone Buttons</h5>
                     <div class="form-row">
-                        <div class="form-group col-md-2">
+                        <div class="form-group col-md-3">
                             <input type="text" id="standaloneButtonWidth" name="standaloneButtonWidth" class="form-control" placeholder="Button Width">
                         </div>
                         <div class="form-group col-md-2">
                             <button id="standaloneButtonWidthUpdate" type="button" class="btn btn-primary">Update</button>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <input type="text" id="standaloneButtonBackgroundColor" name="standaloneButtonBackgroundColor" class="form-control" placeholder="Background Color">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <button id="standaloneButtonBackgroundColorUpdate" type="button" class="btn btn-primary">Update</button>
                         </div>
                     </div>
                     <!-- Set up a container element for the button -->
