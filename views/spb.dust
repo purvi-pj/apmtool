@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Add meta tags for mobile and IE -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title> PayPal Checkout Integration | Client Demo </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+
+    <div class="row">
+        <div class="col-4">
+            <form id="buttonOptionForm" action="" method="POST">
+                <div class="form-group">
+                    <label for="environment">SDK Environment</label>
+                    <select class="form-control" id="environment" name="environment">
+                        <option value="LOCAL">LOCAL</option>
+                        <option value="STAGE">STAGE</option>
+                        <option value="LIVE">LIVE</option>
+                        <option value="CUSTOM">CUSTOM</option>
+                    </select>
+                </div>
+                <div id="hostFormGroup" class="form-group d-none">
+                    <label for="host">Custom Host</label>
+                    <input type="text" name="host" class="form-control" value="{host}">
+                </div>
+                <div class="form-group">
+                    <label for="currency">Currency</label>
+                    <input type="text" name="currency" class="form-control" value="{currency}">
+                </div>
+                <div class="form-group">
+                    <label for="buyerCountry">Buyer Country</label>
+                    <input type="text" name="buyerCountry" class="form-control" value="{buyerCountry}">
+                </div>
+                <div class="form-group">
+                    <label for="paymentscheme">Payment Scheme</label>
+                    <select class="form-control" id="paymentscheme" name="paymentscheme">
+{!                        <option value="alipay">alipay</option>!}
+                        <option value="bancontact">bancontact</option>
+                        <option value="blik">blik</option>
+                        <option value="boletobancario">boletobancario(non-instant)</option>
+                        <option value="eps">eps</option>
+                        <option value="giropay">giropay</option>
+                        <option value="ideal" selected>ideal</option>
+                        <option value="mercadopago">mercadopago</option>
+                        <option value="mybank">mybank</option>
+                        <option value="multibanco">multibanco(non-instant)</option>
+                        <option value="oxxo">oxxo(non-instant)</option>
+                        <option value="p24">p24</option>
+                        <option value="payu">payu</option>
+{!                        <option value="poli">poli</option>!}
+{!                        <option value="safetypay">safetypay</option>!}
+{!                        <option value="satispay">satispay</option>!}
+                        <option value="sofort">sofort</option>
+                        <option value="trustly">trustly</option>
+                        <option value="trustpay">trustpay</option>
+                        <option value="verkkopankki">verkkopankki</option>
+                        <option value="wechatpay">wechatpay</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="buttonColor">Button Color</label>
+                    <select class="form-control" id="buttonColor" name="buttonColor">
+                        <option value="">DEFAULT</option>
+                        <option value="silver">SILVER</option>
+                        <option value="white">WHITE</option>
+                        <option value="black">BLACK</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="buttonShape">Button Shape</label>
+                    <select class="form-control" id="buttonShape" name="buttonShape">
+                        <option value="rect">RECT</option>
+                        <option value="pill">PILL</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="buttonLabel">Button Label</label>
+                    <select class="form-control" id="buttonLabel" name="buttonLabel">
+                        <option value="">DEFAULT</option>
+                        <option value="pay">PAY</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary mb-2">Render</button>
+            </form>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Vertical Buttons</h5>
+                    <div class="form-row">
+                        <div class="form-group col-md-2">
+                            <input type="text" id="verticalButtonWidth" name="verticalButtonWidth" class="form-control" placeholder="Button Width">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <button id="verticalButtonWidthUpdate" type="button" class="btn btn-primary">Update</button>
+                        </div>
+                    </div>
+                <!-- Set up a container element for the button -->
+                <div id="paypal-button-container"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Standalone Buttons</h5>
+                    <div class="form-row">
+                        <div class="form-group col-md-2">
+                            <input type="text" id="standaloneButtonWidth" name="standaloneButtonWidth" class="form-control" placeholder="Button Width">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <button id="standaloneButtonWidthUpdate" type="button" class="btn btn-primary">Update</button>
+                        </div>
+                    </div>
+                    <!-- Set up a container element for the button -->
+                    <div id="paypal-standalone-button-container"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Marks</h5>
+                    <!-- Set up a container element for the button -->
+                    <div id="paypal-marks-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+ <!-- Include the PayPal JavaScript SDK -->
+    <script src="{sdkUrl}"></script>
+
+    <script>
+        paypal.Buttons({
+
+            style: {
+                color:   '{buttonStyle.COLOR}',
+                shape:   '{buttonStyle.SHAPE}',
+                label:   '{buttonStyle.LABEL}'
+            },
+
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '88.44'
+                        }
+                    }]
+                });
+            },
+
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(orderData) {
+                    console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                    var transaction = orderData.purchase_units[0].payments.captures[0];
+                    alert('Transaction '+ transaction.status + ': ' + transaction.id + '\n\nSee console for all available details');
+                });
+            }
+        }).render('#paypal-button-container');
+
+        var fundingArray = [
+            paypal.FUNDING.BANCONTACT,
+            paypal.FUNDING.BLIK,
+            paypal.FUNDING.BOLETO,
+            paypal.FUNDING.EPS,
+            paypal.FUNDING.GIROPAY,
+            paypal.FUNDING.IDEAL,
+            paypal.FUNDING.MERCADOPAGO,
+            paypal.FUNDING.MULTIBLANCO,
+            paypal.FUNDING.MYBANK,
+            paypal.FUNDING.OXXO,
+            paypal.FUNDING.P24,
+            paypal.FUNDING.PAYU,
+            paypal.FUNDING.SOFORT,
+            paypal.FUNDING.TRUSTLY,
+            paypal.FUNDING.VERKKOPANKKI,
+            paypal.FUNDING.WECHATPAY
+        ];
+
+        fundingArray.forEach(function(element) {
+            var button = paypal.Buttons({
+                style: {
+                    color:   '{buttonStyle.COLOR}',
+                    shape:   '{buttonStyle.SHAPE}',
+                    label:   '{buttonStyle.LABEL}'
+                },
+                fundingSource: element
+            });
+
+            if (button.isEligible()) {
+                button.render('#paypal-standalone-button-container');
+            }
+
+            var mark = paypal.Marks({
+                fundingSource: element
+            });
+
+
+            if (mark.isEligible()) {
+                mark.render('#paypal-marks-container');
+            }
+        });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+    <script src="/javascripts/spb.js"></script>
+    <script>
+            var prefillJSON = {prefillValue|js|s};
+    </script>
+</body>
+
+</html>

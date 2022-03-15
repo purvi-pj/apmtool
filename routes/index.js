@@ -12,7 +12,12 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false })
 const launcherController 	= require('../controllers/launcher'),
 	  webhookController		= require('../controllers/webhook'),
 	  historyController 	= require('../controllers/history'),
-	  sandboxController 	= require('../controllers/sandbox');
+	  sandboxController 	= require('../controllers/sandbox'),
+	  spbController         = require('../controllers/spb');
+
+    // Render SPB render form
+    router.get('/spb', spbController.renderButtons);
+    router.post('/spb', spbController.renderButtons);
 
 	// Render create order form
 	router.get('/', launcherController.startOrder);
