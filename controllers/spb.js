@@ -4,7 +4,7 @@ const util = require('util');
 
 function renderButtons(req, res, next) {
 
-    const SDK_ENV = req.body['environment'] || 'STAGE';
+    const SDK_ENV = req.body['environment'] || 'LOCAL';
     const SDK_CURRENCY = req.body['currency'] || 'EUR';
     const SDK_BUYER_COUNTRY = req.body['buyerCountry'] || 'NL';
 
@@ -23,7 +23,7 @@ function renderButtons(req, res, next) {
         CUSTOM:  'AZCjUMsPNzueEuqm2URngrs3LmVxfMQlFD2w3H3BNdo8f4g1Nbg0DEio_WrEpCBis7KPtw2l8OLVRiTS'
     };
 
-    const SDK_URL = util.format('%s%s?client-id=%s%s%s%s',
+    const SDK_URL = util.format('%s%s?client-id=%s%s%s%s&debug=true',
         SDK_HOST[SDK_ENV],
         SDK_PATH,
         CLIENT_ID[SDK_ENV],

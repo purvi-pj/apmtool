@@ -198,7 +198,7 @@
             });
 
 
-            if (mark.isEligible()) {
+            if (button.isEligible()) {
                 mark.render('#paypal-marks-container');
             }
         });
