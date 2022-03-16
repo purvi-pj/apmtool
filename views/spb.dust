@@ -11,7 +11,6 @@
 </head>
 
 <body>
-
     <div class="row">
         <div class="col-4">
             <form id="buttonOptionForm" action="" method="POST">
@@ -85,12 +84,16 @@
                         <option value="pay">PAY</option>
                     </select>
                 </div>
+                <div class="form-group">
+                    <label for="buttonHeight">Button Height (optional)</label>
+                    <input type="text" name="buttonHeight" class="form-control" placeholder="25-55" value="{buttonStyle.HEIGHT}">
+                </div>
                 <button type="submit" class="btn btn-primary mb-2">Render</button>
             </form>
         </div>
         <div class="col">
             <div class="card">
-                <div class="card-body" id="verticalBackground">
+                <div class="card-body">
                     <h5 class="card-title">Vertical Buttons</h5>
                     <div class="form-row">
                         <div class="form-group col-md-3">
@@ -108,12 +111,14 @@
                             <button id="verticalButtonBackgroundColorUpdate" type="button" class="btn btn-primary">Update</button>
                         </div>
                     </div>
-                <!-- Set up a container element for the button -->
-                <div id="paypal-button-container"></div>
+                    <div id="verticalBackground" style="padding:25px">
+                        <!-- Set up a container element for the button -->
+                        <div id="paypal-button-container"></div>
+                    </div>
                 </div>
             </div>
             <div class="card">
-                <div class="card-body" id="standaloneBackground">
+                <div class="card-body">
                     <h5 class="card-title">Standalone Buttons</h5>
                     <div class="form-row">
                         <div class="form-group col-md-3">
@@ -131,8 +136,10 @@
                             <button id="standaloneButtonBackgroundColorUpdate" type="button" class="btn btn-primary">Update</button>
                         </div>
                     </div>
-                    <!-- Set up a container element for the button -->
-                    <div id="paypal-standalone-button-container"></div>
+                    <div id="standaloneBackground" style="padding:25px">
+                        <!-- Set up a container element for the button -->
+                        <div id="paypal-standalone-button-container"></div>
+                    </div>
                 </div>
             </div>
             <div class="card">
@@ -140,6 +147,15 @@
                     <h5 class="card-title">Marks</h5>
                     <!-- Set up a container element for the button -->
                     <div id="paypal-marks-container"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Buttons not loading?</h5>
+                    <div class="alert alert-warning" role="alert">
+                        <p>If you have selected a stage or custom host and buttons are not loading, there may be an issue loading the JS SDK. Verify you are on VPN, click the following link and accept the browser security warning (for Chrome, type `thisisunsafe` anywhere in the new window). After accepting, re-render the buttons. </p>
+                        <a href="{sdkUrl}" target="_blank">Click here</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -154,6 +170,9 @@
             style: {
                 color:   '{buttonStyle.COLOR}',
                 shape:   '{buttonStyle.SHAPE}',
+                {?buttonStyle.HEIGHT}
+                    height:  {buttonStyle.HEIGHT},
+                {/buttonStyle.HEIGHT}
                 label:   '{buttonStyle.LABEL}'
             },
 
@@ -200,6 +219,7 @@
                 style: {
                     color:   '{buttonStyle.COLOR}',
                     shape:   '{buttonStyle.SHAPE}',
+                    {?buttonStyle.HEIGHT}height:  {buttonStyle.HEIGHT},{/buttonStyle.HEIGHT}
                     label:   '{buttonStyle.LABEL}'
                 },
                 fundingSource: element

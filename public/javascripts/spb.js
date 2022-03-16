@@ -9,6 +9,7 @@ $(function () {
     $("#buttonOptionForm").find("select[name='buttonColor']").val([prefillJSON.buttonColor]);
     $("#buttonOptionForm").find("select[name='buttonShape']").val([prefillJSON.buttonShape]);
     $("#buttonOptionForm").find("select[name='buttonLabel']").val([prefillJSON.buttonLabel]);
+    $("#buttonOptionForm").find("select[name='buttonHeight']").val([prefillJSON.buttonHeight]);
 
     if (prefillJSON.environment == 'CUSTOM') {
       $("#hostFormGroup").removeClass("d-none");

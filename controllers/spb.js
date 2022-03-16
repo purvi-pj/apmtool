@@ -34,19 +34,21 @@ function renderButtons(req, res, next) {
 
     const BUTTON_STYLE = {
         COLOR: req.body['buttonColor'] || '',
-        SHAPE: req.body['buttonShape'] || '',
-        LABEL: req.body['buttonLabel'] || ''
+        SHAPE: req.body['buttonShape'] || 'rect',
+        LABEL: req.body['buttonLabel'] || '',
+        HEIGHT: req.body['buttonHeight'] || ''
     };
 
 	const prefillValue = {
 	    environment: SDK_ENV,
-	    host: req.body['host'] || '',
+	    host: req.body['host'] || 'https://te-eriyu-1324.qa.paypal.com',
 		paymentscheme: req.body['paymentscheme'] || 'ideal',
 		currency: SDK_CURRENCY,
 		buyerCountry: SDK_BUYER_COUNTRY,
         buttonColor: BUTTON_STYLE.COLOR,
         buttonShape: BUTTON_STYLE.SHAPE,
-        buttonLabel: BUTTON_STYLE.LABEL
+        buttonLabel: BUTTON_STYLE.LABEL,
+        buttonHeight: BUTTON_STYLE.HEIGHT
 	};
 
     const model = {
