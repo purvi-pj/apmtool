@@ -20,7 +20,7 @@
                         <option value="LOCAL">LOCAL</option>
                         <option value="STAGE">STAGE</option>
                         <option value="LIVE">LIVE</option>
-                        <option value="CUSTOM">CUSTOM</option>
+                        <option value="CUSTOM">CUSTOM (NEW LOGOS)</option>
                     </select>
                 </div>
                 <div id="hostFormGroup" class="form-group d-none">
