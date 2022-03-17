@@ -41,7 +41,7 @@ function renderButtons(req, res, next) {
 
 	const prefillValue = {
 	    environment: SDK_ENV,
-	    host: req.body['host'] || 'https://te-eriyu-1324.qa.paypal.com',
+	    host: req.body['host'] || 'https://te-apm-logo-updates.qa.paypal.com',
 		paymentscheme: req.body['paymentscheme'] || 'ideal',
 		currency: SDK_CURRENCY,
 		buyerCountry: SDK_BUYER_COUNTRY,
