@@ -13,7 +13,7 @@ function renderButtons(req, res, next) {
         LOCAL: 'http://localhost.paypal.com:8000',
         STAGE:  'https://www.msmaster.qa.paypal.com',
         LIVE:   'https://www.paypal.com',
-        CUSTOM: req.body['host'] || ''
+        CUSTOM: req.body['host'] || 'https://te-apm-logo-updates.qa.paypal.com'
     };
     const SDK_PATH = '/sdk/js';
     const CLIENT_ID = {
@@ -41,7 +41,7 @@ function renderButtons(req, res, next) {
 
 	const prefillValue = {
 	    environment: SDK_ENV,
-	    host: req.body['host'] || 'https://te-apm-logo-updates.qa.paypal.com',
+	    host: SDK_HOST[SDK_ENV],
 		paymentscheme: req.body['paymentscheme'] || 'ideal',
 		currency: SDK_CURRENCY,
 		buyerCountry: SDK_BUYER_COUNTRY,
