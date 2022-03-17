@@ -4,7 +4,7 @@ const util = require('util');
 
 function renderButtons(req, res, next) {
 
-    const SDK_ENV = req.body['environment'] || 'LOCAL';
+    const SDK_ENV = req.body['environment'] || 'CUSTOM';
     const SDK_CURRENCY = req.body['currency'] || 'EUR';
     const SDK_BUYER_COUNTRY = req.body['buyerCountry'] || 'NL';
 
