@@ -47,8 +47,13 @@ function mockWebhook(req, res, next) {
 	res.send('OK');
 }
 
+function ppReturn(req, res, next) {
+    res.render("ppReturn", { });
+}
+
 module.exports = {
 	createUser,
 	validateUser,
-	mockWebhook
+	mockWebhook,
+	ppReturn
 }

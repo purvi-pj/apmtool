@@ -19,6 +19,9 @@ const launcherController 	= require('../controllers/launcher'),
     router.get('/spb', spbController.renderButtons);
     router.post('/spb', spbController.renderButtons);
 
+    // Debug return URL page
+    router.get('/ppReturn', sandboxController.ppReturn);
+
 	// Render create order form
 	router.get('/', launcherController.startOrder);
 
