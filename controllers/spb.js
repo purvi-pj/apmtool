@@ -12,6 +12,7 @@ function renderButtons(req, res, next) {
     const SDK_HOST = {
         LOCAL: 'http://localhost.paypal.com:8000',
         STAGE:  'https://www.msmaster.qa.paypal.com',
+        SANDBOX:   'https://www.paypal.com',
         LIVE:   'https://www.paypal.com',
         CUSTOM: req.body['host'] || 'https://te-apm-logo-updates.qa.paypal.com'
     };
@@ -19,6 +20,7 @@ function renderButtons(req, res, next) {
     const CLIENT_ID = {
         LOCAL:   'AZCjUMsPNzueEuqm2URngrs3LmVxfMQlFD2w3H3BNdo8f4g1Nbg0DEio_WrEpCBis7KPtw2l8OLVRiTS',
         STAGE:   'AZCjUMsPNzueEuqm2URngrs3LmVxfMQlFD2w3H3BNdo8f4g1Nbg0DEio_WrEpCBis7KPtw2l8OLVRiTS',
+        SANDBOX: 'AXx6Sso7aff9cazBQ6WZq8kxFYEaMZk6VdRPnG3oi14fmhLLggN30PNuGl55fZABaI08qR4vjbdBkZo7',
         LIVE:    'AaXaDMFBQrXnmaEnnaDJaGze0SHvrWrtCTaKPizp6WWgbblSmMTtkYSuDTWoZ5fjN1oQfJHflrl69V2x',
         CUSTOM:  'AZCjUMsPNzueEuqm2URngrs3LmVxfMQlFD2w3H3BNdo8f4g1Nbg0DEio_WrEpCBis7KPtw2l8OLVRiTS'
     };

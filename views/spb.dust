@@ -19,6 +19,7 @@
                     <select class="form-control" id="environment" name="environment">
                         <option value="LOCAL">LOCAL</option>
                         <option value="STAGE">STAGE</option>
+                        <option value="SANDBOX">SANDBOX</option>
                         <option value="LIVE">LIVE</option>
                         <option value="CUSTOM">CUSTOM (NEW LOGOS)</option>
                     </select>
@@ -94,7 +95,7 @@
         <div class="col">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Vertical Buttons</h5>
+                    <h5 class="card-title">Vertical Buttons (Branded)</h5>
                     <div class="form-row">
                         <div class="form-group col-md-3">
                             <input type="text" id="verticalButtonWidth" name="verticalButtonWidth" class="form-control" placeholder="Button Width">
@@ -119,7 +120,7 @@
             </div>
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Standalone Buttons</h5>
+                    <h5 class="card-title">Standalone Buttons (Branded)</h5>
                     <div class="form-row">
                         <div class="form-group col-md-3">
                             <input type="text" id="standaloneButtonWidth" name="standaloneButtonWidth" class="form-control" placeholder="Button Width">
@@ -161,11 +162,14 @@
         </div>
     </div>
 
- <!-- Include the PayPal JavaScript SDK -->
-    <script src="{sdkUrl}"></script>
+ <!-- Include the PayPal JavaScript SDK (vertical buttons) -->
+    <script data-namespace="paypalVertical" src="{sdkUrl}"></script>
+
+<!-- Include the PayPal JavaScript SDK (vertical buttons) -->
+    <script data-namespace="paypalStandalone" src="{sdkUrl}"></script>
 
     <script>
-        paypal.Buttons({
+        paypalVertical.Buttons({
 
             style: {
                 color:   '{buttonStyle.COLOR}',
@@ -178,11 +182,29 @@
 
             createOrder: function(data, actions) {
                 return actions.order.create({
-                    purchase_units: [{
-                        amount: {
-                            value: '88.44'
+                    "intent": "CAPTURE",
+                    "purchase_units": [{
+                        "amount": {
+                            "currency_code": "{prefillValue.currency}",
+                            "value": "10.00"
+                        },
+                        "shipping": {
+                            "name": {
+                                "full_name": "Vertical Test"
+                            }
                         }
-                    }]
+                    }],
+                    "application_context": {
+                        "shipping_preference": "NO_SHIPPING"
+                    },
+                    "payer": {
+                        "phone": {
+                            "phone_number": {
+                                "national_number": "3225551212"
+                            }
+                        },
+                        "email_address": "apmtool@test.com"
+                    }
                 });
             },
 
@@ -196,40 +218,76 @@
         }).render('#paypal-button-container');
 
         var fundingArray = [
-            paypal.FUNDING.BANCONTACT,
-            paypal.FUNDING.BLIK,
-            paypal.FUNDING.BOLETO,
-            paypal.FUNDING.EPS,
-            paypal.FUNDING.GIROPAY,
-            paypal.FUNDING.IDEAL,
-            paypal.FUNDING.MERCADOPAGO,
-            paypal.FUNDING.MULTIBLANCO,
-            paypal.FUNDING.MYBANK,
-            paypal.FUNDING.OXXO,
-            paypal.FUNDING.P24,
-            paypal.FUNDING.PAYU,
-            paypal.FUNDING.SOFORT,
-            paypal.FUNDING.TRUSTLY,
-            paypal.FUNDING.VERKKOPANKKI,
-            paypal.FUNDING.WECHATPAY
+            paypalStandalone.FUNDING.BANCONTACT,
+            paypalStandalone.FUNDING.BLIK,
+            paypalStandalone.FUNDING.BOLETO,
+            paypalStandalone.FUNDING.EPS,
+            paypalStandalone.FUNDING.GIROPAY,
+            paypalStandalone.FUNDING.IDEAL,
+            paypalStandalone.FUNDING.MERCADOPAGO,
+            paypalStandalone.FUNDING.MULTIBLANCO,
+            paypalStandalone.FUNDING.MYBANK,
+            paypalStandalone.FUNDING.OXXO,
+            paypalStandalone.FUNDING.P24,
+            paypalStandalone.FUNDING.PAYU,
+            paypalStandalone.FUNDING.SOFORT,
+            paypalStandalone.FUNDING.TRUSTLY,
+            paypalStandalone.FUNDING.VERKKOPANKKI,
+            paypalStandalone.FUNDING.WECHATPAY
         ];
 
         fundingArray.forEach(function(element) {
-            var button = paypal.Buttons({
+            var button = paypalStandalone.Buttons({
                 style: {
                     color:   '{buttonStyle.COLOR}',
                     shape:   '{buttonStyle.SHAPE}',
                     {?buttonStyle.HEIGHT}height:  {buttonStyle.HEIGHT},{/buttonStyle.HEIGHT}
                     label:   '{buttonStyle.LABEL}'
                 },
-                fundingSource: element
+                fundingSource: element,
+
+                createOrder: function(data, actions) {
+                    return actions.order.create({
+                        "intent": "CAPTURE",
+                        "purchase_units": [{
+                            "amount": {
+                                "currency_code": "{prefillValue.currency}",
+                                "value": "10.00"
+                            },
+                            "shipping": {
+                                "name": {
+                                    "full_name": "Standalone Test"
+                                }
+                            }
+                        }],
+                        "application_context": {
+                            "shipping_preference": "NO_SHIPPING"
+                        },
+                        "payer": {
+                            "phone": {
+                                "phone_number": {
+                                    "national_number": "3225551212"
+                                }
+                            },
+                            "email_address": "apmtool@test.com"
+                        }
+                    });
+                },
+
+                onApprove: function(data, actions) {
+                    return actions.order.capture().then(function(orderData) {
+                        console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                        var transaction = orderData.purchase_units[0].payments.captures[0];
+                        alert('Transaction '+ transaction.status + ': ' + transaction.id + '\n\nSee console for all available details');
+                    });
+                }
             });
 
             if (button.isEligible()) {
                 button.render('#paypal-standalone-button-container');
             }
 
-            var mark = paypal.Marks({
+            var mark = paypalStandalone.Marks({
                 fundingSource: element
             });
 
