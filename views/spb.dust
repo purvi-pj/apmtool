@@ -152,10 +152,36 @@
             </div>
             <div class="card">
                 <div class="card-body">
+                    <h5 class="card-title">Payment Fields (Unbranded)</h5>
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <input type="text" id="fieldsWidth" name="fieldsWidth" class="form-control" placeholder="Fields Width">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <button id="fieldsWidthUpdate" type="button" class="btn btn-primary">Update</button>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <input type="text" id="fieldsBackgroundColor" name="fieldsBackgroundColor" class="form-control" placeholder="Background Color">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <button id="fieldsBackgroundColorUpdate" type="button" class="btn btn-primary">Update</button>
+                        </div>
+                    </div>
+                    <div id="fieldsBackground" style="padding:25px">
+                    <!-- Set up a container element for the button -->
+                        <div id="paypal-fields-container"></div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card">
+                <div class="card-body">
                     <h5 class="card-title">Buttons not loading?</h5>
                     <div class="alert alert-warning" role="alert">
                         <p>If you have selected a stage or custom host and buttons are not loading, there may be an issue loading the JS SDK. Verify you are on VPN, click the following link and accept the browser security warning (for Chrome, type `thisisunsafe` anywhere in the new window). After accepting, re-render the buttons. </p>
-                        <a href="{sdkUrl}" target="_blank">Click here</a>
+                        <a href="{brandedSdkUrl}" target="_blank">Click here</a>
                     </div>
                 </div>
             </div>
@@ -163,10 +189,13 @@
     </div>
 
  <!-- Include the PayPal JavaScript SDK (vertical buttons) -->
-    <script data-namespace="paypalVertical" src="{sdkUrl}"></script>
+    <script data-namespace="paypalVertical" src="{brandedSdkUrl}"></script>
 
 <!-- Include the PayPal JavaScript SDK (vertical buttons) -->
-    <script data-namespace="paypalStandalone" src="{sdkUrl}"></script>
+    <script data-namespace="paypalStandalone" src="{brandedSdkUrl}"></script>
+
+    <!-- Include the PayPal JavaScript SDK (vertical buttons) -->
+    <script data-namespace="paypalFields" src="{unbrandedSdkUrl}"></script>
 
     <script>
         paypalVertical.Buttons({
@@ -287,13 +316,97 @@
                 button.render('#paypal-standalone-button-container');
             }
 
-            var mark = paypalStandalone.Marks({
+            var mark = paypalFields.Marks({
                 fundingSource: element
             });
 
 
             if (button.isEligible()) {
                 mark.render('#paypal-marks-container');
+            }
+        });
+
+        var fieldsFundingArray = [
+            paypalFields.FUNDING.BANCONTACT,
+            paypalFields.FUNDING.BLIK,
+            paypalFields.FUNDING.BOLETO,
+            paypalFields.FUNDING.EPS,
+            paypalFields.FUNDING.GIROPAY,
+            paypalFields.FUNDING.IDEAL,
+            paypalFields.FUNDING.MERCADOPAGO,
+            paypalFields.FUNDING.MULTIBLANCO,
+            paypalFields.FUNDING.MYBANK,
+            paypalFields.FUNDING.OXXO,
+            paypalFields.FUNDING.P24,
+            paypalFields.FUNDING.PAYU,
+            paypalFields.FUNDING.SOFORT,
+            paypalFields.FUNDING.TRUSTLY,
+            paypalFields.FUNDING.VERKKOPANKKI,
+            paypalFields.FUNDING.WECHATPAY
+        ];
+
+        fieldsFundingArray.forEach(function(element) {
+            var button = paypalFields.Buttons({
+                style: {
+                    color:   '{buttonStyle.COLOR}',
+                    shape:   '{buttonStyle.SHAPE}',
+                    {?buttonStyle.HEIGHT}height:  {buttonStyle.HEIGHT},{/buttonStyle.HEIGHT}
+                    label:   '{buttonStyle.LABEL}'
+                },
+                fundingSource: element,
+
+                createOrder: function(data, actions) {
+                    return actions.order.create({
+                        "intent": "CAPTURE",
+                        "purchase_units": [{
+                            "amount": {
+                                "currency_code": "{prefillValue.currency}",
+                                "value": "10.00"
+                            },
+                            "shipping": {
+                                "name": {
+                                    "full_name": "Fields Test"
+                                }
+                            }
+                        }],
+                        "application_context": {
+                            "shipping_preference": "NO_SHIPPING"
+                        },
+                        "payer": {
+                            "phone": {
+                                "phone_number": {
+                                    "national_number": "3225551212"
+                                }
+                            },
+                            "email_address": "apmtool@test.com"
+                        }
+                    });
+                },
+
+                onApprove: function(data, actions) {
+                    return actions.order.capture().then(function(orderData) {
+                        console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                        var transaction = orderData.purchase_units[0].payments.captures[0];
+                        alert('Transaction '+ transaction.status + ': ' + transaction.id + '\n\nSee console for all available details');
+                    });
+                }
+
+            });
+
+            if (button.isEligible()) {
+                const fieldsDiv = document.getElementById('paypal-fields-container');
+
+                let newDiv = document.createElement('div');
+                newDiv.setAttribute('id', element + '-fields');
+                newDiv.className = 'card-body';
+                fieldsDiv.append(newDiv);
+
+                paypalFields.PaymentFields({
+                    fundingSource: element
+                })
+                .render(newDiv);
+
+                button.render(newDiv);
             }
         });
     </script>

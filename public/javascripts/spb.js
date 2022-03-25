@@ -23,6 +23,10 @@ $(function () {
         $("#paypal-standalone-button-container").width($("#standaloneButtonWidth").val());
     });
 
+    $("#fieldsWidthUpdate").click(function() {
+        $("#paypal-fields-container").width($("#fieldsWidth").val());
+    });
+
     $("#verticalButtonBackgroundColorUpdate").click(function() {
         $("#verticalBackground").css("background-color", $("#verticalButtonBackgroundColor").val());
     });
@@ -31,12 +35,17 @@ $(function () {
         $("#standaloneBackground").css("background-color", $("#standaloneButtonBackgroundColor").val());
     });
 
+    $("#fieldsBackgroundColorUpdate").click(function() {
+        $("#fieldsBackground").css("background-color", $("#fieldsBackgroundColor").val());
+    });
+
   $("#environment").change(function () {
 
     var environment = $("#environment").val();
 
     if (environment == 'CUSTOM') {
       $("#hostFormGroup").removeClass("d-none");
+      $("#buttonOptionForm").find("input[name='host']").val('https://te-apm-logo-updates.qa.paypal.com');
     } else {
       $("#hostFormGroup").addClass("d-none");
     }

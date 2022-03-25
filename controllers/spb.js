@@ -25,12 +25,19 @@ function renderButtons(req, res, next) {
         CUSTOM:  'AZCjUMsPNzueEuqm2URngrs3LmVxfMQlFD2w3H3BNdo8f4g1Nbg0DEio_WrEpCBis7KPtw2l8OLVRiTS'
     };
 
-    const SDK_URL = util.format('%s%s?client-id=%s%s%s%s&debug=true',
+    const BRANDED_SDK_URL = util.format('%s%s?client-id=%s%s%s%s&debug=true',
         SDK_HOST[SDK_ENV],
         SDK_PATH,
         CLIENT_ID[SDK_ENV],
-        '&components=buttons,marks,funding-eligibility',
-//        '&enable-funding=bancontact,eps,giropay,ideal,mybank,sofort,p24,blik,trustly,oxxo,boleto,wechatpay,mercadopago');
+        '&components=buttons,funding-eligibility',
+        util.format('&currency=%s', SDK_CURRENCY),
+        util.format('&buyer-country=%s', SDK_BUYER_COUNTRY));
+
+    const UNBRANDED_SDK_URL = util.format('%s%s?client-id=%s%s%s%s&debug=true',
+        SDK_HOST[SDK_ENV],
+        SDK_PATH,
+        CLIENT_ID[SDK_ENV],
+        '&components=buttons,payment-fields,marks,funding-eligibility',
         util.format('&currency=%s', SDK_CURRENCY),
         util.format('&buyer-country=%s', SDK_BUYER_COUNTRY));
 
@@ -56,7 +63,8 @@ function renderButtons(req, res, next) {
     const model = {
         currency: SDK_CURRENCY,
         buyerCountry: SDK_BUYER_COUNTRY,
-        sdkUrl: SDK_URL,
+        brandedSdkUrl: BRANDED_SDK_URL,
+        unbrandedSdkUrl: UNBRANDED_SDK_URL,
         buttonStyle: BUTTON_STYLE,
         prefillValue: prefillValue
     };
