@@ -10,12 +10,17 @@ var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 const launcherController 	= require('../controllers/launcher'),
+	  puiLauncherController 	= require('../controllers/puiLauncher'),
 	  webhookController		= require('../controllers/webhook'),
 	  historyController 	= require('../controllers/history'),
 	  sandboxController 	= require('../controllers/sandbox');
 
 	// Render create order form
 	router.get('/', launcherController.startOrder);
+	
+	// APM - PUI related
+	router.get('/pui', puiLauncherController.startOrder);
+	router.post('/pui/confirm', puiLauncherController.confirmPaymentSource);
 
 	// PayPal API routes
 	router.post('/create', urlencodedParser, launcherController.createOrder);
