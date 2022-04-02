@@ -45,7 +45,8 @@ function createOrder(req, res, next) {
 		shippingPreference: req.body.shippingpreference,
 		clientType: req.body.clientType,
 		returnUrl: process.env.RETURN_URL,
-		cancelUrl: process.env.CANCEL_URL
+		cancelUrl: process.env.CANCEL_URL,
+		fraudnetGuid: req.body.fraudnetGuid
 	};
 
 	if (req.body.bic) {

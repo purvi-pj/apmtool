@@ -1,7 +1,8 @@
 'use strict';
 
 const ordersUtils 		= require('../lib/orders'),
-	  paymentObjects 	= require('../config/paymentObjects');
+	  paymentObjects 	= require('../config/paymentObjects'),
+	  uuid              = require('uuid');
 
 // Render form
 function startOrder(req, res, next) {
@@ -44,7 +45,7 @@ function startOrder(req, res, next) {
 	};
 
 	const stageRadio = process.env.NODE_ENV === 'development';
-	res.render('puiLauncher', { user: req.user, schemesJSON: paymentObjects, prefillValue, stageRadio });
+	res.render('puiLauncher', { user: req.user, schemesJSON: paymentObjects, prefillValue, stageRadio, fraudnetGUID: uuid.v4()});
 
 }
 
@@ -76,8 +77,8 @@ function confirmPaymentSource(req, res, next) {
 		returnUrl: req.body.returnUrl,
 		cancelUrl: req.body.cancelUrl,
 		customerServiceInstruction1: req.body.customerServiceInstruction1,
-		customerServiceInstruction2: req.body.customerServiceInstruction2
-	};
+		fraudnetGuid: req.body.fraudnetGuid
+    };
 
 	ordersUtils.createAccessToken({
 		environment: req.body.environment,

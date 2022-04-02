@@ -53,6 +53,7 @@ $(function () {
         cancelUrl = $form.find("input[name='cancel_url']").val(),
         customerServiceInstruction1 = $form.find("input[name='customer_service_instruction1']").val(),
         customerServiceInstruction2 = $form.find("input[name='customer_service_instruction2']").val(),
+        fraudnetGuid = $form.find("input[name='fraudnetGuid']").val(),
 
         url = $form.attr("action");
         
@@ -71,7 +72,7 @@ $(function () {
         orderId = '';
 
       // Initiate create order
-      var createOrderRequest = $.post(url, { environment, clientType, customClientId, customClientSecret, paymentscheme, amount, currency, countrycode, name, email, phoneNumber });
+      var createOrderRequest = $.post(url, { environment, clientType, customClientId, customClientSecret, paymentscheme, amount, currency, countrycode, name, email, phoneNumber, fraudnetGuid });
   
       // On create order completion, update progress on parent page
       createOrderRequest.done(function (data) {
@@ -90,7 +91,8 @@ $(function () {
             environment, clientType, customClientId, customClientSecret, orderId, paymentscheme, amount, currency,
             birthDate, prefix, firstName, lastName, email, phoneNumber, phonePrefix, address_line_1, address_city, 
             address_country_code, address_postal_code, brandName, merchantLanguage, merchantCountryCode, 
-            shippingPreference, logoUrl, cancelUrl,returnUrl, customerServiceInstruction1, customerServiceInstruction2
+            shippingPreference, logoUrl, cancelUrl,returnUrl, customerServiceInstruction1, customerServiceInstruction2,
+            fraudnetGuid
           });
   
           confirmPaymentSource.done(function (data) {

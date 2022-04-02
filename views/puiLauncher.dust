@@ -253,6 +253,7 @@
       </div>
 
       <div class="form-group">
+        <input type="hidden" name="fraudnetGuid" value="{fraudnetGUID}"/>
         <button type="button" id="submitBtn" class="btn btn-primary" data-toggle="modal" data-target="#processingModal">
           Submit Order
         </button>
@@ -273,5 +274,13 @@
     var schemesJSON = {schemesJSON|js|s};
     var prefillJSON = {prefillValue|js|s};
   </script>
+  <script type="application/json" fncls="fnparams-dede7cc5-15fd-4c75-a9f4-36c430ee3a99">
+    {
+      "f":"{fraudnetGUID}",
+      "s":"3XW33KVY8B838_checkout-page",
+      "sandbox": true
+    }
+  </script>
+  <script type="text/javascript" src="https://c.paypal.com/da/r/fb.js"></script>
 </body>
 </html>
