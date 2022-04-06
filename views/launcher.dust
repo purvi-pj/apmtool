@@ -128,6 +128,7 @@
             <option value="trustpay">trustpay</option>
             <option value="verkkopankki">verkkopankki</option>
             <option value="wechatpay">wechatpay</option>
+            <option value="grabpay">grabpay</option>
           </select>
         </div>
         <div class="form-group col-md-3">
@@ -228,6 +229,7 @@
   <script>
     var schemesJSON = {schemesJSON|js|s};
     var prefillJSON = {prefillValue|js|s};
+    var countryCode = '{countryCode}';
   </script>
 </body>
 </html>
