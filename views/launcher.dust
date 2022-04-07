@@ -229,7 +229,6 @@
   <script>
     var schemesJSON = {schemesJSON|js|s};
     var prefillJSON = {prefillValue|js|s};
-    var countryCode = '{countryCode}';
   </script>
 </body>
 </html>
