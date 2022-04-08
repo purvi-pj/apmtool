@@ -114,6 +114,7 @@
             <option value="boletobancario">boletobancario(non-instant)</option>
             <option value="eps">eps</option>
             <option value="giropay">giropay</option>
+            <option value="grabpay">grabpay</option>
             <option value="ideal" selected>ideal</option>
             <option value="mybank">mybank</option>
             <option value="multibanco">multibanco(non-instant)</option>
@@ -128,7 +129,6 @@
             <option value="trustpay">trustpay</option>
             <option value="verkkopankki">verkkopankki</option>
             <option value="wechatpay">wechatpay</option>
-            <option value="grabpay">grabpay</option>
           </select>
         </div>
         <div class="form-group col-md-3">

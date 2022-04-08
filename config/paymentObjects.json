@@ -170,7 +170,7 @@
       "autoCapture": false
    },
    "grabpay": {
-      "required": ["name","country_code","email","expiry_date"],
+      "required": ["name","country_code"],
       "schema": {
          "name": "",
          "country_code": ""
