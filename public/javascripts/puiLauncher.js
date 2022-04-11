@@ -56,6 +56,14 @@ $(function () {
 
         url = $form.attr("action");
         
+        var metadataId = createUUID();
+        var uniquePageId = 'PAYPAL_SANDBOX_TOOL';
+        var fnUrl = 'https://c.paypal.com/da/r/fb.js';
+        
+        _injectConfig(metadataId, uniquePageId, environment);
+        _loadBeaconJS(fnUrl);
+        _loadNoScript(metadataId, uniquePageId);
+
       // Apply "sticky" selected settings to start over link
       $("#startOverLink").attr("href", `pui?clientType=${clientType}&environment=${environment}&paymentscheme=${paymentscheme}&amount,
         currency=${amount}&countrycode=${countrycode}&address_line_1=${address_line_1}&address_city=${address_city}&address_country_code=${address_country_code}&address_postal_code=${address_postal_code}&
@@ -71,7 +79,7 @@ $(function () {
         orderId = '';
 
       // Initiate create order
-      var createOrderRequest = $.post(url, { environment, clientType, customClientId, customClientSecret, paymentscheme, amount, currency, countrycode, name, email, phoneNumber });
+      var createOrderRequest = $.post(url, { environment, clientType, customClientId, customClientSecret, paymentscheme, amount, currency, countrycode, name, email, phoneNumber, metadataId});
   
       // On create order completion, update progress on parent page
       createOrderRequest.done(function (data) {
@@ -228,5 +236,51 @@ $(function () {
   
     function getTimeString() {
       return new Date().toLocaleTimeString([], { hour12: false });
+    }
+
+    function _injectConfig(id, pageId, env) {
+      var script = document.getElementById('fconfig');
+      if (script) {
+          if (script.parentNode) {
+              script.parentNode.removeChild(script);
+          }
+      }
+      script = document.createElement('script');     
+      script.id = 'fconfig';
+      script.type = 'application/json';
+      script.setAttribute('fncls', 'fnparams-dede7cc5-15fd-4c75-a9f4-36c430ee3a99');
+      var configuration = {
+          'f': id,
+          's': pageId,
+      };
+
+      if (env == 'SANDBOX') {
+        configuration['sandbox'] = true
+      }
+
+      script.text = JSON.stringify(configuration);
+      document.body.appendChild(script);
+    }
+
+    function _loadBeaconJS(url) {
+      var script = document.createElement('script');
+      script.src = url;
+      document.body.appendChild(script);
+    }
+
+    function _loadNoScript(id, pageId) {
+      var script = document.createElement('noscript');
+      var img = document.createElement("img");
+      var url = `https://c.paypal.com/v1/r/d/b/ns?f=${id}&s=${pageId}&js=0&r=1`
+      img.setAttribute("src", url);
+      script.appendChild(img);
+      document.body.appendChild(script);
+    }
+
+    function createUUID() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+         var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+         return v.toString(16);
+      });
     }
   });
