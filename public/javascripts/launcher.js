@@ -112,6 +112,9 @@ $(function () {
       case 'wechatpay':
         defaultSettings("CN", "EUR", false)
         break;
+      case 'grabpay':
+        defaultSettings("SG", "SGD", false)
+        break;
       default:
         defaultSettings("", "", false)
     }
