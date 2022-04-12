@@ -12,6 +12,18 @@ function loadRecent(req, res, next) {
 	.then((records) => {
 
 		records.forEach((element) => {
+
+            // In the case where expected API request/responses are not present, default to empty objects
+		    if (!_.has(element.CONFIRM_PAYMENT_SOURCE_API)) {
+		        element.CONFIRM_PAYMENT_SOURCE_API = {};
+		    }
+		    if (!_.has(element.GET_ORDER_API)) {
+		        element.GET_ORDER_API = {};
+		    }
+		    if (!_.has(element.CAPTURE_ORDER_API)) {
+		        element.CAPTURE_ORDER_API = {};
+		    }
+
 			element = convertRecordForDisplay(element);			
 		})
 

@@ -238,7 +238,8 @@ function captureOrder(req, res, next) {
 		environment: req.body.environment, 
 		clientType: req.body.clientType,
     	customClientId: req.body.customClientId,
-    	customClientSecret: req.body.customClientSecret 
+    	customClientSecret: req.body.customClientSecret,
+		scheme: req.body.paymentscheme,
 	})
 
 	.then((accessTokenResult) => {

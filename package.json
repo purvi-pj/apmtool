@@ -1,6 +1,6 @@
 {
   "name": "apmtool",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "engines": {
     "node": "12.x"
   },
@@ -26,7 +26,7 @@
     "express-session": "^1.17.1",
     "http-errors": "~1.6.3",
     "lodash": "^4.17.21",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "mongoose": "^5.9.9",
     "morgan": "~1.9.1",
     "passport": "^0.4.1",
