@@ -1,7 +1,8 @@
 'use strict';
 
 const ordersUtils 		= require('../lib/orders'),
-	  paymentObjects 	= require('../config/paymentObjects');
+	  paymentObjects 	= require('../config/paymentObjects'),
+	  puiUtils 		= require('../lib/puiUtils');
 
 // Render form
 function startOrder(req, res, next) {
@@ -40,7 +41,8 @@ function startOrder(req, res, next) {
         returnUrl: returnUrl || 'https://bron.com',
         cancelUrl: cancelUrl || 'https://bron.com',
         customerServiceInstruction1: customerServiceInstruction1 || 'Rosenweg 20',
-        customerServiceInstruction2: customerServiceInstruction2 || '12345 Berlin'
+        customerServiceInstruction2: customerServiceInstruction2 || '12345 Berlin',
+		uuid: puiUtils.generateUUID()
 	};
 
 	const stageRadio = process.env.NODE_ENV === 'development';
