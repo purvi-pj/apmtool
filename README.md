@@ -41,7 +41,6 @@ SESSION_SECRET=
 PP_MOCK_WEBHOOK_URL='http://127.0.0.1:3000/ppwebhook'
 NODE_ENV=
 STAGE_URL=
-STAGE_TOKEN_URL=
 ```
 
 ### Node module dependencies
