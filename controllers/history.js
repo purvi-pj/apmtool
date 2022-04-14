@@ -1,8 +1,7 @@
 'use strict';
 
 const dbUtils 		= require('../lib/db'),
-	  util 			= require('util'),
-      _				= require('underscore');
+	  util 			= require('util');
 
 
 function loadRecent(req, res, next) {
@@ -14,13 +13,13 @@ function loadRecent(req, res, next) {
 		records.forEach((element) => {
 
             // In the case where expected API request/responses are not present, default to empty objects
-		    if (!_.has(element.CONFIRM_PAYMENT_SOURCE_API)) {
+		    if (!element.CONFIRM_PAYMENT_SOURCE_API) {
 		        element.CONFIRM_PAYMENT_SOURCE_API = {};
 		    }
-		    if (!_.has(element.GET_ORDER_API)) {
+		    if (!element.GET_ORDER_API) {
 		        element.GET_ORDER_API = {};
 		    }
-		    if (!_.has(element.CAPTURE_ORDER_API)) {
+		    if (!element.CAPTURE_ORDER_API) {
 		        element.CAPTURE_ORDER_API = {};
 		    }
 

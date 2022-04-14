@@ -422,7 +422,7 @@ $(function () {
         orderFailure(orderId);
       } else {
 
-        var getOrderRequest = $.post(getOrderUrl, { environment, customClientId, customClientSecret, orderId, clientType });
+        var getOrderRequest = $.post(getOrderUrl, { environment, customClientId, customClientSecret, orderId, clientType, paymentscheme });
 
         getOrderRequest.done(function (data) {
 
@@ -457,7 +457,7 @@ $(function () {
 
     // Call capture order API
     function captureOrder(orderId) {
-      var captureOrderRequest = $.post(captureOrderUrl, { environment, orderId, clientType, customClientId, customClientSecret });
+      var captureOrderRequest = $.post(captureOrderUrl, { environment, orderId, clientType, customClientId, customClientSecret, paymentscheme });
 
       captureOrderRequest.done(function (data) {
         if (data.statusCode < 400) {
