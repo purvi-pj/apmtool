@@ -114,6 +114,7 @@
             <option value="boletobancario">boletobancario(non-instant)</option>
             <option value="eps">eps</option>
             <option value="giropay">giropay</option>
+            <option value="grabpay">grabpay</option>
             <option value="ideal" selected>ideal</option>
             <option value="mybank">mybank</option>
             <option value="multibanco">multibanco(non-instant)</option>
