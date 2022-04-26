@@ -118,7 +118,7 @@ $(function () {
               // On failed Confirm Payment API, update modal on UI with error
               $("#progressUpdate").append(`<p>[${getTimeString()}] Confirm Payment Source Failed...</p>`);
               $("#progressUpdate").append('<p><pre>' + JSON.stringify(data.response, null, 2) + '</pre></p>');
-              // orderFailure(orderId);
+              orderFailure(orderId);
             }
           }); 
         } else {
