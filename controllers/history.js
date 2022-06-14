@@ -32,6 +32,20 @@ function loadRecent(req, res, next) {
 	});
 }
 
+function loadRecentWebhooks(req, res, next) {
+
+	dbUtils.getRecentWebhooks({ limit: 50 })
+
+	.then((webhooks) => {
+
+		webhooks.forEach((element) => {
+            element = convertWebhookForDisplay(element);
+		})
+
+		res.render("webhookHistory", { webhooks, user: req.user });
+	});
+}
+
 function loadRecord(req, res, next) {
 
 	if (req.body.orderId) {
@@ -54,6 +68,14 @@ function loadRecord(req, res, next) {
 	} else {
 		loadRecent(req, res, next);
 	}
+}
+
+function convertWebhookForDisplay (webhook) {
+
+    webhook.bodyJSON = JSON.stringify(webhook.BODY, null, 2);
+
+    return webhook;
+
 }
 
 function convertRecordForDisplay (record) {
@@ -118,5 +140,6 @@ function maskValue (value) {
 
 module.exports = {
 	loadRecent,
+	loadRecentWebhooks,
 	loadRecord
 }

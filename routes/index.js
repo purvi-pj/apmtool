@@ -40,6 +40,9 @@ const launcherController 	= require('../controllers/launcher'),
 	router.get('/history', ensureLoggedIn('/login'), historyController.loadRecent);
 	router.post('/history', historyController.loadRecord);
 
+	// Webhook history
+	router.get('/history/webhook', ensureLoggedIn('/login'), historyController.loadRecentWebhooks);
+
 	// Authentication for site and /history access
 	router.get('/user/create', sandboxController.createUser);
 	router.get('/user/validate', sandboxController.validateUser);	
