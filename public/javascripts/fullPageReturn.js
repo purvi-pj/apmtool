@@ -6,10 +6,12 @@ $(function () {
     show: true
   })
 
-  var $form = $("#fullPageReturnForm"),
-    orderId = $form.find("input[name='orderId']").val(),
-    environment = $form.find("input[name='environment']").val(),
-    clientType = $form.find("input[name='clientType']").val();
+  var $form       = $("#fullPageReturnForm"),
+    orderId       = $form.find("input[name='orderId']").val(),
+    environment   = $form.find("input[name='environment']").val(),
+    clientType    = $form.find("input[name='clientType']").val(),
+    paymentscheme = $form.find( "input[name='paymentScheme']" ).val(),
+    accessToken   = $form.find( "input[name='accessToken']" ).val();
 
   var captureStatus = "";
 
@@ -49,7 +51,7 @@ $(function () {
   // Poll PayPal order status for any status update (used for non webhook use case)
   function pollPPOrderStatus(orderId, retryAttempts) {
 
-    var getOrderRequest = $.post(getOrderUrl, { environment, orderId, clientType });
+    var getOrderRequest = $.post(getOrderUrl, { environment, orderId, clientType, paymentscheme, accessToken });
 
     getOrderRequest.done(function (data) {
 
@@ -133,7 +135,7 @@ $(function () {
 
   // Call capture order API
   function captureOrder(orderId) {
-    var captureOrderRequest = $.post(captureOrderUrl, { environment, orderId, clientType });
+    var captureOrderRequest = $.post(captureOrderUrl, { environment, orderId, clientType, accessToken });
 
     captureOrderRequest.done(function (data) {
       if (data.statusCode < 400) {
