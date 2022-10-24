@@ -94,7 +94,8 @@ function getOrder(req, res, next) {
     clientType: req.body.clientType,
     scheme: req.body.paymentscheme,
     customClientId: req.body.customClientId,
-    customClientSecret: req.body.customClientSecret
+    customClientSecret: req.body.customClientSecret,
+    accessToken: req.body.accessToken
   })
 
 	.then((accessTokenResult) => {
@@ -190,15 +191,15 @@ function confirmPaymentSource(req, res, next) {
 		name: req.body.name,
 		emailAddress: req.body.email,
 		phoneNumber: req.body.phonenumber,
-    currency: req.body.currency,
-    expiresInDays: req.body.expiresInDays,
-    taxid: req.body.taxid,
-    taxid_type: req.body.taxid_type,
-    address_line_1: req.body.address_line_1,
-    address_line_2: req.body.address_line_2,
-    admin_area_1: req.body.admin_area_1,
-    admin_area_2: req.body.admin_area_2,
-    postal_code: req.body.postal_code,
+	    currency: req.body.currency,
+	    expiresInDays: req.body.expiresInDays,
+	    taxid: req.body.taxid,
+	    taxid_type: req.body.taxid_type,
+	    address_line_1: req.body.address_line_1,
+	    address_line_2: req.body.address_line_2,
+	    admin_area_1: req.body.admin_area_1,
+	    admin_area_2: req.body.admin_area_2,
+	    postal_code: req.body.postal_code,
 		amount: req.body.amount,
 		countryCode: req.body.countrycode,
 		scheme: req.body.paymentscheme,
@@ -240,6 +241,7 @@ function captureOrder(req, res, next) {
     	customClientId: req.body.customClientId,
     	customClientSecret: req.body.customClientSecret,
 		scheme: req.body.paymentscheme,
+		accessToken: req.body.accessToken
 	})
 
 	.then((accessTokenResult) => {

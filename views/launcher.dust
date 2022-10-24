@@ -126,7 +126,6 @@
             <option value="satispay">satispay</option>
             <option value="sofort">sofort</option>
             <option value="trustly">trustly</option>
-            <option value="trustpay">trustpay</option>
             <option value="verkkopankki">verkkopankki</option>
             <option value="wechatpay">wechatpay</option>
           </select>
